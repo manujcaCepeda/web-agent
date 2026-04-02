@@ -1,0 +1,110 @@
+{
+  "business_name": "Fern Private Care Services",
+  "location": "Florida, USA",
+  "language": "English",
+  "industry": "Elderly Care Services",
+
+  "goal": "leads",
+
+  "target_audience": "Families with elderly members who need professional, safe, and compassionate care",
+
+  "value_proposition": "We provide compassionate, professional, and personalized care for seniors, ensuring safety, comfort, and peace of mind for families.",
+
+  "differentiation": [
+    "Personalized care plans",
+    "24/7 availability",
+    "Care at home or in our facility",
+    "Emotional and physical wellbeing focus"
+  ],
+
+  "services": [
+    {
+      "name": "24/7 Home Care",
+      "description": "Continuous care at the senior’s home, ensuring safety and comfort at all times."
+    },
+    {
+      "name": "Personal Care",
+      "description": "Assistance with hygiene, bathing, grooming, and daily activities."
+    },
+    {
+      "name": "Companionship & Emotional Support",
+      "description": "Friendly companionship to reduce loneliness and improve emotional wellbeing."
+    },
+    {
+      "name": "Medication Management",
+      "description": "Timely and accurate administration of medications."
+    },
+    {
+      "name": "Short-Term Stay Care",
+      "description": "Temporary care at our facility when families are traveling."
+    },
+    {
+      "name": "Rehabilitation & Therapy",
+      "description": "Breathing exercises, pool therapy, and physical rehabilitation."
+    },
+    {
+      "name": "Daily Assistance",
+      "description": "Help with shopping, meals, and daily routines."
+    }
+  ],
+
+  "care_types": [
+    "Hourly care",
+    "Daily care",
+    "Weekly care",
+    "Day and night care"
+  ],
+
+  "features": [
+    "24/7 availability",
+    "Care at home or facility",
+    "Recreational activities",
+    "Sleep monitoring",
+    "Healthy meal preparation"
+  ],
+
+  "seo_keywords": [
+    "elderly care services Florida",
+    "home care for seniors Florida",
+    "24 hour caregiver Florida"
+  ],
+
+  "cta": [
+    "Book a Free Consultation",
+    "Contact us via WhatsApp"
+  ],
+
+  "testimonials": [
+    {
+      "name": "Maria G.",
+      "text": "They took amazing care of my mother. I finally feel at peace knowing she is in good hands."
+    },
+    {
+      "name": "John D.",
+      "text": "Professional, caring, and always available. Highly recommended."
+    }
+  ],
+
+  "business_hours": "24/7 Available",
+
+  "contact_info": {
+    "phone": "12393843206",
+    "email": "info@ferncare.com",
+    "address": "Florida, USA"
+  },
+
+  "whatsapp": "12393843206",
+
+  "social_links": {
+    "facebook": "#",
+    "instagram": "#",
+    "linkedin": "#"
+  },
+
+  "branding": {
+    "logo": "/assets/images/LogoFernPrivateCare.png",
+    "primary_color": "#2F7F79",
+    "secondary_color": "#A7D7C5",
+    "style": "calm, trustworthy, healthcare"
+  }
+}

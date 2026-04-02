@@ -1,0 +1,10 @@
+{
+  "sections": [
+    "hero",
+    "menu",
+    "about",
+    "gallery",
+    "reviews",
+    "reservation"
+  ]
+}

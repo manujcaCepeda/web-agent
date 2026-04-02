@@ -1,0 +1,11 @@
+{
+  "sections": [
+    "hero",
+    "products",
+    "benefits",
+    "testimonials",
+    "offers",
+    "faq",
+    "checkout_cta"
+  ]
+}
