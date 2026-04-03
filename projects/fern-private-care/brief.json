@@ -10,11 +10,14 @@
 
   "value_proposition": "We provide compassionate, professional, and personalized care for seniors, ensuring safety, comfort, and peace of mind for families.",
 
+  "emotional_hook": "Finding someone you can trust to care for your loved ones is one of the most important decisions a family can make.",
+
   "differentiation": [
-    "Personalized care plans",
-    "24/7 availability",
-    "Care at home or in our facility",
-    "Emotional and physical wellbeing focus"
+    "Personalized care plans tailored to each senior’s needs",
+    "Highly trained and compassionate caregivers",
+    "Available 24/7 for complete peace of mind",
+    "Flexible care options at home or in our facility",
+    "Focused on both emotional and physical wellbeing"
   ],
 
   "services": [
@@ -106,5 +109,15 @@
     "primary_color": "#2F7F79",
     "secondary_color": "#A7D7C5",
     "style": "calm, trustworthy, healthcare"
+  },
+
+  "image_style": {
+    "tone": "warm, human, trustworthy",
+    "scenes": [
+      "caregiver assisting elderly person",
+      "smiling senior with caregiver",
+      "home care environment",
+      "friendly companionship moments"
+    ]
   }
 }
