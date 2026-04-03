@@ -20,34 +20,48 @@
     "Focused on both emotional and physical wellbeing"
   ],
 
+  "trust_signals": [
+    "Experienced and trained caregivers",
+    "24/7 availability and support",
+    "Personalized care approach",
+    "Trusted by families in Florida"
+  ],
+
   "services": [
     {
       "name": "24/7 Home Care",
-      "description": "Continuous care at the senior’s home, ensuring safety and comfort at all times."
+      "description": "Continuous care at the senior’s home, ensuring safety and comfort at all times.",
+      "image_query": "elderly home care caregiver"
     },
     {
       "name": "Personal Care",
-      "description": "Assistance with hygiene, bathing, grooming, and daily activities."
+      "description": "Assistance with hygiene, bathing, grooming, and daily activities.",
+      "image_query": "caregiver helping elderly hygiene"
     },
     {
       "name": "Companionship & Emotional Support",
-      "description": "Friendly companionship to reduce loneliness and improve emotional wellbeing."
+      "description": "Friendly companionship to reduce loneliness and improve emotional wellbeing.",
+      "image_query": "elderly companionship caregiver smiling"
     },
     {
       "name": "Medication Management",
-      "description": "Timely and accurate administration of medications."
+      "description": "Timely and accurate administration of medications.",
+      "image_query": "caregiver giving medication elderly"
     },
     {
       "name": "Short-Term Stay Care",
-      "description": "Temporary care at our facility when families are traveling."
+      "description": "Temporary care at our facility when families are traveling.",
+      "image_query": "elderly care facility support"
     },
     {
       "name": "Rehabilitation & Therapy",
-      "description": "Breathing exercises, pool therapy, and physical rehabilitation."
+      "description": "Breathing exercises, pool therapy, and physical rehabilitation.",
+      "image_query": "elderly rehabilitation therapy exercise"
     },
     {
       "name": "Daily Assistance",
-      "description": "Help with shopping, meals, and daily routines."
+      "description": "Help with shopping, meals, and daily routines.",
+      "image_query": "caregiver helping elderly daily activities"
     }
   ],
 
@@ -74,8 +88,10 @@
 
   "cta": [
     "Book a Free Consultation",
-    "Contact us via WhatsApp"
+    "Talk to a Care Specialist Today"
   ],
+
+  "cta_context": "Get peace of mind today. Speak with a professional caregiver and find the best solution for your loved one.",
 
   "testimonials": [
     {

@@ -53,12 +53,15 @@ PROCESS:
    - Apply premium layout patterns (image + text, alternating sections, strong hero)
 
 7. Integrate images (MANDATORY):
-   - Select high-quality images based on business type
-   - Use images to support emotional storytelling and trust
-   - Apply images in:
-     - Hero (background or split layout)
-     - About / Benefits sections
-     - Optional service visuals
+
+   - Use image_style from the brief if available:
+     - tone
+     - scenes
+
+   - Select high-quality images based on:
+     - business type
+     - services offered
+     - emotional context
 
    - Use image sources such as:
      https://images.unsplash.com/photo-...
@@ -66,7 +69,41 @@ PROCESS:
    - Ensure images are:
      - Relevant to the business
      - High-quality
-     - Professional and human-centered (especially for healthcare)
+     - Professional and human-centered
+
+   - Maintain visual consistency:
+     - Similar lighting style
+     - Similar color tone
+     - Consistent emotional feeling across all images
+
+---
+
+IMAGE MAPPING (CRITICAL):
+
+Each section MUST use context-specific images:
+
+- Hero:
+  caregiver with elderly person (emotional + trust)
+
+- Services:
+  caregiving actions (hygiene, assistance, support)
+
+- Benefits:
+  happy senior + caregiver interaction
+
+- Rehabilitation:
+  elderly doing light exercise or therapy
+
+- Companionship:
+  smiling senior + human connection
+
+- Contact / CTA:
+  warm, welcoming caregiver scene
+
+STRICT RULE:
+If the image does NOT clearly represent elderly care, DO NOT use it.
+
+---
 
 8. Build frontend:
    - HTML5
@@ -139,7 +176,7 @@ When applicable (especially healthcare), always emphasize:
 
 ---
 
-VISUAL PRIORITY (NEW - CRITICAL):
+VISUAL PRIORITY (CRITICAL):
 
 - The website must feel visually rich and modern
 - Avoid empty or text-only sections
