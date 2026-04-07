@@ -415,3 +415,63 @@ Avoid:
 - Empty sections
 - Broken UI
 - Poor spacing
+
+--- 
+
+ANIMATION SYSTEM (PREMIUM):
+
+Add scroll-based animations using Intersection Observer.
+
+RULES:
+
+- Animate:
+  - sections
+  - cards
+  - images
+
+- Effects:
+  - fade-in
+  - slide-up
+  - scale-in
+
+---
+
+IMPLEMENTATION:
+
+Add initial state:
+
+class="opacity-0 translate-y-10 transition duration-700"
+
+---
+
+Add JS:
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.remove("opacity-0", "translate-y-10");
+    }
+  });
+});
+
+document.querySelectorAll("section, .card").forEach(el => {
+  observer.observe(el);
+});
+</script>
+
+---
+
+HOVER ANIMATION:
+
+- hover:scale-105
+- hover:shadow-lg
+- transition duration-300
+
+---
+
+RESULT:
+
+- Smooth entrance animations
+- Premium feel
+- Better perceived performance

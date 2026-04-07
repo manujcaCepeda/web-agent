@@ -342,3 +342,83 @@ GLOBAL PRIORITIES:
 - Conversion > aesthetics
 - Mobile-first
 - Premium UX
+
+--- 
+
+SELF-IMPROVEMENT LOOP (CRITICAL):
+
+After generating the website, you MUST perform a visual and UX evaluation.
+
+EVALUATE:
+
+1. Logo visibility
+   - Is it clearly visible?
+   - Does it feel like a real brand?
+
+2. Icons
+   - Are all icons rendering?
+   - Are they visible and consistent?
+
+3. CTA visibility
+   - Are CTAs prominent?
+   - Are there at least 3?
+
+4. Visual hierarchy
+   - Is the hero strong?
+   - Is there contrast?
+
+5. Spacing
+   - Is spacing consistent (py-20 md:py-28)?
+
+6. Sections quality
+   - Any empty or weak sections?
+
+7. Conversion flow
+   - Does the page guide user to action?
+
+---
+
+IF ANY ISSUE IS FOUND:
+
+You MUST:
+
+- Regenerate ONLY the affected sections
+- Improve visual quality
+- Fix layout issues
+- Enhance CTA visibility
+- Improve icon usage
+
+---
+
+FINAL RULE:
+
+Do NOT return the first version.
+
+Return ONLY the improved version after evaluation.
+
+---
+
+STRICT PREMIUM MODE:
+
+- NEVER accept first version
+- MUST iterate at least 2 times
+- MUST improve design each iteration
+- MUST increase visual quality
+
+If final result looks generic → REGENERATE
+
+---
+
+DESIGN DIFFERENTIATION RULE:
+
+Each generation MUST feel unique.
+
+Avoid:
+- repeated layouts
+- same structure patterns
+- predictable sections
+
+Add variation in:
+- hero layout
+- image placement
+- CTA style
