@@ -422,3 +422,110 @@ Add variation in:
 - hero layout
 - image placement
 - CTA style
+
+---
+
+HOW IT WORKS SECTION (MANDATORY — NEW):
+
+Every website MUST include a 3-step process section.
+
+Place AFTER the About/Story section, BEFORE Benefits.
+
+Steps MUST follow this pattern:
+1. First contact (call / WhatsApp / form)
+2. Personalized assessment / plan
+3. Care begins / outcome
+
+RULES:
+- Use numbered step bubbles (1, 2, 3)
+- Include Lucide icon per step
+- Include connector line between steps (desktop only)
+- End with a CTA: "Takes less than 5 minutes. No commitment."
+
+WHY: Reduces fear of commitment. Families need a clear process before they trust.
+
+---
+
+CTA HIERARCHY (MANDATORY — ENFORCED):
+
+Every section with TWO CTAs MUST follow this hierarchy:
+
+- PRIMARY: filled, high-contrast (bg-white text-primary OR bg-primary text-white)
+- SECONDARY: ghost / outline (border-2 border-white/50 hover:bg-white/10)
+
+NEVER use two filled CTAs of the same visual weight.
+
+---
+
+FORM TRUST MICROCOPY (MANDATORY):
+
+Below every form submit button, MUST add:
+
+<div class="flex items-center justify-center gap-2 text-xs text-gray-400">
+  <i data-lucide="lock" style="width:13px;height:13px;color:#9ca3af;"></i>
+  Your information is private and never shared. No commitment required.
+</div>
+
+---
+
+MOBILE WHATSAPP POSITION RULE (CRITICAL):
+
+When a mobile sticky CTA bar is present (bottom-0):
+
+WhatsApp float MUST use:
+class="... bottom-[88px] md:bottom-6 ..."
+
+NEVER overlap the sticky CTA bar.
+
+---
+
+MANDATORY SECTION CHECKLIST (UPDATED):
+
+All websites MUST include ALL of these:
+
+1. Hero (dominant, split or overlay)
+2. Stats Bar (3–4 KPIs)
+3. Services (card grid)
+4. About / Story (image + text)
+5. How It Works (3-step process) ← NEW
+6. Benefits (image + feature list)
+7. Full-width Banner CTA
+8. Care Plans / Pricing Options
+9. Testimonials + inline CTA
+10. FAQ (Lucide chevron accordion)
+11. Contact (info + EmailJS form)
+12. Footer (premium dark)
+13. WhatsApp float
+14. Mobile sticky CTA bar
+
+---
+
+IMAGE VALIDATION RULE (CRITICAL):
+
+Before using any Pexels/Unsplash image ID, MUST mentally verify:
+
+- Does it show elderly care context?
+- Does it show a human caregiver interaction?
+- Is there no unrelated background (garage, signage, generic street)?
+
+If any doubt → USE A DIFFERENT ID.
+
+VERIFIED SAFE IDs FOR ELDERLY CARE (Pexels):
+- 3768131 — caregiver + elderly woman outdoors ✓
+- 7551617 — caregiver at home with senior ✓
+- 18459207 — seniors at table ✓
+- 18429308 — caregiver with seniors group ✓
+
+---
+
+FAQ DESIGN RULE (MANDATORY):
+
+NEVER use a text "+" as FAQ toggle.
+
+ALWAYS use:
+<span class="faq-chevron flex-shrink-0"><i data-lucide="chevron-down" style="width:20px;height:20px;color:#2F7F79;"></i></span>
+
+CSS:
+.faq-chevron { transition: transform 0.3s ease; display: inline-flex; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-item.open { border-color: #2F7F79; }

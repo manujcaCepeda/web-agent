@@ -81,8 +81,9 @@
     /* ── FAQ ── */
     .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
     .faq-answer.open { max-height: 500px; }
-    .faq-icon { transition: transform 0.3s ease; display: inline-block; }
-    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-chevron { transition: transform 0.3s ease; display: inline-flex; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-item.open { border-color: #2F7F79; }
 
     /* ── Service cards ── */
     .service-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
@@ -506,6 +507,91 @@
 
 
 <!-- ════════════════════════════════════════════
+     HOW IT WORKS — 3-step process
+════════════════════════════════════════════ -->
+<section class="py-20 md:py-28 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <div class="text-center max-w-2xl mx-auto mb-16 fade-up">
+      <span class="text-xs font-bold tracking-widest text-primary uppercase mb-3 block">Simple Start</span>
+      <h2 class="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-5">
+        Getting Started is Easier Than You Think
+      </h2>
+      <p class="text-gray-500 text-lg leading-relaxed">
+        We know this is a big decision. That's why we've made the first step completely stress-free.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8 relative">
+
+      <!-- Connector line — desktop only -->
+      <div class="hidden md:block absolute top-[52px] left-[calc(16.666%+2rem)] right-[calc(16.666%+2rem)] h-0.5 bg-secondary-light z-0"></div>
+
+      <!-- Step 1 -->
+      <div class="relative z-10 text-center fade-up">
+        <div class="w-[104px] h-[104px] bg-white rounded-3xl shadow-lg flex items-center justify-center mx-auto mb-6 border-2 border-secondary-light group hover:border-primary transition-colors duration-300">
+          <div>
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center mx-auto mb-1">
+              <span class="text-white text-xs font-extrabold">1</span>
+            </div>
+            <i data-lucide="phone-call" style="width:30px;height:30px;color:#2F7F79;" class="mx-auto block mt-1"></i>
+          </div>
+        </div>
+        <h3 class="font-display text-xl font-bold text-gray-900 mb-3">Free Consultation Call</h3>
+        <p class="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
+          Call or send us a WhatsApp message. We'll listen — no sales pressure, just honest guidance about care options.
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="relative z-10 text-center fade-up">
+        <div class="w-[104px] h-[104px] bg-white rounded-3xl shadow-lg flex items-center justify-center mx-auto mb-6 border-2 border-secondary-light group hover:border-primary transition-colors duration-300">
+          <div>
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center mx-auto mb-1">
+              <span class="text-white text-xs font-extrabold">2</span>
+            </div>
+            <i data-lucide="clipboard-list" style="width:30px;height:30px;color:#2F7F79;" class="mx-auto block mt-1"></i>
+          </div>
+        </div>
+        <h3 class="font-display text-xl font-bold text-gray-900 mb-3">Personalized Care Plan</h3>
+        <p class="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
+          We assess your loved one's needs and design a plan built around their routine, preferences, and health goals.
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="relative z-10 text-center fade-up">
+        <div class="w-[104px] h-[104px] bg-white rounded-3xl shadow-lg flex items-center justify-center mx-auto mb-6 border-2 border-secondary-light group hover:border-primary transition-colors duration-300">
+          <div>
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center mx-auto mb-1">
+              <span class="text-white text-xs font-extrabold">3</span>
+            </div>
+            <i data-lucide="heart-pulse" style="width:30px;height:30px;color:#2F7F79;" class="mx-auto block mt-1"></i>
+          </div>
+        </div>
+        <h3 class="font-display text-xl font-bold text-gray-900 mb-3">Care Begins — You Rest Easy</h3>
+        <p class="text-gray-500 text-sm leading-relaxed max-w-xs mx-auto">
+          Your caregiver starts — you get regular updates, open communication, and complete peace of mind.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center mt-14">
+      <a href="#contact"
+         class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold px-9 py-4 rounded-xl shadow-lg transition-all text-base">
+        <i data-lucide="calendar" style="width:18px;height:18px;color:white;"></i>
+        Start with a Free Consultation
+      </a>
+      <p class="text-gray-400 text-sm mt-3">Takes less than 5 minutes. No commitment.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════
      BENEFITS — Text left / Image right
 ════════════════════════════════════════════ -->
 <section class="py-20 md:py-28 bg-gray-50">
@@ -561,13 +647,14 @@
         </div>
       </div>
 
-      <div class="relative hidden lg:block">
+      <div class="relative">
+        <!-- Mobile: 16/9 aspect to keep compact; Desktop: 3/4 portrait -->
         <div class="rounded-3xl overflow-hidden shadow-2xl" style="aspect-ratio:3/4;">
           <img src="https://images.pexels.com/photos/18459207/pexels-photo-18459207.jpeg?auto=compress&cs=tinysrgb&w=900&q=85"
                alt="Cheerful elderly seniors enjoying a warm social gathering at a care facility — Fern Private Care"
                class="w-full h-full object-cover">
         </div>
-        <div class="absolute -bottom-6 -left-6 max-w-xs bg-white rounded-2xl shadow-xl p-5 border border-gray-100">
+        <div class="absolute -bottom-6 -left-2 sm:-left-6 max-w-xs bg-white rounded-2xl shadow-xl p-5 border border-gray-100">
           <div class="flex gap-0.5 text-yellow-400 text-base mb-2">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
           <p class="text-gray-700 text-sm leading-snug italic">"I finally feel at peace knowing my mother is in good hands."</p>
           <p class="text-gray-400 text-xs mt-2 font-medium">&mdash; Maria G., Florida</p>
@@ -604,7 +691,7 @@
         Book a Free Consultation
       </a>
       <a href="https://wa.me/12393843206" target="_blank" rel="noopener"
-         class="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-9 py-4 rounded-xl transition-all text-base">
+         class="inline-flex items-center justify-center gap-2 border-2 border-white/50 hover:border-white hover:bg-white/10 text-white font-semibold px-9 py-4 rounded-xl transition-all text-base">
         <svg width="19" height="19" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.526 5.848L0 24l6.335-1.509A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.892 0-3.657-.5-5.187-1.374l-.371-.22-3.854.918.976-3.756-.241-.386A9.944 9.944 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
         Talk to Us on WhatsApp
       </a>
@@ -775,7 +862,7 @@
       <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden">
         <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left hover:bg-gray-50 transition-colors">
           <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">What areas in Florida do you serve?</span>
-          <span class="faq-icon text-primary text-2xl flex-shrink-0 font-light leading-none" style="line-height:1;">+</span>
+          <span class="faq-chevron flex-shrink-0"><i data-lucide="chevron-down" style="width:20px;height:20px;color:#2F7F79;"></i></span>
         </button>
         <div class="faq-answer">
           <p class="text-gray-500 text-sm leading-relaxed px-7 pb-5">We currently serve families across Florida, including Miami, Orlando, Tampa, and surrounding areas. Contact us to confirm coverage in your specific location.</p>
@@ -785,7 +872,7 @@
       <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden">
         <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left hover:bg-gray-50 transition-colors">
           <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">How do I get started with care for my loved one?</span>
-          <span class="faq-icon text-primary text-2xl flex-shrink-0 font-light leading-none" style="line-height:1;">+</span>
+          <span class="faq-chevron flex-shrink-0"><i data-lucide="chevron-down" style="width:20px;height:20px;color:#2F7F79;"></i></span>
         </button>
         <div class="faq-answer">
           <p class="text-gray-500 text-sm leading-relaxed px-7 pb-5">Simply fill out our contact form or call us directly. We'll schedule a free consultation to understand your loved one's needs and recommend the right care plan &mdash; at no cost or commitment.</p>
@@ -795,7 +882,7 @@
       <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden">
         <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left hover:bg-gray-50 transition-colors">
           <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">Are your caregivers trained and background-checked?</span>
-          <span class="faq-icon text-primary text-2xl flex-shrink-0 font-light leading-none" style="line-height:1;">+</span>
+          <span class="faq-chevron flex-shrink-0"><i data-lucide="chevron-down" style="width:20px;height:20px;color:#2F7F79;"></i></span>
         </button>
         <div class="faq-answer">
           <p class="text-gray-500 text-sm leading-relaxed px-7 pb-5">Absolutely. All caregivers go through a rigorous screening process including background checks, reference verification, and professional training. We only place caregivers we would trust with our own families.</p>
@@ -805,7 +892,7 @@
       <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden">
         <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left hover:bg-gray-50 transition-colors">
           <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">What if I need care urgently or on short notice?</span>
-          <span class="faq-icon text-primary text-2xl flex-shrink-0 font-light leading-none" style="line-height:1;">+</span>
+          <span class="faq-chevron flex-shrink-0"><i data-lucide="chevron-down" style="width:20px;height:20px;color:#2F7F79;"></i></span>
         </button>
         <div class="faq-answer">
           <p class="text-gray-500 text-sm leading-relaxed px-7 pb-5">Our team is available 24/7 and we can often arrange care within 24 hours. Call us directly for urgent situations &mdash; we'll do everything we can to help immediately.</p>
@@ -815,7 +902,7 @@
       <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden">
         <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left hover:bg-gray-50 transition-colors">
           <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">Can I modify the care plan if my loved one's needs change?</span>
-          <span class="faq-icon text-primary text-2xl flex-shrink-0 font-light leading-none" style="line-height:1;">+</span>
+          <span class="faq-chevron flex-shrink-0"><i data-lucide="chevron-down" style="width:20px;height:20px;color:#2F7F79;"></i></span>
         </button>
         <div class="faq-answer">
           <p class="text-gray-500 text-sm leading-relaxed px-7 pb-5">Of course. Our plans are fully flexible. We regularly review each care plan and work with families to adjust services as needed &mdash; with no penalties or complications.</p>
@@ -825,7 +912,7 @@
       <div class="faq-item border border-gray-200 rounded-2xl overflow-hidden">
         <button class="faq-trigger w-full flex items-center justify-between px-7 py-5 text-left hover:bg-gray-50 transition-colors">
           <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">Do you provide care at home or only at your facility?</span>
-          <span class="faq-icon text-primary text-2xl flex-shrink-0 font-light leading-none" style="line-height:1;">+</span>
+          <span class="faq-chevron flex-shrink-0"><i data-lucide="chevron-down" style="width:20px;height:20px;color:#2F7F79;"></i></span>
         </button>
         <div class="faq-answer">
           <p class="text-gray-500 text-sm leading-relaxed px-7 pb-5">Both! We provide in-home care where caregivers come directly to your loved one, as well as care at our facility for structured environments or short-term stays.</p>
@@ -979,9 +1066,10 @@
               <span id="submit-text">Request Free Consultation</span>
             </button>
 
-            <p class="text-center text-xs text-gray-400">
-              No commitment required. We'll reach out within a few hours.
-            </p>
+            <div class="flex items-center justify-center gap-2 text-xs text-gray-400">
+              <i data-lucide="lock" style="width:13px;height:13px;color:#9ca3af;"></i>
+              Your information is private and never shared. No commitment required.
+            </div>
           </form>
 
         </div>
@@ -1183,7 +1271,7 @@
     <!-- Footer bottom bar -->
     <div class="border-t pt-8 flex flex-col md:flex-row items-center justify-between gap-4" style="border-color:rgba(255,255,255,0.08);">
       <p class="text-gray-600 text-xs text-center md:text-left">
-        &copy; 2025 Fern Private Care Services. All rights reserved. Serving Florida families with compassion.
+        &copy; 2026 Fern Private Care Services. All rights reserved. Serving Florida families with compassion.
       </p>
       <div class="flex items-center gap-6">
         <a href="#" class="text-gray-600 hover:text-white text-xs transition-colors">Privacy Policy</a>
@@ -1221,7 +1309,7 @@
      WHATSAPP FLOATING BUTTON — Premium with pulse
 ════════════════════════════════════════════ -->
 <a href="https://wa.me/12393843206" target="_blank" rel="noopener"
-   class="wa-float fixed bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-semibold transition-all duration-300 z-50"
+   class="wa-float fixed bottom-[88px] md:bottom-6 right-6 bg-green-500 hover:bg-green-600 text-white px-6 py-4 rounded-full shadow-2xl flex items-center gap-3 font-semibold transition-all duration-300 z-50"
    aria-label="Chat on WhatsApp">
   <svg width="26" height="26" fill="white" viewBox="0 0 24 24" class="flex-shrink-0">
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
@@ -1265,7 +1353,7 @@
       iconClose.classList.toggle('hidden', isOpen);
     });
 
-    // ── 5. FAQ Accordion
+    // ── 5. FAQ Accordion — chevron rotates, border turns teal
     document.querySelectorAll('.faq-trigger').forEach(trigger => {
       trigger.addEventListener('click', () => {
         const item   = trigger.closest('.faq-item');
@@ -1278,6 +1366,8 @@
         });
         // Open clicked (if wasn't open)
         if (!isOpen) { item.classList.add('open'); answer.classList.add('open'); }
+        // Re-run lucide to ensure chevron svg is ready
+        lucide.createIcons();
       });
     });
 

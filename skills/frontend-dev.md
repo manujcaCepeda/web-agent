@@ -475,3 +475,135 @@ RESULT:
 - Smooth entrance animations
 - Premium feel
 - Better perceived performance
+
+---
+
+ICON HOVER SYSTEM (DEFINITIVE — CRITICAL FIX):
+
+NEVER use inline style="color:#hex" on icons inside .group containers.
+
+INSTEAD use CSS class:
+
+.group-icon { color: #2F7F79; }
+.group:hover .group-icon { color: white; }
+
+Then on the <i> element:
+<i data-lucide="home" style="width:26px;height:26px;" class="group-icon"></i>
+
+WHY: lucide.createIcons() replaces <i> with <svg> in the DOM.
+Inline style on <i> is dropped. CSS class persists on the replaced <svg>.
+Using !important is fragile — class-based approach has no specificity conflict.
+
+---
+
+LUCIDE CDN (MANDATORY — CORRECT URL):
+
+ALWAYS use the UMD build:
+
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+NEVER use:
+<script src="https://unpkg.com/lucide@latest"></script>
+
+WHY: The default entry is ESM — it does NOT expose window.lucide.
+The UMD build guarantees window.lucide.createIcons() works.
+
+---
+
+SOCIAL ICONS IN DARK FOOTER (DEFINITIVE — CRITICAL):
+
+NEVER use <i data-lucide> for social icons in dark footers.
+
+ALWAYS use inline <svg fill="white"> elements:
+
+<a href="#" class="social-icon w-11 h-11 rounded-xl flex items-center justify-center"
+   style="background:rgba(255,255,255,0.10);"
+   onmouseover="this.style.background='rgba(255,255,255,0.22)';this.style.transform='translateY(-3px) scale(1.07)'"
+   onmouseout="this.style.background='rgba(255,255,255,0.10)';this.style.transform=''">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
+    <!-- path here -->
+  </svg>
+</a>
+
+WHY: Lucide replaces <i> with <svg> and drops inline style="color:white".
+Inline SVGs are 100% reliable, zero dependency.
+
+---
+
+CTA HIERARCHY ENFORCEMENT:
+
+On any section with two CTAs:
+
+PRIMARY:
+class="bg-white text-primary hover:bg-secondary-light font-bold px-8 py-4 rounded-xl shadow-xl"
+
+SECONDARY (ghost):
+class="border-2 border-white/50 hover:border-white hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-xl"
+
+RULE: NEVER make two CTAs equal visual weight.
+
+---
+
+MOBILE STICKY BAR + WHATSAPP FLOAT COEXISTENCE:
+
+When both are present:
+
+Sticky bar: fixed bottom-0 z-40 (md:hidden)
+WhatsApp float: fixed bottom-[88px] md:bottom-6 z-50
+
+Add to body: class="pb-[68px] md:pb-0"
+
+---
+
+FAQ ACCORDION (PREMIUM — MANDATORY):
+
+CSS:
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.faq-answer.open { max-height: 500px; }
+.faq-chevron { transition: transform 0.3s ease; display: inline-flex; }
+.faq-item.open .faq-chevron { transform: rotate(180deg); }
+.faq-item.open { border-color: #2F7F79; }
+
+Toggle element (NOT a text +):
+<span class="faq-chevron flex-shrink-0">
+  <i data-lucide="chevron-down" style="width:20px;height:20px;color:#2F7F79;"></i>
+</span>
+
+---
+
+HOW IT WORKS — COMPONENT TEMPLATE:
+
+3-step process section with connector line:
+
+<section class="py-20 md:py-28 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-8 relative">
+      <!-- Connector line -->
+      <div class="hidden md:block absolute top-[52px] left-[calc(16.666%+2rem)] right-[calc(16.666%+2rem)] h-0.5 bg-secondary-light z-0"></div>
+      <!-- Steps (repeat 3x) -->
+      <div class="relative z-10 text-center">
+        <div class="w-[104px] h-[104px] bg-white rounded-3xl shadow-lg flex items-center justify-center mx-auto mb-6 border-2 border-secondary-light">
+          <div>
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center mx-auto mb-1">
+              <span class="text-white text-xs font-extrabold">1</span>
+            </div>
+            <i data-lucide="phone-call" style="width:30px;height:30px;color:#2F7F79;" class="mx-auto block mt-1"></i>
+          </div>
+        </div>
+        <h3>Step Title</h3>
+        <p>Step description</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+---
+
+FORM TRUST MICROCOPY (MANDATORY):
+
+Below every submit button:
+
+<div class="flex items-center justify-center gap-2 text-xs text-gray-400">
+  <i data-lucide="lock" style="width:13px;height:13px;color:#9ca3af;"></i>
+  Your information is private and never shared. No commitment required.
+</div>
