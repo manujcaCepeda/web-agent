@@ -1,12 +1,33 @@
 {
   "business_name": "Fern Private Care Services",
+  "business_type": "healthcare",
   "location": "Florida, USA",
   "language": "English",
-  "industry": "Elderly Care Services",
 
   "goal": "leads",
 
-  "target_audience": "Families with elderly members who need professional, safe, and compassionate care",
+  "target_audience": "Adult children and families responsible for elderly loved ones who need safe, reliable, and compassionate care",
+
+  "pain_points": [
+    "Fear of leaving a loved one with the wrong caregiver",
+    "Stress from balancing work, life, and caregiving",
+    "Uncertainty about the quality of care available",
+    "Guilt for not being able to provide constant attention"
+  ],
+
+  "desires": [
+    "Peace of mind knowing their loved one is safe",
+    "Trust in a professional and compassionate caregiver",
+    "Reliable and consistent care",
+    "Emotional support for their family member"
+  ],
+
+  "objections": [
+    "How do I know I can trust your caregivers?",
+    "Is the service really personalized?",
+    "What if something goes wrong?",
+    "Is this worth the cost?"
+  ],
 
   "value_proposition": "We provide compassionate, professional, and personalized care for seniors, ensuring safety, comfort, and peace of mind for families.",
 
@@ -21,10 +42,11 @@
   ],
 
   "trust_signals": [
-    "Experienced and trained caregivers",
-    "24/7 availability and support",
-    "Personalized care approach",
-    "Trusted by families in Florida"
+    "10+ years of experience in elderly care",
+    "Fully trained & background-checked caregivers",
+    "24/7 availability and emergency support",
+    "Trusted by families across Florida",
+    "Personalized care plans for every patient"
   ],
 
   "services": [
@@ -65,31 +87,8 @@
     }
   ],
 
-  "care_types": [
-    "Hourly care",
-    "Daily care",
-    "Weekly care",
-    "Day and night care"
-  ],
-
-  "features": [
-    "24/7 availability",
-    "Care at home or facility",
-    "Recreational activities",
-    "Sleep monitoring",
-    "Healthy meal preparation"
-  ],
-
-  "seo_keywords": [
-    "elderly care services Florida",
-    "home care for seniors Florida",
-    "24 hour caregiver Florida"
-  ],
-
-  "cta": [
-    "Book a Free Consultation",
-    "Talk to a Care Specialist Today"
-  ],
+  "cta_primary": "Book a Free Consultation",
+  "cta_secondary": "Talk to a Care Specialist Today",
 
   "cta_context": "Get peace of mind today. Speak with a professional caregiver and find the best solution for your loved one.",
 
