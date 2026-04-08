@@ -88,12 +88,12 @@
     .service-card { transition: transform 0.25s ease, box-shadow 0.25s ease; }
     .service-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(47,127,121,0.14); }
 
-    /* ── Icon color fix: when group-hover turns container primary, icon must go white ── */
-    /* inline style="color:#2F7F79" has high specificity — !important is required here  */
-    .group:hover i[data-lucide],
-    .group:hover i[data-lucide] svg { color: white !important; stroke: white !important; }
-    .service-card:hover i[data-lucide],
-    .service-card:hover i[data-lucide] svg { color: white !important; stroke: white !important; }
+    /* ── Icon hover — class-based, no !important needed ─────────────────────
+       Remove inline color from group icons, control via CSS class only.
+       .group-icon sets default teal; .group:hover overrides to white.
+    ── */
+    .group-icon { color: #2F7F79; }
+    .group:hover .group-icon { color: white; }
 
     /* ── Scroll fade ── */
     .fade-up { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -115,7 +115,7 @@
   </style>
 </head>
 
-<body class="text-gray-700 antialiased bg-white">
+<body class="text-gray-700 antialiased bg-white pb-[68px] md:pb-0">
 
 <!-- ════════════════════════════════════════════
      HEADER — Premium sticky with top accent bar
@@ -129,7 +129,7 @@
     <!-- Logo Block — real brand assets -->
     <a href="#" class="flex items-center gap-3 flex-shrink-0 group">
       <!-- Logo.png = icon-only mark, works at small sizes -->
-      <div class="border-2 border-secondary group-hover:border-primary rounded-2xl p-1 shadow-md group-hover:shadow-lg transition-all duration-300 bg-white flex-shrink-0">
+      <div class="border-2 border-gray-100 group-hover:border-primary/40 rounded-2xl p-1 shadow-md group-hover:shadow-lg transition-all duration-300 bg-white flex-shrink-0">
         <img src="assets/images/Logo.png"
              alt="Fern Private Care icon"
              class="h-12 md:h-14 w-auto object-contain block"
@@ -232,7 +232,7 @@
             Book a Free Consultation
           </a>
           <a href="https://wa.me/12393843206" target="_blank" rel="noopener"
-             class="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-200 text-base shadow-lg">
+             class="inline-flex items-center justify-center gap-2 border-2 border-white/50 hover:border-white hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-200 text-base">
             <svg class="flex-shrink-0" width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.526 5.848L0 24l6.335-1.509A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.892 0-3.657-.5-5.187-1.374l-.371-.22-3.854.918.976-3.756-.241-.386A9.944 9.944 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
             Talk to Us on WhatsApp
           </a>
@@ -255,7 +255,12 @@
         </div>
       </div>
 
-      <!-- Hero Image -->
+      <!-- Hero Image — mobile: full-width below copy; desktop: right column -->
+      <div class="lg:hidden rounded-2xl overflow-hidden shadow-xl mt-2" style="aspect-ratio:16/9;">
+        <img src="https://images.pexels.com/photos/3768131/pexels-photo-3768131.jpeg?auto=compress&cs=tinysrgb&w=900&q=85"
+             alt="Smiling caregiver connecting with an elderly woman — Fern Private Care"
+             class="w-full h-full object-cover">
+      </div>
       <div class="relative hidden lg:block">
         <div class="absolute -inset-6 rounded-[2.5rem] bg-white/10 backdrop-blur-sm"></div>
         <div class="relative rounded-[2rem] overflow-hidden shadow-2xl" style="aspect-ratio:4/5;">
@@ -333,7 +338,7 @@
 
       <div class="service-card bg-white rounded-2xl p-7 shadow-sm border border-gray-100 group cursor-default">
         <div class="w-14 h-14 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors duration-300">
-          <i data-lucide="home" style="width:26px;height:26px;color:#2F7F79;" class="group-icon"></i>
+          <i data-lucide="home" style="width:26px;height:26px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-lg font-bold text-gray-900 mb-3">24/7 Home Care</h3>
         <p class="text-gray-500 text-sm leading-relaxed">Continuous care in the comfort and familiarity of your loved one's own home.</p>
@@ -341,7 +346,7 @@
 
       <div class="service-card bg-white rounded-2xl p-7 shadow-sm border border-gray-100 group cursor-default">
         <div class="w-14 h-14 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors duration-300">
-          <i data-lucide="user-round" style="width:26px;height:26px;color:#2F7F79;" class="group-icon"></i>
+          <i data-lucide="user-round" style="width:26px;height:26px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-lg font-bold text-gray-900 mb-3">Personal Care</h3>
         <p class="text-gray-500 text-sm leading-relaxed">Dignified assistance with hygiene, bathing, grooming, and daily personal activities.</p>
@@ -349,7 +354,7 @@
 
       <div class="service-card bg-white rounded-2xl p-7 shadow-sm border border-gray-100 group cursor-default">
         <div class="w-14 h-14 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors duration-300">
-          <i data-lucide="heart-handshake" style="width:26px;height:26px;color:#2F7F79;" class="group-icon"></i>
+          <i data-lucide="heart-handshake" style="width:26px;height:26px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-lg font-bold text-gray-900 mb-3">Companionship</h3>
         <p class="text-gray-500 text-sm leading-relaxed">Warm companionship that reduces loneliness and nurtures emotional wellbeing every day.</p>
@@ -357,7 +362,7 @@
 
       <div class="service-card bg-white rounded-2xl p-7 shadow-sm border border-gray-100 group cursor-default">
         <div class="w-14 h-14 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors duration-300">
-          <i data-lucide="pill" style="width:26px;height:26px;color:#2F7F79;" class="group-icon"></i>
+          <i data-lucide="pill" style="width:26px;height:26px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-lg font-bold text-gray-900 mb-3">Medication Management</h3>
         <p class="text-gray-500 text-sm leading-relaxed">Timely and accurate medication administration to keep your loved one safe on schedule.</p>
@@ -365,7 +370,7 @@
 
       <div class="service-card bg-white rounded-2xl p-7 shadow-sm border border-gray-100 group cursor-default">
         <div class="w-14 h-14 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors duration-300">
-          <i data-lucide="building-2" style="width:26px;height:26px;color:#2F7F79;" class="group-icon"></i>
+          <i data-lucide="building-2" style="width:26px;height:26px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-lg font-bold text-gray-900 mb-3">Short-Term Stay</h3>
         <p class="text-gray-500 text-sm leading-relaxed">Temporary facility care while families travel &mdash; safe, comfortable, and supervised.</p>
@@ -373,7 +378,7 @@
 
       <div class="service-card bg-white rounded-2xl p-7 shadow-sm border border-gray-100 group cursor-default">
         <div class="w-14 h-14 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors duration-300">
-          <i data-lucide="activity" style="width:26px;height:26px;color:#2F7F79;" class="group-icon"></i>
+          <i data-lucide="activity" style="width:26px;height:26px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-lg font-bold text-gray-900 mb-3">Rehabilitation &amp; Therapy</h3>
         <p class="text-gray-500 text-sm leading-relaxed">Breathing exercises, pool therapy, and physical rehabilitation by trained professionals.</p>
@@ -381,7 +386,7 @@
 
       <div class="service-card bg-white rounded-2xl p-7 shadow-sm border border-gray-100 group cursor-default">
         <div class="w-14 h-14 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors duration-300">
-          <i data-lucide="shopping-basket" style="width:26px;height:26px;color:#2F7F79;" class="group-icon"></i>
+          <i data-lucide="shopping-basket" style="width:26px;height:26px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-lg font-bold text-gray-900 mb-3">Daily Assistance</h3>
         <p class="text-gray-500 text-sm leading-relaxed">Help with grocery shopping, healthy meal preparation, and daily routines.</p>
@@ -426,8 +431,8 @@
       <!-- Image -->
       <div class="relative order-2 lg:order-1">
         <div class="rounded-3xl overflow-hidden shadow-2xl" style="aspect-ratio:4/3;">
-          <img src="https://images.pexels.com/photos/18968358/pexels-photo-18968358.jpeg?auto=compress&cs=tinysrgb&w=900&q=85"
-               alt="Dedicated caregiver gently supporting an elderly woman as they walk together — Fern Private Care Services"
+          <img src="https://images.pexels.com/photos/7551617/pexels-photo-7551617.jpeg?auto=compress&cs=tinysrgb&w=900&q=85"
+               alt="Compassionate caregiver attentively assisting an elderly senior at home — Fern Private Care Services"
                class="w-full h-full object-cover">
         </div>
         <div class="absolute -bottom-7 -right-5 bg-white rounded-2xl shadow-xl px-7 py-5 text-center border border-gray-100 hidden sm:block">
@@ -626,7 +631,7 @@
 
       <div class="group rounded-2xl border-2 border-gray-100 p-8 hover:border-primary hover:shadow-xl transition-all duration-300 cursor-default">
         <div class="w-12 h-12 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
-          <i data-lucide="timer" style="width:22px;height:22px;color:#2F7F79;"></i>
+          <i data-lucide="timer" style="width:22px;height:22px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-xl font-bold text-gray-900 mb-3">Hourly Care</h3>
         <p class="text-gray-500 text-sm leading-relaxed mb-5">Flexible support for a few hours &mdash; ideal for appointments, errands, or family respite.</p>
@@ -637,7 +642,7 @@
 
       <div class="group rounded-2xl border-2 border-gray-100 p-8 hover:border-primary hover:shadow-xl transition-all duration-300 cursor-default">
         <div class="w-12 h-12 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
-          <i data-lucide="calendar-days" style="width:22px;height:22px;color:#2F7F79;"></i>
+          <i data-lucide="calendar-days" style="width:22px;height:22px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-xl font-bold text-gray-900 mb-3">Daily Care</h3>
         <p class="text-gray-500 text-sm leading-relaxed mb-5">Consistent daily support with a familiar caregiver who knows your loved one's routine.</p>
@@ -648,7 +653,7 @@
 
       <div class="group rounded-2xl border-2 border-gray-100 p-8 hover:border-primary hover:shadow-xl transition-all duration-300 cursor-default">
         <div class="w-12 h-12 bg-secondary-light rounded-xl flex items-center justify-center mb-5 group-hover:bg-primary transition-colors">
-          <i data-lucide="calendar-range" style="width:22px;height:22px;color:#2F7F79;"></i>
+          <i data-lucide="calendar-range" style="width:22px;height:22px;" class="group-icon"></i>
         </div>
         <h3 class="font-display text-xl font-bold text-gray-900 mb-3">Weekly Care</h3>
         <p class="text-gray-500 text-sm leading-relaxed mb-5">Structured weekly plans combining care, companionship, and health monitoring.</p>
@@ -852,7 +857,7 @@
 
         <a href="tel:12393843206" class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group">
           <div class="w-12 h-12 bg-secondary-light rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors">
-            <i data-lucide="phone" style="width:20px;height:20px;color:#2F7F79;" class="group-phone"></i>
+            <i data-lucide="phone" style="width:20px;height:20px;" class="group-icon group-phone"></i>
           </div>
           <div>
             <p class="text-xs text-gray-400 font-medium mb-0.5">Phone / WhatsApp</p>
@@ -863,7 +868,7 @@
 
         <a href="mailto:info@ferncare.com" class="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-primary/30 transition-all group">
           <div class="w-12 h-12 bg-secondary-light rounded-xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary transition-colors">
-            <i data-lucide="mail" style="width:20px;height:20px;color:#2F7F79;" class="group-mail"></i>
+            <i data-lucide="mail" style="width:20px;height:20px;" class="group-icon group-mail"></i>
           </div>
           <div>
             <p class="text-xs text-gray-400 font-medium mb-0.5">Email</p>
@@ -928,25 +933,25 @@
           <form id="contact-form" class="space-y-5">
             <div class="grid sm:grid-cols-2 gap-5">
               <div>
-                <label class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">Your Name *</label>
+                <label class="block text-sm font-medium text-gray-600 mb-2">Your Name *</label>
                 <input type="text" name="from_name" required placeholder="Jane Smith"
                        class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all">
               </div>
               <div>
-                <label class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">Phone Number *</label>
+                <label class="block text-sm font-medium text-gray-600 mb-2">Phone Number *</label>
                 <input type="tel" name="phone" required placeholder="(555) 000-0000"
                        class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all">
               </div>
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">Email Address</label>
+              <label class="block text-sm font-medium text-gray-600 mb-2">Email Address</label>
               <input type="email" name="from_email" placeholder="your@email.com"
                      class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all">
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">Type of Care Needed</label>
+              <label class="block text-sm font-medium text-gray-600 mb-2">Type of Care Needed</label>
               <select name="care_type"
                       class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-700 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all appearance-none bg-white">
                 <option value="">Select care type...</option>
@@ -962,7 +967,7 @@
             </div>
 
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-2 uppercase tracking-wider">Tell Us About Your Loved One</label>
+              <label class="block text-sm font-medium text-gray-600 mb-2">Tell Us About Your Loved One</label>
               <textarea name="message" rows="4"
                         placeholder="Share any details about needs, preferences, or concerns. This helps us prepare for our conversation."
                         class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-all resize-none"></textarea>
@@ -1187,6 +1192,29 @@
     </div>
   </div>
 </footer>
+
+
+<!-- ════════════════════════════════════════════
+     MOBILE STICKY CTA BAR — visible only on mobile
+════════════════════════════════════════════ -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 flex items-center justify-between gap-3 md:hidden z-40 shadow-lg">
+  <div class="min-w-0">
+    <p class="text-xs font-bold text-gray-900 truncate">Need care today?</p>
+    <p class="text-xs text-gray-500">Free consultation, no commitment</p>
+  </div>
+  <div class="flex gap-2 flex-shrink-0">
+    <a href="https://wa.me/12393843206" target="_blank" rel="noopener"
+       class="flex items-center gap-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-bold px-3 py-2.5 rounded-lg transition-colors">
+      <svg width="14" height="14" fill="white" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.118 1.526 5.848L0 24l6.335-1.509A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.892 0-3.657-.5-5.187-1.374l-.371-.22-3.854.918.976-3.756-.241-.386A9.944 9.944 0 012 12C2 6.486 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10z"/></svg>
+      WhatsApp
+    </a>
+    <a href="#contact"
+       class="flex items-center gap-1.5 text-white text-xs font-bold px-3 py-2.5 rounded-lg transition-colors"
+       style="background:#2F7F79;">
+      Book Free
+    </a>
+  </div>
+</div>
 
 
 <!-- ════════════════════════════════════════════
