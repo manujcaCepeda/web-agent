@@ -134,24 +134,28 @@ Background mapping:
 
 ## 🧠 IMAGE SYSTEM (PRO)
 
-Images MUST follow:
-
-* query from services.image_query
-* append keywords:
-
-"caregiver elderly warm interaction"
-
-Example:
-
-```
-https://source.unsplash.com/800x600/?elderly,caregiver,home,warm&q=80&auto=format&fit=crop
-```
+Images MUST use the `_image_url` field from each service object.
 
 RULES:
 
-* ALWAYS human interaction
-* NEVER empty scenes
-* CONSISTENT tone across page
+* ALWAYS use the exact URL provided in `_image_url` — never invent URLs
+* NEVER use `source.unsplash.com` — it is deprecated and broken
+* ALWAYS use `images.unsplash.com` with specific photo IDs
+* NEVER use random Unsplash queries — only pre-verified curated URLs
+* Add `onerror="this.style.background='linear-gradient(135deg,#A7D7C5,#2F7F79)';this.removeAttribute('src')"` to all img tags as fallback
+
+ANIMATION RULES (CRITICAL):
+
+* NEVER use Tailwind `opacity-0`, `translate-y-10`, `translate-y-4` inline classes for reveal animations
+* Use ONLY class `reveal-element` or `reveal` for scroll animations
+* The CSS for `.reveal-element` and `.reveal` is defined in Part 1 — do not redefine it
+* Using Tailwind opacity classes conflicts with the CSS animation system and creates invisible sections
+
+SECTION RULES (CRITICAL):
+
+* EVERY `<section>` tag MUST have both an opening and closing tag in the SAME part
+* NEVER leave a section unclosed at the end of a part
+* If you are running low on tokens, close all open tags before stopping
 
 ---
 
