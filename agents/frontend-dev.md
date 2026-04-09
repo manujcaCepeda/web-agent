@@ -86,11 +86,107 @@ FAVICON RULE (CRITICAL):
 
 ---
 
+## DESIGN LANGUAGE SYSTEM (CRITICAL — READ FIRST)
+
+Before writing ANY code, read `style_mode` from the business analysis JSON.
+Then inject the matching CSS variables block into `<style>` in `<head>`.
+Every color, radius, shadow, and spacing decision MUST follow the active mode.
+
+---
+
+### MODE: premium-care
+*Warm, generous, human. Healthcare, senior care, wellness, family services.*
+```css
+:root {
+  --color-primary: #2F7F79;
+  --color-primary-dark: #236059;
+  --color-primary-light: #3a9e97;
+  --color-secondary: #A7D7C5;
+  --color-secondary-light: #ceeae0;
+  --color-accent: #F59E0B;
+  --color-bg: #FAFFFE;
+  --radius-card: 1rem;        /* rounded-2xl */
+  --radius-button: 0.75rem;   /* rounded-xl */
+  --radius-image: 1.5rem;     /* rounded-3xl */
+  --shadow-card: 0 2px 12px rgba(47,127,121,0.08);
+  --shadow-button: 0 8px 30px rgba(47,127,121,0.30);
+}
+body { background: var(--color-bg); font-family: 'Inter', sans-serif; }
+```
+Card style: `bg-white rounded-2xl border border-[rgba(167,215,197,0.25)] shadow-md hover:shadow-xl`
+Section bg alternation: white → `#F0FAF7` → white → brand gradient
+Hero bg: `linear-gradient(135deg, #f0faf7 0%, #e6f7f0 100%)`
+
+---
+
+### MODE: modern-clinic
+*Clean, precise, data-driven. Medical clinics, dental, diagnostics, physio.*
+```css
+:root {
+  --color-primary: #1E40AF;
+  --color-primary-dark: #1e3a8a;
+  --color-primary-light: #3B82F6;
+  --color-secondary: #BFDBFE;
+  --color-secondary-light: #EFF6FF;
+  --color-accent: #10B981;
+  --color-bg: #FFFFFF;
+  --radius-card: 0.5rem;      /* rounded-lg */
+  --radius-button: 0.5rem;    /* rounded-lg */
+  --radius-image: 0.75rem;    /* rounded-xl */
+  --shadow-card: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-button: 0 4px 14px rgba(30,64,175,0.25);
+}
+body { background: var(--color-bg); font-family: 'Inter', sans-serif; }
+```
+Card style: `bg-white rounded-lg border border-slate-200 shadow-sm hover:shadow-md`
+Section bg alternation: white → `#F8FAFC` → white → blue-50
+Hero bg: `linear-gradient(135deg, #ffffff 0%, #eff6ff 100%)`
+Data blocks: show numbers prominently — large font, blue accent
+
+---
+
+### MODE: luxury-service
+*Exclusive, refined, authoritative. Law firms, finance, high-end consulting.*
+```css
+:root {
+  --color-primary: #B8860B;
+  --color-primary-dark: #8B6914;
+  --color-primary-light: #D4A017;
+  --color-secondary: #F5F0E8;
+  --color-secondary-light: #FAF7F0;
+  --color-accent: #C9A84C;
+  --color-bg: #0A0A0A;
+  --radius-card: 0.125rem;    /* rounded-sm */
+  --radius-button: 0.125rem;  /* rounded-sm */
+  --radius-image: 0.25rem;    /* rounded-md */
+  --shadow-card: none;
+  --shadow-button: 0 0 30px rgba(184,134,11,0.35);
+}
+body { background: var(--color-bg); font-family: 'Inter', sans-serif; color: #A8A8A8; }
+h1, h2, h3 { font-family: 'Georgia', serif; color: #FFFFFF; }
+```
+Card style: `bg-[#111] rounded-sm border border-[rgba(184,134,11,0.2)] p-8`
+Section bg: all dark — alternate `#0A0A0A` → `#111111` → `#0A0A0A`
+Hero: always `minimal-luxury` variant — NO background image
+Headings: serif font, white, very large (text-6xl to text-8xl on hero)
+CTA: gold background with gold glow — `box-shadow: 0 0 30px rgba(184,134,11,0.35)`
+
+---
+
+### DESIGN LANGUAGE RULES (ALL MODES)
+* NEVER mix variables from different modes in the same site
+* NEVER hardcode a color that belongs to a different mode
+* If `style_mode` is missing from analysis → default to `premium-care`
+* The mode controls: colors, radii, shadows, hero variant, section backgrounds
+* Section headers: always use `--color-primary` for the eyebrow label (small caps above H2)
+
+---
+
 ## GLOBAL DESIGN SYSTEM
 
 * max-w-7xl mx-auto px-6
 * responsive grid
-* whitespace priority
+* whitespace priority per mode (luxury-service uses more)
 
 ---
 

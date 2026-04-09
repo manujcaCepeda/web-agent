@@ -1,0 +1,198 @@
+{
+  "_note": "Design Language System — defines visual identity per style_mode. The business-analyzer detects the mode. The frontend-dev applies it via CSS variables. Each mode makes sites look and feel distinct.",
+
+  "style_modes": {
+
+    "premium-care": {
+      "description": "Warm, generous, human. For healthcare, senior care, wellness, family services.",
+      "personality": ["trustworthy", "warm", "compassionate", "reassuring", "human"],
+      "keywords_trigger": ["care", "senior", "family", "wellness", "home", "support", "compassion", "healing"],
+
+      "colors": {
+        "primary": "#2F7F79",
+        "primary_dark": "#236059",
+        "primary_light": "#3a9e97",
+        "secondary": "#A7D7C5",
+        "secondary_light": "#ceeae0",
+        "accent": "#F59E0B",
+        "background": "#FAFFFE",
+        "surface": "#FFFFFF",
+        "surface_alt": "#F0FAF7",
+        "text_heading": "#111827",
+        "text_body": "#4B5563",
+        "text_muted": "#9CA3AF",
+        "border": "rgba(167,215,197,0.4)"
+      },
+
+      "typography": {
+        "heading_font": "'Inter', sans-serif",
+        "body_font": "'Inter', sans-serif",
+        "heading_weight": "800",
+        "heading_tracking": "tight",
+        "heading_line_height": "1.2",
+        "body_line_height": "1.75",
+        "accent_style": "color: var(--color-primary); font-weight: 800;"
+      },
+
+      "shape": {
+        "card_radius": "rounded-2xl",
+        "button_radius": "rounded-xl",
+        "badge_radius": "rounded-full",
+        "image_radius": "rounded-3xl"
+      },
+
+      "shadows": {
+        "card": "shadow-md hover:shadow-xl",
+        "hero_image": "shadow-2xl",
+        "button": "0 8px 30px rgba(47,127,121,0.30)",
+        "badge": "shadow-xl"
+      },
+
+      "spacing": {
+        "section": "py-12 md:py-16",
+        "section_spacious": "py-16 md:py-20",
+        "card_inner": "p-6",
+        "hero": "py-14 md:py-20"
+      },
+
+      "css_variables": ":root { --color-primary: #2F7F79; --color-primary-dark: #236059; --color-primary-light: #3a9e97; --color-secondary: #A7D7C5; --color-secondary-light: #ceeae0; --color-accent: #F59E0B; --color-bg: #FAFFFE; --radius-card: 1rem; --radius-button: 0.75rem; }",
+
+      "hero_variant": "split-emotional",
+      "hero_bg": "linear-gradient(135deg, #f0faf7 0%, #e6f7f0 100%)",
+
+      "cta_style": "background: var(--color-primary); color: white; border-radius: var(--radius-button); padding: 1rem 2rem; font-weight: 700;",
+
+      "card_style": "background: white; border-radius: var(--radius-card); border: 1px solid rgba(167,215,197,0.25); box-shadow: 0 2px 12px rgba(47,127,121,0.08);"
+    },
+
+    "modern-clinic": {
+      "description": "Clean, precise, data-driven. For medical clinics, dental, physio, tech-health, diagnostics.",
+      "personality": ["precise", "trustworthy", "efficient", "professional", "clinical"],
+      "keywords_trigger": ["clinic", "medical", "dental", "diagnostic", "therapy", "lab", "health center", "physio"],
+
+      "colors": {
+        "primary": "#1E40AF",
+        "primary_dark": "#1e3a8a",
+        "primary_light": "#3B82F6",
+        "secondary": "#BFDBFE",
+        "secondary_light": "#EFF6FF",
+        "accent": "#10B981",
+        "background": "#FFFFFF",
+        "surface": "#FFFFFF",
+        "surface_alt": "#F8FAFC",
+        "text_heading": "#0F172A",
+        "text_body": "#334155",
+        "text_muted": "#94A3B8",
+        "border": "rgba(203,213,225,0.8)"
+      },
+
+      "typography": {
+        "heading_font": "'Inter', sans-serif",
+        "body_font": "'Inter', sans-serif",
+        "heading_weight": "700",
+        "heading_tracking": "tight",
+        "heading_line_height": "1.15",
+        "body_line_height": "1.6",
+        "accent_style": "color: #1E40AF; font-weight: 700;"
+      },
+
+      "shape": {
+        "card_radius": "rounded-lg",
+        "button_radius": "rounded-lg",
+        "badge_radius": "rounded-md",
+        "image_radius": "rounded-xl"
+      },
+
+      "shadows": {
+        "card": "shadow-sm hover:shadow-md",
+        "hero_image": "shadow-xl",
+        "button": "0 4px 14px rgba(30,64,175,0.25)",
+        "badge": "shadow-md"
+      },
+
+      "spacing": {
+        "section": "py-12 md:py-16",
+        "section_spacious": "py-14 md:py-18",
+        "card_inner": "p-5",
+        "hero": "py-12 md:py-18"
+      },
+
+      "css_variables": ":root { --color-primary: #1E40AF; --color-primary-dark: #1e3a8a; --color-primary-light: #3B82F6; --color-secondary: #BFDBFE; --color-secondary-light: #EFF6FF; --color-accent: #10B981; --color-bg: #FFFFFF; --radius-card: 0.5rem; --radius-button: 0.5rem; }",
+
+      "hero_variant": "split-emotional",
+      "hero_bg": "linear-gradient(135deg, #ffffff 0%, #eff6ff 100%)",
+
+      "cta_style": "background: #1E40AF; color: white; border-radius: 0.5rem; padding: 0.875rem 2rem; font-weight: 700; letter-spacing: -0.01em;",
+
+      "card_style": "background: white; border-radius: 0.5rem; border: 1px solid rgba(203,213,225,0.8); box-shadow: 0 1px 4px rgba(0,0,0,0.06);"
+    },
+
+    "luxury-service": {
+      "description": "Exclusive, refined, authoritative. For law firms, finance, high-end consulting, luxury brands.",
+      "personality": ["exclusive", "authoritative", "refined", "premium", "elite"],
+      "keywords_trigger": ["law", "legal", "luxury", "private", "wealth", "executive", "elite", "premium", "boutique", "exclusive"],
+
+      "colors": {
+        "primary": "#B8860B",
+        "primary_dark": "#8B6914",
+        "primary_light": "#D4A017",
+        "secondary": "#F5F0E8",
+        "secondary_light": "#FAF7F0",
+        "accent": "#C9A84C",
+        "background": "#0A0A0A",
+        "surface": "#111111",
+        "surface_alt": "#1A1A1A",
+        "text_heading": "#FFFFFF",
+        "text_body": "#A8A8A8",
+        "text_muted": "#606060",
+        "border": "rgba(184,134,11,0.25)"
+      },
+
+      "typography": {
+        "heading_font": "'Georgia', 'Times New Roman', serif",
+        "body_font": "'Inter', sans-serif",
+        "heading_weight": "700",
+        "heading_tracking": "tight",
+        "heading_line_height": "1.1",
+        "body_line_height": "1.7",
+        "accent_style": "color: #B8860B; font-weight: 700;"
+      },
+
+      "shape": {
+        "card_radius": "rounded-sm",
+        "button_radius": "rounded-sm",
+        "badge_radius": "rounded-none",
+        "image_radius": "rounded-md"
+      },
+
+      "shadows": {
+        "card": "shadow-none hover:shadow-lg",
+        "hero_image": "shadow-2xl",
+        "button": "0 0 30px rgba(184,134,11,0.35)",
+        "badge": "shadow-xl"
+      },
+
+      "spacing": {
+        "section": "py-16 md:py-24",
+        "section_spacious": "py-20 md:py-28",
+        "card_inner": "p-8",
+        "hero": "py-20 md:py-28"
+      },
+
+      "css_variables": ":root { --color-primary: #B8860B; --color-primary-dark: #8B6914; --color-primary-light: #D4A017; --color-secondary: #F5F0E8; --color-secondary-light: #FAF7F0; --color-accent: #C9A84C; --color-bg: #0A0A0A; --radius-card: 0.125rem; --radius-button: 0.125rem; }",
+
+      "hero_variant": "minimal-luxury",
+      "hero_bg": "#0A0A0A",
+
+      "cta_style": "background: #B8860B; color: white; border-radius: 0.125rem; padding: 1rem 2.5rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.875rem; box-shadow: 0 0 30px rgba(184,134,11,0.3);",
+
+      "card_style": "background: #111111; border-radius: 0.125rem; border: 1px solid rgba(184,134,11,0.2); padding: 2rem;"
+    }
+  },
+
+  "detection_rules": {
+    "priority": "Use business keywords first, then industry, then fallback",
+    "fallback": "premium-care",
+    "notes": "When in doubt, premium-care is the safest default — it works for most service businesses"
+  }
+}
