@@ -1,0 +1,23 @@
+{
+  "client_id": "fern-private-care",
+  "template": "healthcare",
+  "language": "en",
+  "goal": "leads",
+
+  "output": {
+    "format": "html",
+    "include_seo": true,
+    "include_analytics": false
+  },
+
+  "features": {
+    "whatsapp": true,
+    "form": true,
+    "animations": true
+  },
+
+  "deployment": {
+    "env": "local",
+    "base_path": "/projects/fern-private-care"
+  }
+}
