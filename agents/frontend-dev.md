@@ -219,11 +219,136 @@ Add stagger:
 
 ### HERO
 
-Enhancements:
+Read `hero_variant` from layout JSON and render the matching variant below.
 
-* gradient overlay (NOT flat black)
-* max-w-3xl text container
-* strong CTA contrast
+---
+
+#### VARIANT: CINEMATIC
+Full-bleed image, dark overlay, centered white text. For restaurants, events, hospitality.
+```html
+<section class="relative min-h-[90vh] flex items-center overflow-hidden">
+  <!-- Background image -->
+  <img src="{{hero_image_url}}" alt="{{hero_alt}}" loading="eager"
+    class="absolute inset-0 w-full h-full object-cover object-center">
+  <!-- Dark gradient overlay — NEVER flat black -->
+  <div class="absolute inset-0" style="background:linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.65) 60%, rgba(0,0,0,0.80) 100%);"></div>
+  <!-- Content centered -->
+  <div class="relative z-10 max-w-4xl mx-auto px-6 text-center text-white">
+    <!-- Trust pill -->
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8 border border-white/30 bg-white/10 backdrop-blur-sm">
+      {{trust_badge_text}}
+    </div>
+    <h1 class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight mb-6">{{headline}}</h1>
+    <p class="text-xl md:text-2xl text-white/80 leading-relaxed mb-10 max-w-2xl mx-auto">{{subheadline}}</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#contact" class="px-10 py-4 rounded-xl font-bold text-white text-lg" style="background:var(--color-primary);">{{cta_primary}}</a>
+      <a href="#menu" class="px-10 py-4 rounded-xl font-semibold text-white text-lg border-2 border-white/50 hover:bg-white/10 transition-colors">{{cta_secondary}}</a>
+    </div>
+  </div>
+  <!-- Bottom fade -->
+  <div class="absolute bottom-0 left-0 right-0 h-32" style="background:linear-gradient(to bottom, transparent, rgba(0,0,0,0.4));"></div>
+</section>
+```
+
+---
+
+#### VARIANT: SPLIT EMOTIONAL (default — healthcare, services, wellness)
+60% text / 40% image. Human face required. Floating stat badge on image.
+```html
+<section class="py-14 md:py-20 overflow-hidden" style="background:linear-gradient(135deg, #f8fffe 0%, #edfaf5 100%);">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 xl:gap-16 items-center">
+
+      <!-- Text column -->
+      <div>
+        <!-- Trust pill badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8 border"
+          style="background:rgba(167,215,197,0.3); color:var(--color-primary-dark); border-color:rgba(47,127,121,0.2);">
+          {{trust_badge_text}}
+        </div>
+        <!-- H1 — must be emotionally punchy, NOT generic -->
+        <h1 class="text-4xl md:text-5xl xl:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight mb-6">
+          {{headline_line_1}}
+          <span class="block mt-1" style="color:var(--color-primary);">{{headline_accent}}</span>
+        </h1>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-2xl">{{subheadline}}</p>
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+          <a href="#contact" class="btn-primary px-8 py-4 text-base text-center">{{cta_primary}}</a>
+          <a href="tel:{{phone}}" class="btn-outline px-8 py-4 text-base text-center">{{cta_secondary}}</a>
+        </div>
+        <!-- Star rating social proof — MANDATORY in split-emotional -->
+        <div class="flex items-center gap-3">
+          <div class="flex text-amber-400">★★★★★</div>
+          <span class="text-sm font-semibold text-gray-700">{{rating}} · Rated by {{reviews_count}}+ clients</span>
+        </div>
+      </div>
+
+      <!-- Image column -->
+      <div class="relative">
+        <div class="rounded-3xl overflow-hidden shadow-2xl" style="border:3px solid rgba(167,215,197,0.4);">
+          <img src="{{hero_image_url}}" alt="{{hero_alt}}" loading="eager"
+            class="w-full h-[480px] lg:h-[560px] object-cover object-center">
+          <div class="absolute inset-0 rounded-3xl" style="background:linear-gradient(180deg, transparent 55%, rgba(47,127,121,0.15) 100%);"></div>
+        </div>
+        <!-- Floating stat badge — anchored bottom-left of image -->
+        <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl px-5 py-4 flex items-center gap-3 border border-gray-100 z-10">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(167,215,197,0.35);">
+            {{badge_icon_svg}}
+          </div>
+          <div>
+            <p class="text-2xl font-extrabold leading-none" style="color:var(--color-primary);">{{badge_number}}</p>
+            <p class="text-xs text-gray-500 font-medium mt-0.5 leading-tight">{{badge_label}}</p>
+          </div>
+        </div>
+        <!-- Top-right decorative accent -->
+        <div class="absolute -top-4 -right-4 w-24 h-24 rounded-full opacity-50 z-0"
+          style="background:radial-gradient(circle, var(--color-secondary) 0%, transparent 70%);"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+```
+
+---
+
+#### VARIANT: MINIMAL LUXURY
+Solid background, no image, oversized typography. For law, finance, premium consulting.
+```html
+<section class="py-20 md:py-28 overflow-hidden bg-gray-950">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Thin rule accent -->
+    <div class="flex items-center gap-4 mb-12">
+      <div class="h-px flex-1" style="background:var(--color-primary);opacity:0.4;"></div>
+      <span class="text-xs font-bold tracking-[0.3em] uppercase" style="color:var(--color-primary);">{{trust_badge_text}}</span>
+      <div class="h-px flex-1" style="background:var(--color-primary);opacity:0.4;"></div>
+    </div>
+    <!-- Oversized headline -->
+    <h1 class="text-6xl md:text-8xl font-black text-white leading-none tracking-tight mb-8 max-w-4xl">
+      {{headline_line_1}}<br>
+      <span style="color:var(--color-primary);">{{headline_accent}}</span>
+    </h1>
+    <div class="flex flex-col md:flex-row gap-12 items-start md:items-end">
+      <p class="text-lg md:text-xl text-white/60 leading-relaxed max-w-xl">{{subheadline}}</p>
+      <div class="flex flex-col sm:flex-row gap-4 flex-shrink-0">
+        <a href="#contact" class="px-10 py-4 rounded-xl font-bold text-white text-base"
+          style="background:var(--color-primary);">{{cta_primary}}</a>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+---
+
+HERO RULES (ALL VARIANTS):
+* NEVER use a flat color overlay — always use a gradient
+* NEVER center text on split-emotional — text is always left-aligned
+* Star rating is MANDATORY on split-emotional hero
+* Floating badge is MANDATORY on split-emotional hero image
+* Hero image: loading="eager" — NEVER lazy on hero
+* H1 copy must be emotionally punchy — if it reads like a tagline, REWRITE it
 
 ---
 

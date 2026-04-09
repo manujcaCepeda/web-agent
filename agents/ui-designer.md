@@ -103,13 +103,47 @@ You MUST introduce variation:
 
 ## HERO VARIATION (MANDATORY)
 
-Choose ONE:
+You MUST choose ONE of these 3 premium hero variants. Selection is based on industry + brand tone:
 
-* background-image
-* split
-* split-reversed
-* layered (image + floating content)
-* editorial (text dominant + visual side)
+### VARIANT 1 — CINEMATIC
+```
+Use when: restaurant, event, hospitality, real estate luxury
+Layout: full-bleed background image + dark gradient overlay + text centered
+Image: wide shot, atmospheric, no face crop required
+Text: large white headline centered, subtext below, single CTA
+Mood: dramatic, immersive, emotional
+```
+
+### VARIANT 2 — SPLIT EMOTIONAL (default for most industries)
+```
+Use when: healthcare, professional services, coaching, wellness
+Layout: 60% text left / 40% image right (or reversed)
+Image: close human face or hands — emotional connection required
+Text: bold headline left-aligned, trust pill badge above, CTAs + star rating below
+Mood: trustworthy, warm, human
+Extra: floating stat badge on image (-bottom-6 -left-6)
+```
+
+### VARIANT 3 — MINIMAL LUXURY
+```
+Use when: law firms, finance, high-end consulting, premium brands
+Layout: solid brand-color or white background — NO background image
+Image: small product/logo element or none
+Text: oversized serif headline, elegant subtext, minimal single CTA
+Mood: refined, authoritative, exclusive
+Extra: thin horizontal rule accent, geometric decorative element
+```
+
+### SELECTION LOGIC (MANDATORY)
+| Industry | Default Variant | Override if... |
+|---|---|---|
+| healthcare | split-emotional | Never override |
+| restaurant / food | cinematic | Never override |
+| ecommerce | split-emotional or minimal-luxury | luxury brand → minimal-luxury |
+| professional services | split-emotional | high-authority brand → minimal-luxury |
+| wellness / spa | cinematic | minimalist brand → minimal-luxury |
+
+CRITICAL: The hero variant MUST be declared in layout JSON output as `"hero_variant": "cinematic" | "split-emotional" | "minimal-luxury"`
 
 ---
 
