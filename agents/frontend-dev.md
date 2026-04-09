@@ -244,15 +244,76 @@ Background mapping:
 
 Images MUST use the `_image_url` field from each service object.
 
-RULES:
-
+### CORE RULES
 * ALWAYS use the exact URL provided in `_image_url` — never invent URLs
 * NEVER use `source.unsplash.com` — it is deprecated and broken
 * ALWAYS use `images.unsplash.com` with specific photo IDs
 * NEVER use random Unsplash queries — only pre-verified curated URLs
-* Add `onerror="this.style.background='linear-gradient(135deg,#A7D7C5,#2F7F79)';this.removeAttribute('src')"` to all img tags as fallback
+* Add `onerror="this.style.background='linear-gradient(135deg,#A7D7C5,#2F7F79)';this.removeAttribute('src')"` to ALL img tags
 * Add `loading="lazy"` to ALL images EXCEPT the hero (hero must load immediately)
-* Hero image: `loading="eager"` or omit loading attribute entirely
+* Hero image: `loading="eager"` — never lazy
+
+---
+
+### IMAGE TREATMENT BY SECTION (MANDATORY)
+
+Each section type has specific HTML treatment. Never reuse the same img class across all sections.
+
+#### HERO (split-emotional variant)
+```html
+<img src="{{url}}" alt="{{alt}}"
+  loading="eager"
+  class="w-full h-[480px] lg:h-[560px] object-cover object-top"
+  onerror="this.style.background='linear-gradient(135deg,#A7D7C5,#2F7F79)';this.removeAttribute('src')">
+```
+`object-top` ensures the face stays visible and is not cut. Use `object-center` only if image has centered subject.
+
+#### HERO (cinematic variant)
+```html
+<img src="{{url}}" alt="{{alt}}"
+  loading="eager"
+  class="absolute inset-0 w-full h-full object-cover object-center"
+  onerror="this.style.background='linear-gradient(135deg,#111,#333)';this.removeAttribute('src')">
+```
+
+#### SERVICE CARDS
+```html
+<!-- Wrapper — consistent height across ALL cards, NEVER mix heights -->
+<div class="overflow-hidden h-52 relative img-zoom">
+  <img src="{{url}}" alt="{{alt}}"
+    loading="lazy"
+    class="w-full h-full object-cover object-center"
+    onerror="this.style.background='linear-gradient(135deg,#A7D7C5,#2F7F79)';this.removeAttribute('src')">
+  <!-- Subtle brand overlay — bottom fade only -->
+  <div class="absolute inset-0 pointer-events-none"
+    style="background:linear-gradient(to top, rgba(47,127,121,0.30), transparent 60%);"></div>
+</div>
+```
+CONSISTENCY RULE: All service card image wrappers MUST use `h-52`. Never `h-48`, `h-56`, or mixed heights — inconsistency breaks the grid rhythm.
+
+#### TESTIMONIAL AVATARS
+```html
+<img src="{{avatar_url}}" alt="{{author_name}}"
+  loading="lazy"
+  class="w-12 h-12 rounded-full object-cover object-center flex-shrink-0"
+  style="ring: 2px solid var(--color-secondary); outline: 2px solid var(--color-secondary); outline-offset: 2px;"
+  onerror="this.style.background='var(--color-secondary)';this.removeAttribute('src')">
+```
+
+#### SECTION EYEBROW LABELS (visual hierarchy — MANDATORY)
+Every H2 section header MUST use this 3-level structure:
+```html
+<!-- Level 1: Eyebrow — pill badge, never plain text -->
+<span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
+  style="background:rgba(47,127,121,0.1); color:var(--color-primary);">
+  Section Label
+</span>
+<!-- Level 2: H2 — large, bold, max 2 lines -->
+<h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">{{headline}}</h2>
+<!-- Level 3: Subtext — muted, short -->
+<p class="text-gray-500 text-lg leading-relaxed max-w-2xl mx-auto">{{subtext}}</p>
+```
+RULE: Eyebrow MUST be a pill (rounded-full + background tint). Plain uppercase text with just color = visually weak. Every section must have all 3 levels.
 
 ANIMATION RULES (CRITICAL):
 

@@ -195,6 +195,85 @@ Each section MUST define:
 
 ---
 
+## 🖼️ IMAGE COMPOSITION BY SECTION (MANDATORY)
+
+Define image treatment for each section type. These rules control crop, focal point, aspect ratio, and overlay.
+
+### HERO IMAGE
+```
+aspect_ratio: portrait (3:4) for split-emotional | landscape (16:9) for cinematic
+focal_point: object-top (face visible above fold) or object-center
+crop_priority: faces — if 2 people, crop to show connection between them
+overlay: gradient bottom-fade only (never full dark flat)
+height: min h-[480px] lg:h-[560px] for split | min-h-[90vh] for cinematic
+emotion_check: image MUST show warmth, eye contact, or clear human connection
+```
+
+### SERVICE CARDS
+```
+aspect_ratio: 16:10 landscape — use h-52 (208px) for all cards consistently
+focal_point: object-center — subject centered, no important element cut
+crop: show the action or interaction, not just the person
+overlay: subtle bottom gradient (rgba primary, max 0.35 opacity)
+consistency_rule: ALL service card images MUST use same height — never mix h-48 and h-52
+hover: zoom 1.06x on group hover (img-zoom class)
+```
+
+### TESTIMONIAL AVATARS
+```
+aspect_ratio: 1:1 square
+size: w-12 h-12 (48px) minimum — w-14 h-14 if space allows
+crop: object-cover object-center — face fully visible
+border: ring-2 ring-offset-2 with brand secondary color
+fallback: brand gradient if image fails (onerror)
+```
+
+### BENEFITS SECTION
+```
+image: optional — prefer icon-based layout
+if image used: split composition, lifestyle photo (not product), object-center
+no overlay needed — light section background provides enough contrast
+```
+
+### TRUST / STATS BAR
+```
+NO images — numbers only
+visual weight comes from typography size (text-5xl+), not images
+```
+
+### GALLERY (if present)
+```
+mixed ratios allowed: 1:1, 4:3, 16:9
+use CSS grid with masonry or auto-fit
+all images: object-cover with consistent max-height
+```
+
+---
+
+## 📐 SECTION EYEBROW SYSTEM (MANDATORY — visual hierarchy)
+
+Every section header MUST follow this 3-level hierarchy:
+
+```
+Level 1 — Eyebrow label (small, uppercase, pill badge)
+Level 2 — H2 headline (large, bold, max 2 lines)
+Level 3 — Subtext (muted, max 2 sentences)
+```
+
+Eyebrow MUST use pill style (not plain text):
+```html
+<span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
+  style="background:rgba(47,127,121,0.1); color:var(--color-primary);">
+  Section Label
+</span>
+```
+
+NEVER use plain colored text as eyebrow — it disappears visually.
+H2 font size: text-3xl md:text-4xl minimum — never smaller.
+Subtext: text-gray-500, max-w-2xl, centered on center-layout sections.
+
+---
+
 # 🎨 VISUAL RHYTHM (STRICT)
 
 Alternate backgrounds:
