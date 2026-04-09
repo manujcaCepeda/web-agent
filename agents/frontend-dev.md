@@ -271,25 +271,91 @@ SECTION RULES (CRITICAL):
 
 ## 🎬 MICRO UX SYSTEM (PREMIUM)
 
-Add:
+ALWAYS inject this CSS block into `<style>` — it powers all micro interactions:
 
-### Hover:
+```css
+/* ── Button Shimmer ── */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.btn-primary:hover::after { left: 150%; }
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-primary:active { transform: scale(0.97); }
 
-* hover:scale-[1.03]
-* hover:shadow-xl
+/* ── Icon Circle Fill on Card Hover ── */
+.icon-circle {
+  transition: background 0.25s ease;
+}
+.group:hover .icon-circle {
+  background: var(--color-primary) !important;
+}
+.group:hover .icon-circle svg {
+  color: white;
+  stroke: white;
+}
 
-### Buttons:
+/* ── Card lift ── */
+.card-hover {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+}
 
-* transition duration-300
-* active:scale-95
+/* ── Image zoom on hover ── */
+.img-zoom {
+  overflow: hidden;
+}
+.img-zoom img {
+  transition: transform 0.5s ease;
+}
+.img-zoom:hover img {
+  transform: scale(1.06);
+}
 
-### Images:
+/* ── Stagger reveal ── */
+.reveal-on-scroll {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-on-scroll.visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+```
 
-* group-hover:scale-105
+### STAGGER SYSTEM (MANDATORY — apply to every card grid)
+Every grid of cards MUST use consistent stagger delays via inline style:
+```html
+<div class="group card-hover ..." style="transition-delay: 0ms;">   <!-- card 1 -->
+<div class="group card-hover ..." style="transition-delay: 100ms;">  <!-- card 2 -->
+<div class="group card-hover ..." style="transition-delay: 200ms;">  <!-- card 3 -->
+<div class="group card-hover ..." style="transition-delay: 300ms;">  <!-- card 4 -->
+```
+NEVER leave stagger delays undefined — inconsistent timing breaks the premium feel.
 
-### Links:
+### HOVER RULES
+* Cards: `card-hover` class (translateY -4px + shadow on hover)
+* Images inside cards: wrap in `img-zoom` div
+* Icon containers: class `icon-circle` → fills with primary color on group hover
+* Buttons: `btn-primary` class gets shimmer automatically via CSS above
+* Outline buttons: `transition-colors duration-200` — fill to brand color on hover
 
-* subtle underline animation
+### ANIMATION RULES
+* Scroll reveal: `reveal-on-scroll opacity-0 translate-y-6` + IntersectionObserver
+* Stagger: always inline `style="transition-delay: Xms"` on each card
+* NEVER use Tailwind opacity-0/translate-y inline for reveal — use reveal-on-scroll class only
 
 ---
 
@@ -464,10 +530,93 @@ HERO RULES (ALL VARIANTS):
 
 ---
 
-### TRUST
+### TRUST BLOCKS (CRITICAL — 3 mandatory components)
 
-* icon inside soft circle
-* optional highlight card
+A trust section MUST include ALL of the following. Never just icons with text.
+
+---
+
+#### TRUST BLOCK 1 — STATS BAR (Big isolated numbers)
+Numbers must be large, bold, and isolated. They must feel undeniable.
+```html
+<section class="py-10 bg-white border-y border-gray-100">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div class="reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:0ms;">
+        <p class="text-5xl md:text-6xl font-black leading-none" style="color:var(--color-primary);">500+</p>
+        <p class="text-xs font-bold text-gray-400 mt-2 uppercase tracking-widest">Families Served</p>
+      </div>
+      <div class="reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:100ms;">
+        <p class="text-5xl md:text-6xl font-black leading-none" style="color:var(--color-primary);">10+</p>
+        <p class="text-xs font-bold text-gray-400 mt-2 uppercase tracking-widest">Years of Experience</p>
+      </div>
+      <div class="reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:200ms;">
+        <p class="text-5xl md:text-6xl font-black leading-none" style="color:var(--color-primary);">4.9★</p>
+        <p class="text-xs font-bold text-gray-400 mt-2 uppercase tracking-widest">Average Rating</p>
+      </div>
+      <div class="reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:300ms;">
+        <p class="text-5xl md:text-6xl font-black leading-none" style="color:var(--color-primary);">24/7</p>
+        <p class="text-xs font-bold text-gray-400 mt-2 uppercase tracking-widest">Available Support</p>
+      </div>
+    </div>
+  </div>
+</section>
+```
+RULES: Use real numbers from brief. If not provided, use conservative placeholders. NEVER invent inflated numbers.
+
+---
+
+#### TRUST BLOCK 2 — BADGE GRID (Visual authority signals)
+Badges must feel like certifications, not decorations.
+```html
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12">
+  <div class="flex flex-col items-center gap-3 p-5 rounded-2xl text-center border reveal-on-scroll opacity-0 translate-y-6"
+    style="border-color:rgba(167,215,197,0.35); background:rgba(240,250,247,0.6); transition-delay:0ms;">
+    <div class="w-14 h-14 rounded-full flex items-center justify-center icon-circle transition-all duration-300"
+      style="background:rgba(167,215,197,0.3);">
+      {{icon_svg_badge}}
+    </div>
+    <p class="text-sm font-bold text-gray-800 leading-tight">Background Checked</p>
+  </div>
+  <!-- Repeat for: Licensed & Insured / Free Consultation / 24/7 Support -->
+</div>
+```
+
+---
+
+#### TRUST BLOCK 3 — PHOTO TESTIMONIALS (Social proof with face)
+At least ONE testimonial MUST include a real-looking avatar. Anonymous text quotes = zero trust.
+```html
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+  <div class="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 p-8 border border-gray-100 flex flex-col gap-5 reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:0ms;">
+    <!-- Stars -->
+    <div class="flex text-amber-400 text-lg">★★★★★</div>
+    <!-- Quote -->
+    <p class="text-gray-600 leading-relaxed text-sm italic flex-1">
+      "{{testimonial_quote}}"
+    </p>
+    <!-- Author with photo -->
+    <div class="flex items-center gap-4 pt-4 border-t border-gray-100">
+      <img src="{{avatar_url}}" alt="{{author_name}}"
+        class="w-12 h-12 rounded-full object-cover ring-2 ring-offset-2"
+        style="ring-color:var(--color-secondary);"
+        onerror="this.style.background='var(--color-secondary)';this.removeAttribute('src')">
+      <div>
+        <p class="font-bold text-gray-900 text-sm">{{author_name}}</p>
+        <p class="text-xs text-gray-400 mt-0.5">{{author_role}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+---
+
+TRUST RULES:
+* Stats bar is NOT optional — every site MUST have one
+* Numbers must be visually dominant — text-5xl minimum
+* At least one testimonial must have an avatar image with onerror fallback
+* Badge grid uses icon-circle class for hover fill animation (see MICRO UX)
 
 ---
 

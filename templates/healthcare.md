@@ -83,17 +83,46 @@ Each service MUST:
 
 ## TRUST SYSTEM (CRITICAL)
 
-You MUST include ALL:
+You MUST include ALL of the following. Generic trust copy = zero impact.
 
-* Years of experience (real or placeholder)
-* Fully trained caregivers
-* Background-checked staff
-* Real location (city/state)
-* Availability (24/7 if applicable)
+### MANDATORY STATS BAR (big isolated numbers)
+Extract from brief. If not provided, use conservative realistic defaults:
 
-MANDATORY phrase:
+| Stat | Source | Default if missing |
+|---|---|---|
+| Families served | brief.trust_signals | “200+” |
+| Years experience | brief.founded / brief.trust_signals | “5+” |
+| Star rating | brief.trust_signals / reviews | “4.9★” |
+| Availability | brief.services | “24/7” |
 
-“Fully trained & background-checked caregivers”
+RULE: Numbers MUST be text-5xl or larger. Small numbers = invisible trust.
+
+### MANDATORY BADGE GRID (4 visual authority signals)
+Every healthcare site MUST show these as visual badge cards (icon + label):
+
+1. Background-Checked Caregivers
+2. Licensed & Insured
+3. Free Initial Consultation
+4. 24/7 Family Support
+
+### MANDATORY PHOTO TESTIMONIALS
+* At least 2 of 3 testimonials MUST include an avatar image
+* Each testimonial MUST name a specific service or outcome
+* Each testimonial MUST have: name + role (e.g. “Maria L. — Daughter of client”)
+* Stars (★★★★★) MUST appear above every quote
+* Anonymous quotes with no face = NOT acceptable
+
+### MANDATORY TRUST PHRASES
+Place these as microcopy throughout the site:
+
+* “Trusted by [X]+ families across [location]”
+* “Background-checked. Licensed. Insured.”
+* “Free consultation — no commitment required”
+* “Available 24/7 — even on holidays”
+
+MANDATORY phrase (keep this):
+
+“Fully trained & background-checked caregivers. Always.”
 
 ---
 
