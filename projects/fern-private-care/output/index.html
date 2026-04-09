@@ -229,6 +229,8 @@
     "sameAs": ["#", "#", "#"]
   }
   </script>
+  <!-- EmailJS — Replace YOUR_PUBLIC_KEY, YOUR_SERVICE_ID, YOUR_TEMPLATE_ID -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body class="text-gray-800 antialiased">
 
@@ -1024,21 +1026,68 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
       <!-- Form -->
       <div class="bg-white rounded-3xl shadow-xl p-8 md:p-10 reveal-element">
-        <form id="contact-form" class="space-y-6">
-          <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Your Name</label>
-            <input type="text" name="name" required placeholder="Maria Johnson" class="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-[#2F7F79] focus:ring-2 focus:ring-[#2F7F79]/20 outline-none transition-all duration-200 text-gray-800">
+        <h3 class="text-xl font-bold text-gray-900 mb-1">Book a Free Consultation</h3>
+        <p class="text-gray-500 text-sm mb-6">A care specialist will contact you within a few hours — no obligation, ever.</p>
+
+        <!-- Success message (hidden by default) -->
+        <div id="form-success" class="hidden bg-green-50 border border-green-200 rounded-2xl p-6 text-center mb-6">
+          <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h4 class="font-bold text-green-800 text-base mb-1">Message Sent Successfully!</h4>
+          <p class="text-green-700 text-sm">Thank you! We'll contact you shortly. Redirecting to WhatsApp...</p>
+        </div>
+
+        <form id="contact-form" class="space-y-5">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Your Name *</label>
+              <input type="text" name="from_name" required placeholder="Maria Johnson"
+                     class="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-[#2F7F79] focus:ring-2 focus:ring-[#2F7F79]/20 outline-none transition-all duration-200 text-gray-800">
+            </div>
+            <div>
+              <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number *</label>
+              <input type="tel" name="phone" required placeholder="(239) 000-0000"
+                     class="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-[#2F7F79] focus:ring-2 focus:ring-[#2F7F79]/20 outline-none transition-all duration-200 text-gray-800">
+            </div>
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
-            <input type="tel" name="phone" required placeholder="(239) 000-0000" class="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-[#2F7F79] focus:ring-2 focus:ring-[#2F7F79]/20 outline-none transition-all duration-200 text-gray-800">
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+            <input type="email" name="from_email" placeholder="your@email.com"
+                   class="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-[#2F7F79] focus:ring-2 focus:ring-[#2F7F79]/20 outline-none transition-all duration-200 text-gray-800">
           </div>
           <div>
-            <label class="block text-sm font-semibold text-gray-700 mb-2">How can we help?</label>
-            <textarea name="message" rows="4" placeholder="Tell us about your loved one and the care they need..." class="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-[#2F7F79] focus:ring-2 focus:ring-[#2F7F79]/20 outline-none transition-all duration-200 text-gray-800 resize-none"></textarea>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Service or Care Plan Needed</label>
+            <select name="care_type"
+                    class="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-[#2F7F79] focus:ring-2 focus:ring-[#2F7F79]/20 outline-none transition-all duration-200 text-gray-700 bg-white appearance-none">
+              <option value="">Select an option...</option>
+              <optgroup label="— Services —">
+                <option>24/7 Home Care</option>
+                <option>Personal Care</option>
+                <option>Companionship &amp; Emotional Support</option>
+                <option>Medication Management</option>
+                <option>Short-Term Stay Care</option>
+                <option>Rehabilitation &amp; Therapy</option>
+                <option>Daily Assistance</option>
+              </optgroup>
+              <optgroup label="— Care Plans —">
+                <option>Hourly Care</option>
+                <option>Daily Care</option>
+                <option>Weekly Care</option>
+                <option>Day &amp; Night Care (24/7)</option>
+              </optgroup>
+              <option>I'm not sure — need guidance</option>
+            </select>
           </div>
-          <button type="submit" class="w-full bg-[#2F7F79] text-white font-bold py-4 rounded-xl hover:bg-[#1a5c57] active:scale-95 transition-all duration-300 shadow-lg hover:shadow-xl text-base">
-            Book My Free Consultation →
+          <div>
+            <label class="block text-sm font-semibold text-gray-700 mb-2">Tell Us About Your Loved One</label>
+            <textarea name="message" rows="4"
+                      placeholder="Share any details about needs, preferences, or concerns. This helps us prepare for our conversation."
+                      class="w-full px-4 py-3.5 rounded-xl border border-gray-200 focus:border-[#2F7F79] focus:ring-2 focus:ring-[#2F7F79]/20 outline-none transition-all duration-200 text-gray-800 resize-none"></textarea>
+          </div>
+          <button type="submit" id="submit-btn"
+                  class="w-full bg-[#2F7F79] text-white font-bold py-4 rounded-xl hover:bg-[#1a5c57] active:scale-95 transition-all duration-300 shadow-lg hover:shadow-xl text-base flex items-center justify-center gap-2">
+            <span id="submit-text">Book My Free Consultation →</span>
           </button>
           <p class="text-center text-xs text-gray-400">No commitment required · We respond within 24 hours</p>
         </form>
@@ -1075,6 +1124,18 @@
             <p class="text-gray-500 text-sm mt-1">Serving families across the state</p>
           </div>
         </div>
+        <div class="bg-white rounded-2xl p-6 shadow-md flex items-start gap-4">
+          <div class="w-12 h-12 bg-[#2F7F79]/10 rounded-xl flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-[#2F7F79]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke-width="2"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-gray-900 mb-1">Hours</p>
+            <p class="text-gray-700 font-medium">24/7 &mdash; Always Available</p>
+            <p class="text-gray-500 text-sm mt-1">Days, nights, weekends &amp; holidays</p>
+          </div>
+        </div>
+
+
         <div class="bg-[#2F7F79]/5 border border-[#2F7F79]/20 rounded-2xl p-6">
           <p class="text-[#2F7F79] font-semibold text-sm mb-2">Prefer WhatsApp?</p>
           <a href="https://wa.me/12393843206?text=Hello%2C%20I%27d%20like%20to%20learn%20about%20your%20senior%20care%20services." target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-[#25D366] text-white font-semibold px-5 py-2.5 rounded-xl hover:bg-[#1da851] transition-colors duration-200">
@@ -1220,16 +1281,41 @@
     if (header) header.classList.toggle('shadow-md', window.scrollY > 20);
   });
 
-  // Contact form → WhatsApp
-  const form = document.getElementById('contact-form');
+  // EmailJS init — replace with your real keys
+  emailjs.init('AbfZRwaJ3s6go1X2r');
+
+  // Contact form → EmailJS + WhatsApp redirect
+  const form       = document.getElementById('contact-form');
+  const submitBtn  = document.getElementById('submit-btn');
+  const submitText = document.getElementById('submit-text');
+  const successMsg = document.getElementById('form-success');
+
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const name = form.querySelector('[name="name"]')?.value || '';
-      const phone = form.querySelector('[name="phone"]')?.value || '';
-      const message = form.querySelector('[name="message"]')?.value || '';
-      const text = encodeURIComponent(`Hello! My name is ${name}. Phone: ${phone}. ${message}`);
-      window.open(`https://wa.me/12393843206?text=${text}`, '_blank');
+      submitBtn.disabled = true;
+      submitText.textContent = 'Sending...';
+      submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+
+      emailjs.sendForm('service_g509z2f', 'template_73vulg8', form)
+        .then(function() {
+          form.classList.add('hidden');
+          successMsg.classList.remove('hidden');
+          setTimeout(function() {
+            const name    = form.querySelector('[name="from_name"]')?.value || '';
+            const phone   = form.querySelector('[name="phone"]')?.value || '';
+            const service = form.querySelector('[name="care_type"]')?.value || '';
+            const text    = encodeURIComponent(`Hello! My name is ${name}. Phone: ${phone}. Service: ${service}. I just submitted a consultation request on your website.`);
+            window.open(`https://wa.me/12393843206?text=${text}`, '_blank');
+          }, 1500);
+        })
+        .catch(function(error) {
+          console.error('EmailJS error:', error);
+          submitBtn.disabled = false;
+          submitText.textContent = 'Book My Free Consultation →';
+          submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+          alert('Something went wrong. Please call us at (239) 384-3206 or send a WhatsApp message.');
+        });
     });
   }
 
