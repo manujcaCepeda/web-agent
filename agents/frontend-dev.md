@@ -68,11 +68,21 @@ DO NOT invent data
 
 ```html
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{seo.meta_title}}</title>
   <meta name="description" content="{{seo.meta_description}}">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Favicon: ALWAYS use SVG data URL — works on file:// and all servers -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='16' fill='%23{{brand_color_hex}}'/><text x='16' y='22' text-anchor='middle' font-size='18' font-family='serif' fill='white'>{{brand_initial}}</text></svg>">
+  <!-- OG + Twitter tags injected by generate.py -->
 </head>
 ```
+
+FAVICON RULE (CRITICAL):
+* ALWAYS use SVG data URL for the favicon — NEVER reference an external PNG file
+* External file references (href="../assets/images/Logo.png") FAIL on file:// protocol
+* SVG data URLs work universally: file://, http://, https://
+* Use the brand primary color (URL-encoded hex) and first letter of business name
 
 ---
 
@@ -86,15 +96,17 @@ DO NOT invent data
 
 ## SPACING
 
-ALL sections:
+ALL sections default:
 
-* py-20 md:py-28
+* py-12 md:py-16
 
 Density modifier:
 
-* compact → py-12
-* normal → default
-* spacious → py-28 md:py-36
+* compact → py-10 md:py-12
+* normal → py-12 md:py-16 (default)
+* spacious → py-16 md:py-20
+
+NEVER use py-20 md:py-28 or larger as default — sections become too tall on desktop screens and cause bad UX on standard monitor sizes.
 
 ---
 
@@ -143,6 +155,8 @@ RULES:
 * ALWAYS use `images.unsplash.com` with specific photo IDs
 * NEVER use random Unsplash queries — only pre-verified curated URLs
 * Add `onerror="this.style.background='linear-gradient(135deg,#A7D7C5,#2F7F79)';this.removeAttribute('src')"` to all img tags as fallback
+* Add `loading="lazy"` to ALL images EXCEPT the hero (hero must load immediately)
+* Hero image: `loading="eager"` or omit loading attribute entirely
 
 ANIMATION RULES (CRITICAL):
 
@@ -276,13 +290,19 @@ Accordion with smooth open animation
 * sticky
 * backdrop-blur-md
 * bg-white/80
+* Logo link: ALWAYS use href="#" — NEVER href="/" (causes browser to navigate to filesystem root on file:// protocol)
 
 ---
 
 ## FOOTER
 
-* gradient dark background
+* dark background (bg-gray-900)
 * strong contrast
+* padding: pt-10 pb-6 (NOT pt-16 — too tall on mobile)
+* inner grid: gap-8 md:gap-12 (responsive gap — NOT gap-12 on all screens)
+* bottom bar: flex flex-col md:flex-row gap-4 (stack on mobile)
+
+MOBILE RULE: Footer columns MUST stack cleanly on mobile with readable spacing. Never use fixed large gaps that cause excessive vertical scroll.
 
 ---
 
