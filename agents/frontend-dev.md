@@ -173,6 +173,44 @@ CTA: gold background with gold glow — `box-shadow: 0 0 30px rgba(184,134,11,0.
 
 ---
 
+### SECTION HEADER SPACING RULE
+Section headers inside `py-12` sections MUST use `mb-10`, never `mb-16`.
+`mb-16` (64px) + `py-12` padding = 112px of dead space before content reaches the user.
+Formula: section padding ÷ 2 = max mb allowed. For py-12 → mb-10. For py-16 → mb-12.
+
+### BENEFITS / FEATURE CARDS — HOVER RULE (CRITICAL)
+Every feature/benefit card MUST have the `group` class for icon-circle hover to work.
+Without `group`, the `.group:hover .icon-circle` CSS selector fires on NOTHING.
+```html
+<!-- CORRECT -->
+<div class="group bg-gray-50 hover:bg-white rounded-2xl p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 border border-transparent hover:border-[rgba(167,215,197,0.4)]">
+  <div class="icon-circle w-14 h-14 rounded-2xl ...">{{icon}}</div>
+```
+```html
+<!-- WRONG — icon-circle hover will never trigger -->
+<div class="bg-gray-50 rounded-2xl p-8">
+  <div class="w-14 h-14 rounded-2xl ...">{{icon}}</div>
+```
+
+### REVEAL ANIMATION CONSISTENCY RULE
+Use ONLY `translate-y-10` for scroll-reveal elements — NEVER `translate-y-6` or other values.
+The IntersectionObserver JS removes `opacity-0` and `translate-y-10` specifically.
+Using a different translate class means the element will appear but stay offset visually.
+EXCEPTION: Stats bar uses `translate-y-6` — ensure JS also removes it (add to classList.remove list).
+
+### SELECT DROPDOWN RULE
+NEVER use `appearance-none` on a `<select>` without adding a custom arrow SVG:
+```html
+<div class="relative">
+  <select class="... appearance-none pr-10">...</select>
+  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4">
+    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+    </svg>
+  </div>
+</div>
+```
+
 ### DESIGN LANGUAGE RULES (ALL MODES)
 * NEVER mix variables from different modes in the same site
 * NEVER hardcode a color that belongs to a different mode
