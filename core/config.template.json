@@ -1,5 +1,7 @@
 {
-  "client_id": "fern-private-care",
+  "_instructions": "Copy this file to /projects/{client_id}/config.json and fill in the values.",
+
+  "client_id": "your-client-id",
   "template": "healthcare",
   "language": "en",
   "goal": "leads",
@@ -36,6 +38,6 @@
 
   "deployment": {
     "env": "local",
-    "base_path": "/projects/fern-private-care"
+    "base_path": "/projects/your-client-id"
   }
 }

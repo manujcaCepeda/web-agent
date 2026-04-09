@@ -1,0 +1,55 @@
+{
+  "_note": "Curated Unsplash image library. All IDs manually verified by industry. NEVER use source.unsplash.com (deprecated). Only use images.unsplash.com with explicit photo IDs.",
+
+  "healthcare": {
+    "hero": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=1200&h=800&fit=crop&crop=faces&auto=format&q=85",
+    "services": [
+      "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
+      "https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
+      "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
+      "https://images.unsplash.com/photo-1590765738209-6b8be59b6b7e?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
+      "https://images.unsplash.com/photo-1624727828489-a1e03b79bba8?w=800&h=500&fit=crop&crop=faces&auto=format&q=80"
+    ],
+    "fallback_color": "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)"
+  },
+
+  "restaurant": {
+    "hero": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&h=800&fit=crop&auto=format&q=85",
+    "services": [
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=800&h=500&fit=crop&auto=format&q=80"
+    ],
+    "fallback_color": "linear-gradient(135deg, #f59e0b 0%, #b45309 100%)"
+  },
+
+  "ecommerce": {
+    "hero": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=800&fit=crop&auto=format&q=85",
+    "services": [
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=800&h=500&fit=crop&auto=format&q=80"
+    ],
+    "fallback_color": "linear-gradient(135deg, #6366f1 0%, #4338ca 100%)"
+  },
+
+  "services": {
+    "hero": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=800&fit=crop&auto=format&q=85",
+    "services": [
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=800&h=500&fit=crop&auto=format&q=80",
+      "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=500&fit=crop&auto=format&q=80"
+    ],
+    "fallback_color": "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)"
+  }
+}

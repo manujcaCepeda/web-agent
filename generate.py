@@ -27,29 +27,121 @@ AGENTS_DIR = BASE_DIR / "agents"
 TEMPLATES_DIR = BASE_DIR / "templates"
 CORE_DIR = BASE_DIR / "core"
 
-# Verified curated images per industry — never use source.unsplash.com (deprecated)
-# All IDs confirmed as elderly/healthcare appropriate
-CURATED_IMAGES = {
-    "healthcare": {
-        "hero": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=900&h=700&fit=crop&crop=faces&auto=format&q=85",
-        "services": [
-            "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
-            "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=top&auto=format&q=80",
-            "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=bottom&auto=format&q=80",
-            "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=right&auto=format&q=80",
-            "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=left&auto=format&q=80",
-            "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=entropy&auto=format&q=80",
-        ]
-    },
-    "restaurant": {
-        "hero": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&h=700&fit=crop&auto=format&q=85",
-        "services": []
-    },
-    "ecommerce": {
-        "hero": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&h=700&fit=crop&auto=format&q=85",
-        "services": []
+
+def load_images_library() -> dict:
+    """Load curated image library from core/images.json."""
+    images_path = CORE_DIR / "images.json"
+    if images_path.exists():
+        data = json.loads(read_file(images_path))
+        # Strip the _note metadata key
+        return {k: v for k, v in data.items() if not k.startswith("_")}
+    # Fallback if file missing
+    return {
+        "healthcare": {
+            "hero": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=1200&h=800&fit=crop&crop=faces&auto=format&q=85",
+            "services": [
+                "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
+                "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
+                "https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
+                "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
+                "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=top&auto=format&q=80",
+                "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=500&fit=crop&crop=top&auto=format&q=80",
+            ],
+            "fallback_color": "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)"
+        }
     }
-}
+
+
+def build_schema_org(brief: dict, config: dict) -> str:
+    """Build Schema.org JSON-LD script block."""
+    schema_cfg = brief.get("schema", {})
+    loc = config.get("localization", {})
+    contact = brief.get("contact_info", {})
+
+    schema = {
+        "@context": "https://schema.org",
+        "@type": schema_cfg.get("type", "LocalBusiness"),
+        "name": brief.get("business_name", ""),
+        "description": brief.get("value_proposition", ""),
+        "url": "",
+        "telephone": contact.get("phone", ""),
+        "email": contact.get("email", ""),
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": brief.get("location", ""),
+            "addressCountry": loc.get("country", "US")
+        },
+        "openingHours": brief.get("business_hours", "Mo-Su 00:00-23:59"),
+        "priceRange": schema_cfg.get("price_range", "$$"),
+        "foundingDate": schema_cfg.get("founding_year", ""),
+        "sameAs": list(brief.get("social_links", {}).values())
+    }
+
+    return f'<script type="application/ld+json">\n{json.dumps(schema, indent=2)}\n</script>'
+
+
+def build_og_tags(seo: dict, brief: dict, hero_img: str) -> str:
+    """Build Open Graph + Twitter Card meta tags."""
+    title = seo.get("meta_title", brief.get("business_name", ""))
+    description = seo.get("meta_description", brief.get("value_proposition", ""))
+    business_name = brief.get("business_name", "")
+
+    lines = [
+        f'<meta property="og:type" content="website">',
+        f'<meta property="og:title" content="{title}">',
+        f'<meta property="og:description" content="{description}">',
+        f'<meta property="og:image" content="{hero_img}">',
+        f'<meta property="og:site_name" content="{business_name}">',
+        f'<meta name="twitter:card" content="summary_large_image">',
+        f'<meta name="twitter:title" content="{title}">',
+        f'<meta name="twitter:description" content="{description}">',
+        f'<meta name="twitter:image" content="{hero_img}">',
+    ]
+    return "\n  ".join(lines)
+
+
+def build_analytics_snippet(config: dict) -> str:
+    """Build GA4 + Meta Pixel snippets if configured."""
+    analytics = config.get("analytics", {})
+    if not config.get("output", {}).get("include_analytics", False):
+        return ""
+
+    snippets = []
+
+    ga4_id = analytics.get("ga4_id", "")
+    if ga4_id:
+        snippets.append(
+            f'<!-- Google Analytics -->\n'
+            f'<script async src="https://www.googletagmanager.com/gtag/js?id={ga4_id}"></script>\n'
+            f'<script>\n'
+            f'  window.dataLayer = window.dataLayer || [];\n'
+            f'  function gtag(){{dataLayer.push(arguments);}}\n'
+            f'  gtag("js", new Date());\n'
+            f'  gtag("config", "{ga4_id}");\n'
+            f'</script>'
+        )
+
+    pixel_id = analytics.get("meta_pixel_id", "")
+    if pixel_id:
+        snippets.append(
+            f'<!-- Meta Pixel -->\n'
+            f'<script>\n'
+            f'  !function(f,b,e,v,n,t,s)\n'
+            f'  {{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?\n'
+            f'  n.callMethod.apply(n,arguments):n.queue.push(arguments)}};\n'
+            f'  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";\n'
+            f'  n.queue=[];t=b.createElement(e);t.async=!0;\n'
+            f'  t.src=v;s=b.getElementsByTagName(e)[0];\n'
+            f'  s.parentNode.insertBefore(t,s)}}(window, document,"script",\n'
+            f'  "https://connect.facebook.net/en_US/fbevents.js");\n'
+            f'  fbq("init", "{pixel_id}");\n'
+            f'  fbq("track", "PageView");\n'
+            f'</script>\n'
+            f'<noscript><img height="1" width="1" style="display:none"\n'
+            f'  src="https://www.facebook.com/tr?id={pixel_id}&ev=PageView&noscript=1"/></noscript>'
+        )
+
+    return "\n\n".join(snippets)
 
 
 def read_file(path: Path) -> str:
@@ -97,7 +189,7 @@ def call_claude(client: anthropic.Anthropic, system_prompt: str, user_message: s
 
 
 def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: dict, config: dict, seo_data: dict, layout_data: dict) -> str:
-    """Generate frontend HTML in two focused parts to avoid token limits."""
+    """Generate frontend HTML in three focused parts to avoid token limits."""
 
     primary_color = brief.get("branding", {}).get("primary_color", "#2F7F79")
     secondary_color = brief.get("branding", {}).get("secondary_color", "#A7D7C5")
@@ -115,6 +207,9 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     testimonials = seo_data.get("testimonials", [])
     faq = seo_data.get("faq", [])
     cta = seo_data.get("cta", {})
+    features = config.get("features", {})
+    use_lazy_loading = features.get("lazy_loading", True)
+    use_schema_org = features.get("schema_org", True)
 
     shared_context = (
         f"Business: {business_name}\n"
@@ -125,12 +220,16 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"Meta description: {seo.get('meta_description', '')}\n"
     )
 
-    # Load curated images for this template
+    # Load curated images from core/images.json
+    images_lib = load_images_library()
     template_key = config.get("template", "healthcare")
-    img_set = CURATED_IMAGES.get(template_key, CURATED_IMAGES["healthcare"])
-    hero_img = img_set["hero"]
-    service_imgs = img_set["services"]
-    # Inject image URLs into each service
+    img_set = images_lib.get(template_key, images_lib.get("healthcare", {}))
+    hero_img = img_set.get("hero", "")
+    service_imgs = img_set.get("services", [])
+    fallback_color = img_set.get("fallback_color", "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)")
+    img_onerror = f'onerror="this.style.background=\'{fallback_color}\';this.removeAttribute(\'src\')"'
+
+    # Inject image URLs into each service object
     for i, svc in enumerate(services):
         svc["_image_url"] = service_imgs[i % len(service_imgs)] if service_imgs else hero_img
 
@@ -141,6 +240,12 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     faq_json = json.dumps(faq, indent=2)
     cta_json = json.dumps(cta, indent=2)
     hero_json = json.dumps(hero, indent=2)
+    lazy_attr = ' loading="lazy"' if use_lazy_loading else ""
+
+    # Build pre-generated head extras
+    og_tags = build_og_tags(seo, brief, hero_img)
+    analytics_snippet = build_analytics_snippet(config)
+    schema_block = build_schema_org(brief, config) if use_schema_org else ""
 
     # ── PART 1: DOCTYPE + HEAD + CSS + HEADER + HERO ─────────────────────────
     print("\n  → Part 1: Head + Header + Hero...")
@@ -149,87 +254,153 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"CONTEXT: {shared_context}\n"
         f"HERO: {hero_json}\n\n"
         f"OUTPUT:\n"
-        f"1. <!DOCTYPE html> + <head>: charset, viewport, title='{seo.get('meta_title','')}', "
-        f"meta description, Tailwind CDN, Google Fonts Inter, "
-        f"<style> block with: scroll animations (.reveal {{ opacity:0; transform:translateY(24px); transition:0.7s }}), "
-        f".reveal.visible and .reveal-element.visible {{opacity:1;transform:none}}, "
-        f"FAQ accordion (.faq-answer {{max-height:0;overflow:hidden;transition:0.4s}}), "
-        f".faq-item.open .faq-answer {{max-height:500px}}, "
-        f"WhatsApp pulse @keyframes, mobile CTA bar, sticky header, custom scrollbar, "
-        f"brand CSS vars (--color-primary:{primary_color}; --color-secondary:{secondary_color})\n"
-        f"2. <body> opens (NO padding-bottom on body — mobile CTA handles its own spacing)\n"
-        f"3. Sticky <header>: logo img src='{logo}' h-10, brand name text next to logo, "
+        f"1. <!DOCTYPE html> + <head>:\n"
+        f"   - <meta charset='UTF-8'>\n"
+        f"   - <meta name='viewport' content='width=device-width, initial-scale=1.0'>\n"
+        f"   - <title>{seo.get('meta_title', '')}</title>\n"
+        f"   - <meta name='description' content='{seo.get('meta_description', '')}'>\n"
+        f"   - Insert these tags EXACTLY as-is (do not modify or recreate them):\n"
+        f"     {og_tags}\n"
+        f"   - Tailwind CDN: <script src='https://cdn.tailwindcss.com'></script>\n"
+        f"   - Google Fonts Inter\n"
+        f"   - <style> block with:\n"
+        f"     * :root {{ --color-primary: {primary_color}; --color-secondary: {secondary_color}; }}\n"
+        f"     * body {{ font-family: 'Inter', sans-serif; }}\n"
+        f"     * .reveal {{ opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }}\n"
+        f"     * .reveal.visible, .reveal-element.visible {{ opacity: 1; transform: none; }}\n"
+        f"     * .faq-answer {{ max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }}\n"
+        f"     * .faq-item.open .faq-answer {{ max-height: 500px; }}\n"
+        f"     * @keyframes pulse-wa {{ 0%,100% {{ box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }} 50% {{ box-shadow: 0 0 0 12px rgba(37,211,102,0); }} }}\n"
+        f"     * .wa-pulse {{ animation: pulse-wa 2s infinite; }}\n"
+        f"     * .mobile-cta-bar {{ display: none; }}\n"
+        f"     * @media (max-width: 767px) {{ .mobile-cta-bar {{ display: flex; }} }}\n"
+        f"     * Custom scrollbar, sticky header blur effect\n"
+        f"   - Schema.org block — insert EXACTLY as-is:\n"
+        f"     {schema_block}\n"
+        f"   - Analytics — insert EXACTLY as-is (if empty string, skip):\n"
+        f"     {analytics_snippet if analytics_snippet else '<!-- analytics disabled -->'}\n"
+        f"2. <body> opens (NO global padding-bottom)\n"
+        f"3. Sticky <header>: backdrop-blur-md bg-white/90 border-b, "
+        f"logo img src='{logo}' class='h-10 w-auto', brand name next to logo, "
         f"nav links (Services href='#services' / Why Us href='#benefits' / Testimonials href='#testimonials' / FAQ href='#faq' / Contact href='#contact'), "
-        f"phone tel:{phone}, 'Free Consultation' CTA button, mobile hamburger\n"
-        f"4. Mobile nav dropdown (hidden by default)\n"
-        f"5. Hero <section id='hero'>: split grid (text 60%/image 40%), trust badge pill, H1 headline, "
-        f"subheadline, 2 CTA buttons, 3 trust microcopy items, floating badge on image\n"
-        f"   Hero image: src='{hero_img}' — MUST use this exact URL\n"
+        f"phone tel:{phone}, 'Free Consultation' CTA button (bg primary color), mobile hamburger button\n"
+        f"4. Mobile nav dropdown (#mobile-menu, hidden by default, shows on hamburger click)\n"
+        f"5. Hero <section id='hero'>: full-width split grid (text left 60% / image right 40%), "
+        f"trust badge pill at top, H1 headline from HERO data, subheadline, 2 CTA buttons "
+        f"(primary=Book Consultation, secondary=Call Now), 3 trust microcopy items below CTAs\n"
+        f"   Hero image EXACT URL: {hero_img}\n"
+        f"   Hero img tag: <img src='{hero_img}' alt='Senior care' class='...' {img_onerror}>\n"
+        f"   DO NOT add loading='lazy' to the hero image (above the fold)\n"
         f"6. End with comment <!-- END PART 1 --> — DO NOT close body or html."
     )
     part1_raw, _ = call_claude(client, system_prompt, part1_msg, "Frontend Part 1 (Head+Hero)", max_tokens=8000)
     part1_html = extract_html(part1_raw)
 
-    # ── PART 2: SERVICES + CTA1 + BENEFITS + TRUST ───────────────────────────
+    # ── PART 2: SERVICES + CTA BANNER + BENEFITS + TRUST ─────────────────────
     print("\n  → Part 2: Services + Benefits + Trust...")
 
-    # Build service cards with pre-assigned image URLs
     service_cards_instruction = ""
     for i, svc in enumerate(services):
         img_url = svc.get("_image_url", hero_img)
-        service_cards_instruction += f"  Card {i+1}: title='{svc.get('title','')}', image src='{img_url}' (USE THIS EXACT URL)\n"
+        service_cards_instruction += (
+            f"  Card {i+1}: title='{svc.get('title', '')}'\n"
+            f"    image: <img src='{img_url}' alt='{svc.get('title', '')}' "
+            f"class='w-full h-48 object-cover group-hover:scale-105 transition duration-500'"
+            f"{lazy_attr} {img_onerror}>\n"
+        )
 
     part2_msg = (
         f"Generate ONLY Part 2 of an index.html. Start immediately after <!-- END PART 1 -->.\n"
         f"NO DOCTYPE, NO html tag, NO head tag. Start directly with a <section> tag.\n\n"
-        f"CONTEXT: {shared_context}\n"
-        f"SERVICES ({len(services)} cards — use EXACT image URLs below):\n"
+        f"CONTEXT: {shared_context}\n\n"
+        f"IMAGE RULES (CRITICAL):\n"
+        f"- Use ONLY the exact img tags specified below for each service card\n"
+        f"- NEVER use source.unsplash.com — it is deprecated\n"
+        f"- Add {img_onerror} to ALL img tags as fallback\n"
+        f"- Add loading='lazy' to ALL img tags (except hero which is in Part 1)\n\n"
+        f"SERVICE CARDS (use these EXACT img tags):\n"
         f"{service_cards_instruction}\n"
         f"FULL SERVICES DATA: {services_json}\n"
         f"BENEFITS: {benefits_json}\n"
         f"TRUST: {trust_json}\n\n"
-        f"CRITICAL RULES:\n"
-        f"- Use ONLY the image URLs listed above for each service card. DO NOT use source.unsplash.com\n"
-        f"- Do NOT use Tailwind 'opacity-0' or 'translate-y-10' inline classes — use class='reveal-element' instead\n"
-        f"- Every <section> MUST have opening AND closing tags\n\n"
-        f"OUTPUT (complete all items before ending):\n"
-        f"1. <section id='services' class='py-20 md:py-28 bg-gray-50'>: 3-column card grid, "
-        f"each card has the specified image, title, description, 2-3 bullet benefits, hover shadow\n"
-        f"2. CTA banner: gradient, headline, subheadline, button → href='#contact'\n"
-        f"3. <section id='benefits' class='py-20 md:py-28 bg-white'>: MUST be fully generated — "
-        f"6 benefit cards (icon + title + description), 3-column grid\n"
-        f"4. <section id='trust' class='py-16 bg-gray-50'>: 4 stat cards (500+ Families, 10+ Years, 24/7 Available, 4.9 Rating)\n"
+        f"ANIMATION RULES:\n"
+        f"- Do NOT use Tailwind 'opacity-0' or 'translate-y-10' inline classes\n"
+        f"- Use class='reveal-element' for scroll-reveal animations\n"
+        f"- Every <section> MUST have both opening AND closing tags\n\n"
+        f"OUTPUT (generate ALL items fully before ending):\n"
+        f"1. <section id='services' class='py-20 md:py-28 bg-gray-50'>:\n"
+        f"   3-column responsive grid, each card: overflow-hidden rounded-2xl shadow-md hover:shadow-xl "
+        f"group cursor-pointer transition duration-300, image on top, then title+description+bullet list\n"
+        f"2. Inline CTA banner: gradient bg (primary to secondary), headline, subheadline, button → href='#contact'\n"
+        f"3. <section id='benefits' class='py-20 md:py-28 bg-white'>:\n"
+        f"   Section title + subtitle, then 6 benefit cards in 3-column grid\n"
+        f"   Each card: icon (SVG or emoji in colored circle), bold title, description paragraph\n"
+        f"   MUST be fully generated — do not leave this section empty\n"
+        f"4. <section id='trust' class='py-16 bg-gray-50'>:\n"
+        f"   4 stat cards: '500+ Families Served', '10+ Years Experience', '24/7 Available', '4.9★ Rating'\n"
+        f"   Each card: large number in primary color, label text, subtle icon\n"
         f"5. End with comment <!-- END PART 2 --> — DO NOT close body or html."
     )
     part2_raw, _ = call_claude(client, system_prompt, part2_msg, "Frontend Part 2 (Services+Benefits)", max_tokens=8000)
     part2_html = extract_html(part2_raw)
 
-    # ── PART 3: TESTIMONIALS + FAQ + CTA + CONTACT + FOOTER + SCRIPTS ────────
+    # ── PART 3: TESTIMONIALS + FAQ + CTA + CONTACT + FOOTER + JS ─────────────
     print("\n  → Part 3: Testimonials + FAQ + Contact + Footer + JS...")
+
+    # Analytics event tracking JS (config-driven)
+    analytics = config.get("analytics", {})
+    tracking_js = ""
+    if config.get("output", {}).get("include_analytics", False) and analytics.get("ga4_id"):
+        if analytics.get("track_cta_clicks", True):
+            tracking_js += "\n    // Track CTA clicks\n    document.querySelectorAll('[data-track]').forEach(el => { el.addEventListener('click', () => { gtag('event', el.dataset.track); }); });"
+        if analytics.get("track_form_submit", True):
+            tracking_js += "\n    // Track form submit\n    const form = document.querySelector('#contact form'); if(form) form.addEventListener('submit', () => gtag('event', 'form_submit'));"
+        if analytics.get("track_whatsapp_click", True):
+            tracking_js += "\n    // Track WhatsApp click\n    document.querySelector('#wa-btn')?.addEventListener('click', () => gtag('event', 'whatsapp_click'));"
+
     part3_msg = (
-        f"Generate ONLY Part 3 (final part) of an index.html. Start immediately after <!-- END PART 2 -->.\n"
+        f"Generate ONLY Part 3 (the FINAL part) of an index.html. Start immediately after <!-- END PART 2 -->.\n"
         f"NO DOCTYPE, NO html, NO head. Start with a <section> tag. MUST end with </body></html>.\n\n"
         f"CONTEXT: {shared_context}\n"
         f"TESTIMONIALS: {testimonials_json}\n"
         f"FAQ: {faq_json}\n"
         f"CTA: {cta_json}\n\n"
-        f"OUTPUT:\n"
-        f"1. Testimonials <section id='testimonials'>: gradient background, card grid, star ratings (★★★★★), name, text\n"
-        f"2. FAQ <section id='faq'>: bg-white, accordion items (click to expand), smooth animation\n"
-        f"3. Final CTA section: dark gradient, headline, subheadline, primary button, reassurance text\n"
-        f"4. Contact <section id='contact'>: bg-gray-50, split layout: left=form(name/phone/message/submit), "
-        f"right=contact info (phone:{phone}, email:{email}, address:{address}, hours:24/7)\n"
-        f"5. Footer: dark bg, logo, nav links, social icons (FB/IG/LinkedIn all href='#'), copyright\n"
-        f"6. WhatsApp floating button (bottom-right, pulse animation, href=https://wa.me/{whatsapp})\n"
-        f"7. Mobile sticky CTA bar (bottom, hidden on md+)\n"
-        f"8. ONE <script> block with: IntersectionObserver reveal, FAQ accordion toggle, "
-        f"mobile menu toggle, sticky header shadow on scroll, form submit redirects to WhatsApp\n"
+        f"ANIMATION RULES:\n"
+        f"- Do NOT use Tailwind 'opacity-0' or 'translate-y-10' inline classes\n"
+        f"- Use class='reveal-element' for scroll-reveal\n"
+        f"- Every <section> MUST open and close in this part\n\n"
+        f"OUTPUT (generate ALL items — NEVER truncate):\n"
+        f"1. <section id='testimonials' class='py-20 bg-gradient-to-br from-[{primary_color}] to-[{secondary_color}]'>:\n"
+        f"   White card grid, ★★★★★ stars, testimonial text, name+role, hover shadow\n"
+        f"2. <section id='faq' class='py-20 bg-white'>:\n"
+        f"   FAQ accordion — each .faq-item has a button (toggle .open class) and .faq-answer div\n"
+        f"   Use data from FAQ array provided\n"
+        f"3. Final CTA section: dark gradient bg, bold headline, subheadline, single primary CTA button\n"
+        f"4. <section id='contact' class='py-20 bg-gray-50'>:\n"
+        f"   Split layout: left=contact form (name/phone/message/submit button), "
+        f"right=contact info card (phone:{phone}, email:{email}, address:{address}, hours:24/7)\n"
+        f"   Form id='contact-form', submit button id='form-submit-btn'\n"
+        f"5. <footer>: dark gradient bg, logo img src='{logo}' class='h-12 w-auto brightness-0 invert', "
+        f"tagline, nav links in columns, social icons (FB/IG/LinkedIn href='#'), copyright line\n"
+        f"6. WhatsApp button: id='wa-btn', fixed bottom-6 right-6, z-50, rounded-full, green bg, "
+        f"pulse animation class='wa-pulse', href='https://wa.me/{whatsapp}', target='_blank'\n"
+        f"7. Mobile sticky CTA bar: class='mobile-cta-bar fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg p-3 gap-2':\n"
+        f"   Two buttons — Call Now (tel:{phone}) and WhatsApp (wa.me/{whatsapp})\n"
+        f"8. ONE <script> block containing ALL JavaScript:\n"
+        f"   a) IntersectionObserver: observe '.reveal-element, .reveal', add 'visible' class at threshold 0.1, "
+        f"also immediately activate elements already in viewport on window load\n"
+        f"   b) FAQ accordion: querySelectorAll('.faq-item button'), toggle 'open' on parent .faq-item\n"
+        f"   c) Mobile menu toggle: hamburger button toggles #mobile-menu visibility\n"
+        f"   d) Sticky header: add shadow class on scroll > 50px\n"
+        f"   e) Form submit: prevent default, redirect to https://wa.me/{whatsapp}?text=...\n"
+        f"   f) Analytics tracking (insert verbatim):{tracking_js if tracking_js else ' // analytics disabled'}\n"
         f"9. Close with </body></html>"
     )
     part3_raw, stop3 = call_claude(client, system_prompt, part3_msg, "Frontend Part 3 (Footer+JS)", max_tokens=8000)
     part3_html = extract_html(part3_raw)
 
     if stop3 == "max_tokens" and "</html>" not in part3_html:
+        print("  WARNING: Part 3 hit token limit — appending closing tags")
         part3_html += "\n</body>\n</html>"
 
     full_html = part1_html + "\n" + part2_html + "\n" + part3_html
@@ -239,15 +410,12 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
 
 def extract_json(text: str) -> str:
     """Extract JSON block from LLM response."""
-    # Try to find JSON between ```json ... ``` blocks
     if "```json" in text:
         start = text.find("```json") + 7
         end = text.find("```", start)
         return text[start:end].strip()
-    # Try to find raw JSON object
     if text.strip().startswith("{"):
         return text.strip()
-    # Try to find first { to last }
     start = text.find("{")
     end = text.rfind("}") + 1
     if start != -1 and end > start:
@@ -258,12 +426,12 @@ def extract_json(text: str) -> str:
 def extract_html(text: str) -> str:
     """Extract HTML from LLM response."""
     if "```html" in text:
-        start = text.find("```html") + 7  # skip "```html\n"
+        start = text.find("```html") + 7
         end = text.find("```", start)
         if end == -1:
             return text[start:].strip()
         return text[start:end].strip()
-    if "<!DOCTYPE" in text or "<html" in text:
+    if "<!DOCTYPE" in text or "<html" in text or text.strip().startswith("<section"):
         return text.strip()
     return text
 
@@ -309,6 +477,9 @@ def run_pipeline(client_id: str):
     prompts = load_prompts(template_name)
     brief_str = json.dumps(brief, indent=2)
     print(f"  ✓ Template: {template_name} | Language: {config['language']} | Goal: {config['goal']}")
+    print(f"  ✓ Features: lazy_loading={config.get('features',{}).get('lazy_loading')} | "
+          f"schema_org={config.get('features',{}).get('schema_org')} | "
+          f"analytics={config.get('output',{}).get('include_analytics')}")
 
     # STEP 1 — Business Analysis
     print("\n[2/6] Business Analysis")
@@ -349,7 +520,6 @@ def run_pipeline(client_id: str):
         Path("debug_copy.txt").write_text(copy_raw, encoding="utf-8")
         sys.exit(1)
 
-    # Validate contract
     errors = validate_copy_json(copy_data)
     if errors:
         print(f"  WARNING: Contract violations found:")
@@ -377,7 +547,7 @@ def run_pipeline(client_id: str):
         print("  WARNING: SEO optimizer returned invalid JSON, using copy data without SEO")
         seo_data = copy_data
 
-    # Merge branding from brief into data
+    # Merge branding and contact from brief
     seo_data["business"] = {
         "name": brief.get("business_name", ""),
         "type": brief.get("business_type", ""),
@@ -408,7 +578,7 @@ def run_pipeline(client_id: str):
         print("  WARNING: UI Designer returned invalid JSON, using minimal layout")
         layout_data = {"layout_style": "premium-soft", "visual_intensity": "medium", "sections": []}
 
-    # STEP 5 — Frontend Generation (2-part strategy)
+    # STEP 5 — Frontend Generation (3-part strategy)
     print("\n[6/6] Frontend Generation")
     html_content = generate_frontend(client, prompts["frontend_dev"], brief, config, seo_data, layout_data)
 

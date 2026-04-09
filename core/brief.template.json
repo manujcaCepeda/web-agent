@@ -1,0 +1,78 @@
+{
+  "_instructions": "Copy this file to /projects/{client_id}/brief.json and fill in all values. Remove the _instructions field.",
+
+  "business_name": "",
+  "business_type": "healthcare",
+  "location": "Florida, USA",
+  "language": "English",
+
+  "goal": "leads",
+
+  "target_audience": "",
+
+  "pain_points": [],
+  "desires": [],
+  "objections": [],
+
+  "value_proposition": "",
+  "emotional_hook": "",
+
+  "differentiation": [],
+
+  "trust_signals": [],
+
+  "services": [
+    {
+      "name": "",
+      "description": "",
+      "image_query": ""
+    }
+  ],
+
+  "cta_primary": "Book a Free Consultation",
+  "cta_secondary": "Talk to a Specialist Today",
+  "cta_context": "",
+
+  "testimonials": [
+    {
+      "name": "",
+      "text": "",
+      "role": ""
+    }
+  ],
+
+  "business_hours": "24/7 Available",
+
+  "contact_info": {
+    "phone": "",
+    "email": "",
+    "address": ""
+  },
+
+  "whatsapp": "",
+
+  "social_links": {
+    "facebook": "#",
+    "instagram": "#",
+    "linkedin": "#"
+  },
+
+  "branding": {
+    "logo": "/assets/images/logo.png",
+    "primary_color": "#2F7F79",
+    "secondary_color": "#A7D7C5",
+    "style": "calm, trustworthy, professional"
+  },
+
+  "schema": {
+    "type": "LocalBusiness",
+    "price_range": "$$",
+    "founding_year": "2014"
+  },
+
+  "localization": {
+    "country": "US",
+    "state": "Florida",
+    "region": "Southwest Florida"
+  }
+}
