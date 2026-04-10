@@ -151,6 +151,47 @@ Closing line MUST include:
 
 ---
 
+## WOW SECTION (MANDATORY — EMOTIONAL IMPACT)
+
+A full-bleed section placed between Badge Grid and Testimonials.
+
+Purpose: create an emotional pause — maximum impact, zero friction.
+
+### Requirements:
+- Full-bleed background image: real caregiver + senior moment (warmth, eye contact)
+- Dark gradient overlay: `rgba(15,50,47,0.85)` → `rgba(47,127,121,0.70)`
+- Large quotation mark SVG above the text (decorative, opacity 40%)
+- Central pull quote: warm, human, reassuring — 1-2 sentences max
+- Below quote: thin horizontal rule (brand color, opacity 50%)
+- Single CTA button (white bg, brand text color)
+- NO headline, NO eyebrow — just the quote and CTA
+
+### Mandatory quote direction:
+“You don't have to do this alone. We care for your loved ones — like family.”
+
+### Image treatment:
+- `object-cover object-center`
+- `onerror` fallback to brand gradient
+- `loading=”lazy”`
+
+---
+
+## BADGE GRID (MANDATORY — VISUAL AUTHORITY)
+
+4 icon + label badges displayed horizontally before Testimonials.
+
+Required badges (exact):
+1. Background-Checked Caregivers
+2. Licensed & Insured
+3. Free Initial Consultation
+4. 24/7 Family Support
+
+Footer microcopy (mandatory): “Fully trained & background-checked caregivers. Always.”
+
+Section header microcopy: “Our Commitment to Your Family” (small uppercase, no eyebrow pill needed)
+
+---
+
 ## IMAGE SYSTEM (STRICT)
 
 ONLY allow images that show:

@@ -83,6 +83,33 @@ Healthcare → MUST be: low or medium
 
 ---
 
+# 🌟 WOW SECTION (MANDATORY FOR HEALTHCARE)
+
+A full-bleed emotional section placed between Badge Grid and Testimonials.
+
+```
+type: wow-section
+layout: full-bleed
+background: dark-overlay-image
+composition:
+  text_position: center
+  image_position: background
+  emphasis: balanced
+density: spacious
+content_mapping:
+  quote: "emotional pull quote — 1-2 sentences, warm, human"
+  cta_button: cta.button
+```
+
+Rules:
+- NEVER use a headline or eyebrow — only the quote
+- Large decorative quotation mark SVG (opacity 40%) above quote
+- Dark gradient overlay (never flat black)
+- Single white-background CTA button
+- Horizontal rule separator (brand color) between quote and CTA
+
+---
+
 # 🔁 VARIATION SYSTEM (CRITICAL)
 
 You MUST introduce variation:
@@ -303,14 +330,16 @@ Rules:
 
 1. Hero
 2. Services
-3. CTA
-4. Benefits
-5. Trust
-6. Testimonials
-7. CTA
-8. FAQ
-9. CTA
-10. Contact
+3. How It Works (3-step process)
+4. CTA Banner
+5. Stats Bar (big trust numbers)
+6. Benefits
+7. Badge Grid (4 authority badges)
+8. Wow Section (full-bleed emotional quote)
+9. Testimonials
+10. FAQ
+11. CTA
+12. Contact
 
 ---
 
