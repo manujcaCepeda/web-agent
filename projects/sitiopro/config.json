@@ -1,0 +1,13 @@
+{
+  "client_id": "sitiopro",
+  "template": "services",
+  "language": "es",
+  "goal": "leads",
+  "features": {
+    "lazy_loading": true,
+    "schema_org": true
+  },
+  "output": {
+    "include_analytics": false
+  }
+}

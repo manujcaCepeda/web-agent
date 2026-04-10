@@ -1,0 +1,217 @@
+{
+  "business_name": "SitioPro",
+  "business_type": "services",
+  "location": "Ecuador",
+  "language": "es",
+
+  "goal": "leads",
+
+  "target_audience": "Emprendedores, pequeños y medianos negocios que necesitan presencia digital profesional para crecer y atraer más clientes",
+
+  "pain_points": [
+    "No tienen presencia digital profesional",
+    "Su sitio web actual no genera clientes",
+    "No saben cómo competir online",
+    "Han tenido malas experiencias con agencias lentas o genéricas",
+    "Temen invertir sin ver resultados claros"
+  ],
+
+  "desires": [
+    "Un sitio web que se vea profesional y genere confianza",
+    "Más clientes y ventas desde internet",
+    "Entrega rápida sin complicaciones",
+    "Diseño diferente, no una plantilla más"
+  ],
+
+  "objections": [
+    "¿Es muy caro para mi negocio?",
+    "¿Cuánto tiempo tomará?",
+    "¿Realmente voy a conseguir clientes con un sitio web?",
+    "¿Qué pasa si no me gusta el resultado?"
+  ],
+
+  "value_proposition": "Diseñamos y desarrollamos sitios web modernos, rápidos y optimizados para convertir visitantes en clientes. Entrega rápida, diseño premium y enfoque total en resultados.",
+
+  "emotional_hook": "Tu negocio merece una presencia digital que inspire confianza y genere ventas desde el primer día.",
+
+  "differentiation": [
+    "Entrega en 3 a 7 días hábiles",
+    "Diseño premium — sin plantillas genéricas",
+    "Enfoque en conversión, no solo en estética",
+    "100% optimizado para móviles",
+    "Soporte personalizado incluido"
+  ],
+
+  "trust_signals": [
+    "Diseño profesional y a medida",
+    "Entrega rápida garantizada",
+    "Enfoque en resultados medibles",
+    "Soporte personalizado post-entrega",
+    "Clientes satisfechos en Ecuador y Latinoamérica"
+  ],
+
+  "services": [
+    {
+      "name": "Landing Pages",
+      "description": "Páginas diseñadas para convertir visitantes en clientes. Perfectas para campañas y lanzamientos.",
+      "image_url": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
+    },
+    {
+      "name": "Sitios Web Corporativos",
+      "description": "Presencia digital completa que transmite profesionalismo y genera confianza en tu marca.",
+      "image_url": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
+    },
+    {
+      "name": "Tiendas Online",
+      "description": "E-commerce optimizado para vender más. Diseño atractivo, proceso de compra simple y seguro.",
+      "image_url": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
+    },
+    {
+      "name": "Rediseño Web",
+      "description": "Transforma tu sitio actual en una herramienta de ventas moderna y efectiva.",
+      "image_url": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
+    },
+    {
+      "name": "Optimización de Conversión",
+      "description": "Analizamos y mejoramos tu sitio para que más visitantes se conviertan en clientes reales.",
+      "image_url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
+    }
+  ],
+
+  "pricing": [
+    {
+      "name": "Plan Básico",
+      "price": "$299",
+      "description": "Ideal para emprendedores que dan sus primeros pasos en internet",
+      "features": [
+        "1 página profesional",
+        "Diseño moderno y a medida",
+        "100% responsive (móvil)",
+        "Formulario de contacto",
+        "Entrega en 3 días"
+      ],
+      "cta": "Empezar ahora",
+      "highlighted": false
+    },
+    {
+      "name": "Plan Profesional",
+      "price": "$699",
+      "description": "Para negocios que quieren destacar y generar más clientes",
+      "features": [
+        "Hasta 5 páginas",
+        "Diseño premium exclusivo",
+        "SEO básico incluido",
+        "Optimizado para conversión",
+        "Entrega en 5 días",
+        "Soporte 30 días"
+      ],
+      "cta": "El más elegido",
+      "highlighted": true
+    },
+    {
+      "name": "Plan Avanzado",
+      "price": "$1,499",
+      "description": "Solución completa para empresas que quieren dominar su mercado digital",
+      "features": [
+        "Páginas ilimitadas",
+        "Diseño avanzado y estratégico",
+        "SEO + optimización de conversión",
+        "Integración con redes sociales",
+        "Analítica y seguimiento",
+        "Entrega en 7 días",
+        "Soporte 60 días"
+      ],
+      "cta": "Quiero el avanzado",
+      "highlighted": false
+    }
+  ],
+
+  "testimonials": [
+    {
+      "name": "Carlos M.",
+      "role": "Dueño de restaurante, Quito",
+      "text": "En menos de una semana tenía mi sitio web funcionando. Desde entonces recibo reservas online todos los días. La mejor inversión para mi negocio.",
+      "avatar": "https://randomuser.me/api/portraits/men/32.jpg"
+    },
+    {
+      "name": "Andrea V.",
+      "role": "Emprendedora, Guayaquil",
+      "text": "Tenía miedo de invertir y no ver resultados, pero el equipo de SitioPro me explicó todo desde el inicio. Mi tienda online ya genera ventas constantes.",
+      "avatar": "https://randomuser.me/api/portraits/women/55.jpg"
+    },
+    {
+      "name": "Roberto S.",
+      "role": "Consultor, Cuenca",
+      "text": "El diseño superó todas mis expectativas. Mis clientes siempre comentan lo profesional que se ve mi sitio. Totalmente recomendado.",
+      "avatar": "https://randomuser.me/api/portraits/men/71.jpg"
+    }
+  ],
+
+  "faq": [
+    {
+      "question": "¿Cuánto tiempo tarda en estar listo mi sitio?",
+      "answer": "Entre 3 y 7 días hábiles según el plan. Te entregamos un sitio completo, revisado y listo para publicar."
+    },
+    {
+      "question": "¿Necesito tener conocimientos técnicos?",
+      "answer": "No. Nosotros nos encargamos de todo. Solo necesitas compartir la información de tu negocio y nosotros hacemos el resto."
+    },
+    {
+      "question": "¿Puedo hacer cambios después de la entrega?",
+      "answer": "Sí. Todos los planes incluyen un período de ajustes post-entrega. Además ofrecemos soporte continuo para cualquier modificación futura."
+    },
+    {
+      "question": "¿El sitio web funciona bien en celulares?",
+      "answer": "Absolutamente. Todos nuestros sitios son 100% responsive y están optimizados para dispositivos móviles, que representan más del 70% del tráfico web."
+    },
+    {
+      "question": "¿Incluye hosting y dominio?",
+      "answer": "El diseño y desarrollo están incluidos. El hosting y dominio se contratan por separado, pero te asesoramos para elegir las mejores opciones según tu presupuesto."
+    }
+  ],
+
+  "cta_primary": "Agenda tu asesoría gratuita",
+  "cta_secondary": "Ver planes y precios",
+
+  "cta_context": "Sin compromiso. En 30 minutos te mostramos cómo podemos transformar tu presencia digital.",
+
+  "business_hours": "Lunes a Viernes 9:00 - 18:00",
+
+  "contact_info": {
+    "phone": "+593987654321",
+    "email": "hola@sitiopro.ec",
+    "address": "Ecuador"
+  },
+
+  "whatsapp": "593987654321",
+
+  "social_links": {
+    "instagram": "#",
+    "facebook": "#",
+    "linkedin": "#"
+  },
+
+  "branding": {
+    "logo": "",
+    "primary_color": "#2563EB",
+    "secondary_color": "#DBEAFE",
+    "style": "moderno, tecnológico, profesional",
+    "hero_image_url": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200&h=800&fit=crop&crop=center&auto=format&q=85"
+  },
+
+  "schema": {
+    "type": "ProfessionalService",
+    "price_range": "$$",
+    "founding_year": "2023"
+  },
+
+  "image_style": {
+    "tone": "moderno, tecnológico, profesional",
+    "scenes": [
+      "personas trabajando en laptop",
+      "diseño web en pantalla",
+      "equipo de trabajo digital",
+      "interfaz de usuario moderna"
+    ]
+  }
+}
