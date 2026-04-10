@@ -300,6 +300,47 @@ Images MUST use the `_image_url` field from each service object.
 
 ---
 
+## 🚫 IMAGE VALIDATION RULES (HARD RULES — NEVER VIOLATE)
+
+### FORBIDDEN
+- NEVER use `source.unsplash.com` — it is deprecated and returns random images
+- NEVER construct image URLs from `image_query` fields
+- NEVER generate your own Unsplash search URLs
+- NEVER render an `<img>` without an `onerror` fallback
+- NEVER use `loading="lazy"` on hero images (above the fold)
+- NEVER use the same image URL in two different service cards
+
+### MANDATORY for every `<img>` tag
+```html
+<!-- Correct pattern — ALL images must follow this -->
+<img
+  src="[EXACT URL PROVIDED IN INPUT]"
+  alt="[descriptive alt text]"
+  class="..."
+  loading="lazy"
+  onerror="this.onerror=null;this.style.background='linear-gradient(135deg,#A7D7C5,#2F7F79)';this.removeAttribute('src');"
+>
+```
+
+### IMAGE URL SOURCE HIERARCHY (follow in order)
+1. Use the exact `<img>` tag provided in `SERVICE CARDS` section of your input
+2. If not found → use the `_image_url` field in the service data
+3. If not found → render a gradient div fallback:
+   ```html
+   <div class="w-full h-52 rounded-t-2xl" style="background:linear-gradient(135deg,#A7D7C5,#2F7F79);"></div>
+   ```
+4. NEVER proceed to any other source
+
+### HEALTHCARE IMAGE CONTEXT CHECK
+For healthcare sites, every image MUST show:
+- Caregiver + elderly person interaction (NOT medical equipment, NOT surgery, NOT anatomy)
+- Home environment (NOT hospital)
+- Warm, human, emotional connection
+
+If the provided URL fails this check → use the gradient fallback.
+
+---
+
 ### IMAGE TREATMENT BY SECTION (MANDATORY)
 
 Each section type has specific HTML treatment. Never reuse the same img class across all sections.

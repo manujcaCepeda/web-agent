@@ -28,24 +28,46 @@ TEMPLATES_DIR = BASE_DIR / "templates"
 CORE_DIR = BASE_DIR / "core"
 
 
+def extract_img_url(img_obj: any, width: int = 800, height: int = 500) -> str:
+    """Extract a plain URL string from an image object or string.
+    images.json stores objects {url, label, mood} — this normalizes to a plain URL.
+    """
+    if isinstance(img_obj, dict):
+        url = img_obj.get("url", "")
+    else:
+        url = img_obj or ""
+    # Ensure dimensions are injected if URL is a bare Unsplash photo ID reference
+    return url
+
+
 def load_images_library() -> dict:
-    """Load curated image library from core/images.json."""
+    """Load curated image library from core/images.json.
+    Returns normalized structure with plain URL strings (not objects).
+    """
     images_path = CORE_DIR / "images.json"
     if images_path.exists():
         data = json.loads(read_file(images_path))
-        # Strip the _note metadata key
-        return {k: v for k, v in data.items() if not k.startswith("_")}
-    # Fallback if file missing
+        normalized = {}
+        for industry, img_set in data.items():
+            if industry.startswith("_"):
+                continue
+            normalized[industry] = {
+                "hero": extract_img_url(img_set.get("hero", "")),
+                "services": [extract_img_url(s) for s in img_set.get("services", [])],
+                "fallback_color": img_set.get("fallback_color", "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)")
+            }
+        return normalized
+    # Fallback if file missing — verified elderly care photo IDs only
     return {
         "healthcare": {
             "hero": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=1200&h=800&fit=crop&crop=faces&auto=format&q=85",
             "services": [
-                "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
                 "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
                 "https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
                 "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
-                "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&h=500&fit=crop&crop=top&auto=format&q=80",
-                "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=500&fit=crop&crop=top&auto=format&q=80",
+                "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
+                "https://images.unsplash.com/photo-1590765738209-6b8be59b6b7e?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
+                "https://images.unsplash.com/photo-1624727828489-a1e03b79bba8?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
             ],
             "fallback_color": "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)"
         }
@@ -243,20 +265,56 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"Meta description: {seo.get('meta_description', '')}\n"
     )
 
-    # Load curated images from core/images.json
+    # Load curated images from core/images.json (normalized — hero and services are plain URL strings)
     images_lib = load_images_library()
     template_key = config.get("template", "healthcare")
     img_set = images_lib.get(template_key, images_lib.get("healthcare", {}))
-    hero_img = img_set.get("hero", "")
+    # brief.json may override hero image via branding.hero_image_url
+    _raw_hero = (
+        brief.get("branding", {}).get("hero_image_url")
+        or extract_img_url(img_set.get("hero", ""))
+    )
+    # resolve_image_path defined below — inline resolution for hero
+    hero_img = (
+        _raw_hero if (_raw_hero.startswith("http://") or _raw_hero.startswith("https://") or _raw_hero.startswith("../"))
+        else f"../{_raw_hero}" if _raw_hero else ""
+    )
     service_imgs = img_set.get("services", [])
     fallback_color = img_set.get("fallback_color", "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)")
-    img_onerror = f'onerror="this.style.background=\'{fallback_color}\';this.removeAttribute(\'src\')"'
+    img_onerror = f'onerror="this.onerror=null;this.style.background=\'{fallback_color}\';this.removeAttribute(\'src\')"'
+    print(f"  ✓ Hero image: {hero_img[:80]}..." if len(hero_img) > 80 else f"  ✓ Hero image: {hero_img}")
+    print(f"  ✓ Service images: {len(service_imgs)} curated | {sum(1 for s in services if s.get('image_url'))} from brief.json")
+
+    def resolve_image_path(img_url: str) -> str:
+        """Resolve image paths relative to the output/ directory.
+        Local paths in brief.json are relative to the project root (e.g. assets/images/X.png).
+        The output HTML lives in output/, so local paths need ../prefix.
+        Remote URLs (http/https) are returned as-is.
+        """
+        if not img_url:
+            return ""
+        if img_url.startswith("http://") or img_url.startswith("https://"):
+            return img_url
+        # Already resolved (starts with ../)
+        if img_url.startswith("../"):
+            return img_url
+        # Local path — prefix with ../ since output is one level deep
+        return f"../{img_url}"
 
     # Inject image URLs into each service object
+    # Priority: 1) image_url from brief.json (curated per service, local or remote)
+    #           2) images.json library by position
+    #           3) hero fallback
     for i, svc in enumerate(services):
-        svc["_image_url"] = service_imgs[i % len(service_imgs)] if service_imgs else hero_img
+        curated_fallback = service_imgs[i % len(service_imgs)] if service_imgs else hero_img
+        raw_url = svc.get("image_url") or curated_fallback
+        svc["_image_url"] = resolve_image_path(raw_url)
 
-    services_json = json.dumps(services, indent=2)
+    # Strip image_query and internal fields before sending to Claude.
+    # image_query causes Claude to generate its own source.unsplash.com URLs — FORBIDDEN.
+    STRIP_KEYS = {"image_query", "_image_url", "image_url"}
+    clean_services = [{k: v for k, v in svc.items() if k not in STRIP_KEYS} for svc in services]
+    services_json = json.dumps(clean_services, indent=2)
     benefits_json = json.dumps(benefits, indent=2)
     trust_json = json.dumps(trust, indent=2)
     testimonials_json = json.dumps(testimonials, indent=2)
@@ -368,14 +426,16 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     # ── PART 2: SERVICES + CTA BANNER + BENEFITS + TRUST ─────────────────────
     print("\n  → Part 2: Services + Benefits + Trust...")
 
-    service_cards_instruction = ""
+    # Build per-card image tags — use _image_url (already resolved to final URL)
+    service_cards_instruction = "COPY THESE EXACT <img> TAGS — DO NOT MODIFY SRC URLS:\n"
     for i, svc in enumerate(services):
-        img_url = svc.get("_image_url", hero_img)
+        img_url = svc.get("_image_url") or hero_img
+        svc_name = svc.get("name", svc.get("title", f"Service {i+1}"))
         service_cards_instruction += (
-            f"  Card {i+1}: title='{svc.get('title', '')}'\n"
-            f"    image: <img src='{img_url}' alt='{svc.get('title', '')}' "
-            f"class='w-full h-48 object-cover group-hover:scale-105 transition duration-500'"
-            f"{lazy_attr} {img_onerror}>\n"
+            f"  Card {i+1} ({svc_name}):\n"
+            f"    <img src=\"{img_url}\" alt=\"{svc_name}\" "
+            f"class=\"w-full h-52 object-cover object-center group-hover:scale-105 transition-transform duration-500\" "
+            f"loading=\"lazy\" {img_onerror}>\n"
         )
 
     part2_msg = (
@@ -383,14 +443,15 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"NO DOCTYPE, NO html tag, NO head tag. Start directly with a <section> tag.\n\n"
         f"CONTEXT: {shared_context}\n"
         f"LAYOUT DECISIONS: {layout_json_summary}\n\n"
-        f"IMAGE RULES (CRITICAL):\n"
-        f"- Use ONLY the exact img tags specified below for each service card\n"
-        f"- NEVER use source.unsplash.com — it is deprecated\n"
-        f"- Add {img_onerror} to ALL img tags as fallback\n"
-        f"- Add loading='lazy' to ALL img tags (except hero which is in Part 1)\n\n"
-        f"SERVICE CARDS (use these EXACT img tags):\n"
+        f"IMAGE RULES (ABSOLUTE — NEVER VIOLATE):\n"
+        f"- COPY the exact <img> tags provided below — NEVER change src URLs\n"
+        f"- NEVER use source.unsplash.com (deprecated and broken)\n"
+        f"- NEVER generate your own image URLs from image_query or any query\n"
+        f"- ALL images MUST have {img_onerror} as fallback\n"
+        f"- ALL images MUST have loading='lazy' (except hero in Part 1)\n"
+        f"- If you cannot find the img tag for a card → use the fallback gradient div\n\n"
         f"{service_cards_instruction}\n"
-        f"FULL SERVICES DATA: {services_json}\n"
+        f"SERVICES DATA (text content only — use img tags above for images):\n{services_json}\n"
         f"BENEFITS: {benefits_json}\n"
         f"TRUST: {trust_json}\n\n"
         f"ANIMATION RULES:\n"

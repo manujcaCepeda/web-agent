@@ -53,37 +53,37 @@
     {
       "name": "24/7 Home Care",
       "description": "Continuous care at the senior’s home, ensuring safety and comfort at all times.",
-      "image_query": "elderly home care caregiver"
+      "image_url": "../assets/images/services/homeCare.png"
     },
     {
       "name": "Personal Care",
       "description": "Assistance with hygiene, bathing, grooming, and daily activities.",
-      "image_query": "caregiver helping elderly hygiene"
+      "image_url": "../assets/images/services/personalCare.png"
     },
     {
       "name": "Companionship & Emotional Support",
       "description": "Friendly companionship to reduce loneliness and improve emotional wellbeing.",
-      "image_query": "elderly companionship caregiver smiling"
+      "image_url": "../assets/images/services/companionship.png"
     },
     {
       "name": "Medication Management",
       "description": "Timely and accurate administration of medications.",
-      "image_query": "caregiver giving medication elderly"
+      "image_url": "../assets/images/services/medicational.png"
     },
     {
       "name": "Short-Term Stay Care",
       "description": "Temporary care at our facility when families are traveling.",
-      "image_query": "elderly care facility support"
+      "image_url": "../assets/images/services/short-term.png"
     },
     {
       "name": "Rehabilitation & Therapy",
       "description": "Breathing exercises, pool therapy, and physical rehabilitation.",
-      "image_query": "elderly rehabilitation therapy exercise"
+      "image_url": "../assets/images/services/rehabilitation.png"
     },
     {
       "name": "Daily Assistance",
       "description": "Help with shopping, meals, and daily routines.",
-      "image_query": "caregiver helping elderly daily activities"
+      "image_url": "../assets/images/services/homeCare.png"
     }
   ],
 
@@ -123,7 +123,8 @@
     "logo": "/assets/images/LogoFernPrivateCare.png",
     "primary_color": "#2F7F79",
     "secondary_color": "#A7D7C5",
-    "style": "calm, trustworthy, healthcare"
+    "style": "calm, trustworthy, healthcare",
+    "hero_image_url": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=1200&h=800&fit=crop&crop=faces&auto=format&q=85"
   },
 
   "image_style": {
