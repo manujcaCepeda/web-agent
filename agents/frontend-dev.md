@@ -27,10 +27,17 @@ You will receive:
 * layout JSON (ui-designer)
 * copy JSON (copywriter)
 * SEO data (seo-optimizer)
+* style system (style-engine) — `style_mode`, colors, typography, effects
+* hero system (hero-system) — `hero_variant`, trust_elements, mobile_behavior
+* component system (component-system) — buttons, cards, icons, images
 * brief.json
 * config.json
 
 ALL inputs MUST be used.
+
+PRIORITY RULE:
+- Read `style_mode` from style-engine (NOT from business-analyzer)
+- Read `hero_variant` from hero-system (NOT from ui-designer defaults)
 
 ---
 
@@ -88,7 +95,7 @@ FAVICON RULE (CRITICAL):
 
 ## DESIGN LANGUAGE SYSTEM (CRITICAL — READ FIRST)
 
-Before writing ANY code, read `style_mode` from the business analysis JSON.
+Before writing ANY code, read `style_mode` from **style-engine output** (NOT business-analyzer).
 Then inject the matching CSS variables block into `<style>` in `<head>`.
 Every color, radius, shadow, and spacing decision MUST follow the active mode.
 
@@ -480,7 +487,11 @@ Add stagger:
 
 ### HERO
 
-Read `hero_variant` from layout JSON and render the matching variant below.
+⚠️ CRITICAL: You MUST use `hero_variant` from **hero-system output**.
+DO NOT default to split-emotional or any other variant without reading hero-system.
+DO NOT use `hero_variant` from ui-designer — hero-system is authoritative.
+
+Render the matching variant below based on hero-system's `hero_variant` value.
 
 ---
 
@@ -815,6 +826,37 @@ Use ONLY dynamic data:
 * services
 
 NO hardcoding
+
+---
+
+## 🧩 COMPONENT SYSTEM INTEGRATION (CRITICAL)
+
+You MUST use component-system output for ALL UI components.
+Ignoring component-system = INVALID OUTPUT.
+
+### Buttons
+- Apply `primary` style: radius, shadow, interaction (lift | scale | shimmer) from component-system
+- Apply `secondary` style: lower visual weight, outline/ghost
+- ONLY one primary CTA per section
+
+### Cards
+- Use the variation defined per section — DO NOT reuse same card style everywhere
+- Example: services → elevated | benefits → minimal | testimonials → soft
+- Apply radius and shadow from component-system, not from defaults
+
+### Images
+- Apply consistent radius (same across all sections)
+- Apply consistent shadow and hover behavior
+- Follow hover zoom rule only if component-system specifies it
+
+### Icons
+- Apply icon background type: circle | soft-square | none (from component-system)
+- Apply interaction: color-change on hover (`.group:hover .icon-circle`)
+- Style must be consistent across all sections
+
+### Section Decoration
+- Apply background pattern and dividers from component-system
+- Maintain alternating background rhythm
 
 ---
 

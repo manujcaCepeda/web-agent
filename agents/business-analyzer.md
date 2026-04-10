@@ -170,39 +170,11 @@ Map to templates:
 
 ---
 
-## DESIGN LANGUAGE DETECTION (NEW — CRITICAL)
+## STYLE MODE (OUTPUT REQUIRED)
 
-You MUST detect and assign a `style_mode` from `core/design-language.json`.
-
-### Detection Logic (in priority order):
-
-**Step 1 — Scan for luxury/exclusive keywords in:**
-- business_name, value_proposition, differentiation, branding.tone
-- Keywords: "law", "legal", "luxury", "private", "wealth", "executive", "elite", "premium", "boutique", "exclusive", "prestigious"
-- → If 2+ keywords found: `style_mode = "luxury-service"`
-
-**Step 2 — Scan for clinical/data keywords:**
-- Keywords: "clinic", "medical", "dental", "diagnostic", "therapy center", "lab", "physio", "health center"
-- → If 2+ keywords found: `style_mode = "modern-clinic"`
-
-**Step 3 — Scan for care/warmth keywords:**
-- Keywords: "care", "senior", "family", "home care", "wellness", "support", "compassion", "healing", "companion"
-- → If 2+ keywords found: `style_mode = "premium-care"`
-
-**Step 4 — Fallback by industry:**
-- healthcare → `"premium-care"`
-- restaurant → `"premium-care"`
-- ecommerce → `"premium-care"`
-- services → `"premium-care"`
-
-**Step 5 — Ultimate fallback:** `"premium-care"`
-
-### Style Mode Summary:
-| Mode | Use for | Visual tone |
-|---|---|---|
-| `premium-care` | healthcare, wellness, family services | Warm, teal, generous spacing |
-| `modern-clinic` | medical clinics, dental, diagnostics | Clean, blue, data-dense |
-| `luxury-service` | law, finance, high-end consulting | Dark, gold, maximum whitespace |
+You MUST include `style_mode` in your JSON output.
+Detection rules are defined in the STYLE ENGINE RULES section appended to this prompt.
+Apply those rules exactly to determine which mode fits: `premium-care` | `modern-clinic` | `luxury-service`
 
 ---
 

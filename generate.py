@@ -161,12 +161,35 @@ def load_client(client_id: str) -> tuple[dict, dict]:
 
 
 def load_prompts(template_name: str) -> dict:
+    # Load optional supplementary context files (injected into existing agents — no extra API calls)
+    def load_optional(path: Path) -> str:
+        return read_file(path) if path.exists() else ""
+
+    style_engine = load_optional(CORE_DIR / "style-engine.md")
+    hero_system = load_optional(CORE_DIR / "hero-system.md")
+    component_system = load_optional(CORE_DIR / "component-system.md")
+
+    # Inject style-engine into business-analyzer (authoritative style_mode source)
+    business_analyzer_prompt = read_file(AGENTS_DIR / "business-analyzer.md")
+    if style_engine:
+        business_analyzer_prompt += f"\n\n---\n\n# STYLE ENGINE RULES (APPLY WHEN DETECTING style_mode)\n\n{style_engine}"
+
+    # Inject hero-system into ui-designer (hero variant selection authority)
+    ui_designer_prompt = read_file(AGENTS_DIR / "ui-designer.md")
+    if hero_system:
+        ui_designer_prompt += f"\n\n---\n\n# HERO SYSTEM RULES (USE FOR hero_variant SELECTION)\n\n{hero_system}"
+
+    # Inject component-system into frontend-dev (component behavior specification)
+    frontend_dev_prompt = read_file(AGENTS_DIR / "frontend-dev.md")
+    if component_system:
+        frontend_dev_prompt += f"\n\n---\n\n# COMPONENT SYSTEM SPECIFICATION\n\n{component_system}"
+
     return {
-        "business_analyzer": read_file(AGENTS_DIR / "business-analyzer.md"),
+        "business_analyzer": business_analyzer_prompt,
         "copywriter": read_file(AGENTS_DIR / "copywriter.md"),
         "seo_optimizer": read_file(AGENTS_DIR / "seo-optimizer.md"),
-        "ui_designer": read_file(AGENTS_DIR / "ui-designer.md"),
-        "frontend_dev": read_file(AGENTS_DIR / "frontend-dev.md"),
+        "ui_designer": ui_designer_prompt,
+        "frontend_dev": frontend_dev_prompt,
         "output_contract": read_file(CORE_DIR / "output-contract.md"),
         "template": read_file(TEMPLATES_DIR / f"{template_name}.md"),
     }
@@ -242,6 +265,49 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     hero_json = json.dumps(hero, indent=2)
     lazy_attr = ' loading="lazy"' if use_lazy_loading else ""
 
+    # Extract layout decisions from ui-designer output
+    hero_variant = layout_data.get("hero_variant", "split-emotional")
+    layout_style = layout_data.get("layout_style", "premium-soft")
+    visual_intensity = layout_data.get("visual_intensity", "medium")
+    layout_json_summary = json.dumps({
+        "hero_variant": hero_variant,
+        "layout_style": layout_style,
+        "visual_intensity": visual_intensity,
+        "sections": [s.get("type", "") for s in layout_data.get("sections", [])]
+    }, indent=2)
+    print(f"  ✓ Layout: style={layout_style} | intensity={visual_intensity} | hero={hero_variant}")
+
+    # Build hero instruction based on hero_variant from ui-designer
+    if hero_variant == "cinematic":
+        hero_instruction = (
+            f"5. Hero <section id='hero'> — CINEMATIC VARIANT: full-bleed background image with dark gradient overlay, text centered.\n"
+            f"   Background: <img src='{hero_img}' class='absolute inset-0 w-full h-full object-cover object-center' {img_onerror} loading='eager'>\n"
+            f"   Dark overlay: gradient rgba(0,0,0,0.55) to rgba(0,0,0,0.35).\n"
+            f"   Content: centered white H1 (max-w-4xl text-5xl md:text-6xl lg:text-7xl font-black), subheadline white/80, single large CTA button.\n"
+            f"   Section height: min-h-[90vh]. No split grid — full width centered content.\n"
+            f"   DO NOT add loading='lazy' to the hero image.\n"
+        )
+    elif hero_variant == "minimal-luxury":
+        hero_instruction = (
+            f"5. Hero <section id='hero'> — MINIMAL LUXURY VARIANT: solid brand-color or white background, NO background image.\n"
+            f"   Layout: centered content, generous whitespace (py-32 md:py-40).\n"
+            f"   Thin horizontal rule accent above headline. Oversized serif headline (text-6xl md:text-7xl font-black).\n"
+            f"   Elegant subtext (text-xl text-gray-500 max-w-2xl). Single minimal CTA (border-2, no fill by default).\n"
+            f"   Optional: small geometric decorative element (circle or line pattern, opacity 0.05).\n"
+            f"   NO hero image needed. Brand identity comes from typography and whitespace.\n"
+        )
+    else:  # split-emotional (default)
+        hero_instruction = (
+            f"5. Hero <section id='hero'> — SPLIT EMOTIONAL VARIANT: 60% text left / 40% image right grid.\n"
+            f"   Trust pill badge above H1. H1 headline from HERO data (text-4xl md:text-5xl lg:text-6xl font-black).\n"
+            f"   Subheadline below. 2 CTA buttons: primary (filled) + secondary (outline). Star rating + review count below CTAs.\n"
+            f"   Image column: portrait aspect (rounded-2xl shadow-xl), floating stat badge positioned -bottom-6 -left-6.\n"
+            f"   Hero image EXACT URL: {hero_img}\n"
+            f"   Hero img tag: <img src='{hero_img}' alt='Senior care' class='w-full h-full object-cover object-top rounded-2xl' {img_onerror} loading='eager'>\n"
+            f"   On mobile: image appears ABOVE text (order-first lg:order-last on image div).\n"
+            f"   DO NOT add loading='lazy' to the hero image.\n"
+        )
+
     # Build pre-generated head extras
     og_tags = build_og_tags(seo, brief, hero_img)
     analytics_snippet = build_analytics_snippet(config)
@@ -252,7 +318,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     part1_msg = (
         f"Generate ONLY Part 1 of a premium index.html. Be concise — no inline comments.\n\n"
         f"CONTEXT: {shared_context}\n"
-        f"HERO: {hero_json}\n\n"
+        f"LAYOUT DECISIONS (from ui-designer — follow exactly):\n{layout_json_summary}\n\n"
+        f"HERO COPY: {hero_json}\n\n"
         f"OUTPUT:\n"
         f"1. <!DOCTYPE html> + <head>:\n"
         f"   - <meta charset='UTF-8'>\n"
@@ -266,31 +333,33 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"   - <style> block with:\n"
         f"     * :root {{ --color-primary: {primary_color}; --color-secondary: {secondary_color}; }}\n"
         f"     * body {{ font-family: 'Inter', sans-serif; }}\n"
-        f"     * .reveal {{ opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }}\n"
+        f"     * .reveal, .reveal-element {{ opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }}\n"
         f"     * .reveal.visible, .reveal-element.visible {{ opacity: 1; transform: none; }}\n"
-        f"     * .faq-answer {{ max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }}\n"
-        f"     * .faq-item.open .faq-answer {{ max-height: 500px; }}\n"
-        f"     * @keyframes pulse-wa {{ 0%,100% {{ box-shadow: 0 0 0 0 rgba(37,211,102,0.5); }} 50% {{ box-shadow: 0 0 0 12px rgba(37,211,102,0); }} }}\n"
-        f"     * .wa-pulse {{ animation: pulse-wa 2s infinite; }}\n"
-        f"     * .mobile-cta-bar {{ display: none; }}\n"
-        f"     * @media (max-width: 767px) {{ .mobile-cta-bar {{ display: flex; }} }}\n"
-        f"     * Custom scrollbar, sticky header blur effect\n"
+        f"     * .reveal-on-scroll {{ transition: opacity 0.7s ease, transform 0.7s ease; }}\n"
+        f"     * .btn-primary {{ position:relative; overflow:hidden; }}\n"
+        f"     * .btn-primary::after {{ content:''; position:absolute; top:0; left:-100%; width:60%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent); transition:left 0.5s ease; pointer-events:none; }}\n"
+        f"     * .btn-primary:hover::after {{ left:150%; }}\n"
+        f"     * .icon-circle {{ transition: background 0.25s ease; }}\n"
+        f"     * .group:hover .icon-circle {{ background: {primary_color} !important; }}\n"
+        f"     * .group:hover .icon-circle svg {{ color: white; stroke: white; }}\n"
+        f"     * .faq-answer {{ max-height: 0; overflow: hidden; transition: max-height 0.45s cubic-bezier(0.22,1,0.36,1); }}\n"
+        f"     * .faq-answer.open {{ max-height: 400px; }}\n"
+        f"     * @keyframes whatsapp-pulse {{ 0%,100% {{ box-shadow: 0 0 0 0 rgba(37,211,102,0.55); }} 70% {{ box-shadow: 0 0 0 14px rgba(37,211,102,0); }} }}\n"
+        f"     * .whatsapp-pulse {{ animation: whatsapp-pulse 2.2s infinite; }}\n"
+        f"     * @media (max-width:767px) {{ body {{ padding-bottom: 68px; }} }}\n"
+        f"     * @media (min-width:768px) {{ body {{ padding-bottom: 0 !important; }} }}\n"
+        f"     * Custom scrollbar (6px, primary color thumb), sticky header backdrop-blur\n"
         f"   - Schema.org block — insert EXACTLY as-is:\n"
         f"     {schema_block}\n"
         f"   - Analytics — insert EXACTLY as-is (if empty string, skip):\n"
         f"     {analytics_snippet if analytics_snippet else '<!-- analytics disabled -->'}\n"
-        f"2. <body> opens (NO global padding-bottom)\n"
-        f"3. Sticky <header>: backdrop-blur-md bg-white/90 border-b, "
-        f"logo img src='{logo}' class='h-10 w-auto', brand name next to logo, "
-        f"nav links (Services href='#services' / Why Us href='#benefits' / Testimonials href='#testimonials' / FAQ href='#faq' / Contact href='#contact'), "
-        f"phone tel:{phone}, 'Free Consultation' CTA button (bg primary color), mobile hamburger button\n"
-        f"4. Mobile nav dropdown (#mobile-menu, hidden by default, shows on hamburger click)\n"
-        f"5. Hero <section id='hero'>: full-width split grid (text left 60% / image right 40%), "
-        f"trust badge pill at top, H1 headline from HERO data, subheadline, 2 CTA buttons "
-        f"(primary=Book Consultation, secondary=Call Now), 3 trust microcopy items below CTAs\n"
-        f"   Hero image EXACT URL: {hero_img}\n"
-        f"   Hero img tag: <img src='{hero_img}' alt='Senior care' class='...' {img_onerror}>\n"
-        f"   DO NOT add loading='lazy' to the hero image (above the fold)\n"
+        f"2. <body> opens\n"
+        f"3. Sticky <header> id='main-header': backdrop-blur-md bg-white/90 border-b shadow-sm, "
+        f"logo img src='{logo}' class='h-10 w-auto', "
+        f"nav links (Services/#services, Why Us/#benefits, Testimonials/#testimonials, FAQ/#faq, Contact/#contact), "
+        f"phone tel:{phone} with icon, 'Free Consultation' btn-primary px-6 py-2.5 text-sm, mobile hamburger\n"
+        f"4. Mobile nav dropdown (#mobile-menu, hidden by default)\n"
+        f"{hero_instruction}"
         f"6. End with comment <!-- END PART 1 --> — DO NOT close body or html."
     )
     part1_raw, _ = call_claude(client, system_prompt, part1_msg, "Frontend Part 1 (Head+Hero)", max_tokens=8000)
@@ -312,7 +381,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     part2_msg = (
         f"Generate ONLY Part 2 of an index.html. Start immediately after <!-- END PART 1 -->.\n"
         f"NO DOCTYPE, NO html tag, NO head tag. Start directly with a <section> tag.\n\n"
-        f"CONTEXT: {shared_context}\n\n"
+        f"CONTEXT: {shared_context}\n"
+        f"LAYOUT DECISIONS: {layout_json_summary}\n\n"
         f"IMAGE RULES (CRITICAL):\n"
         f"- Use ONLY the exact img tags specified below for each service card\n"
         f"- NEVER use source.unsplash.com — it is deprecated\n"
@@ -362,6 +432,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"Generate ONLY Part 3 (the FINAL part) of an index.html. Start immediately after <!-- END PART 2 -->.\n"
         f"NO DOCTYPE, NO html, NO head. Start with a <section> tag. MUST end with </body></html>.\n\n"
         f"CONTEXT: {shared_context}\n"
+        f"LAYOUT DECISIONS: {layout_json_summary}\n\n"
         f"TESTIMONIALS: {testimonials_json}\n"
         f"FAQ: {faq_json}\n"
         f"CTA: {cta_json}\n\n"
@@ -480,6 +551,13 @@ def run_pipeline(client_id: str):
     print(f"  ✓ Features: lazy_loading={config.get('features',{}).get('lazy_loading')} | "
           f"schema_org={config.get('features',{}).get('schema_org')} | "
           f"analytics={config.get('output',{}).get('include_analytics')}")
+    # Report which supplementary systems are active
+    active_systems = []
+    if (CORE_DIR / "style-engine.md").exists(): active_systems.append("style-engine")
+    if (CORE_DIR / "hero-system.md").exists(): active_systems.append("hero-system")
+    if (CORE_DIR / "component-system.md").exists(): active_systems.append("component-system")
+    if active_systems:
+        print(f"  ✓ Supplementary systems loaded: {', '.join(active_systems)} (injected, no extra API calls)")
 
     # STEP 1 — Business Analysis
     print("\n[2/6] Business Analysis")

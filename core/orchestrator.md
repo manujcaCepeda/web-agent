@@ -80,11 +80,84 @@ Output:
 * audience
 * tone
 * emotional_triggers
+* style_mode (preliminary — overridden by style-engine)
 
 VALIDATE:
 
 * no empty values
 * matches template intent
+
+---
+
+## 🎨 STEP 1.5 — STYLE ENGINE
+
+Run style-engine with:
+
+* business analysis
+* brief.json
+* industry template
+
+Output:
+
+* style_mode (AUTHORITATIVE — use this, not business-analyzer's)
+* color_strategy
+* typography
+* spacing
+* imagery direction
+* effects
+
+VALIDATE:
+
+* style_mode ∈ [`premium-care`, `modern-clinic`, `luxury-service`]
+* matches business_type
+* not generic
+
+---
+
+## 🎯 STEP 1.6 — HERO SYSTEM
+
+Run hero-system with:
+
+* business analysis
+* style-engine output (style_mode)
+* industry template
+
+Output:
+
+* hero_type (emotional_story | trust_authority | direct_offer | problem_solution)
+* hero_variant (cinematic | split-emotional | minimal-luxury)
+* visual_strategy
+* trust_elements
+* mobile_behavior
+
+VALIDATE:
+
+* hero_variant ∈ [`cinematic`, `split-emotional`, `minimal-luxury`]
+* matches business_type
+* not generic
+
+---
+
+## 🧩 STEP 1.7 — COMPONENT SYSTEM
+
+Run component-system with:
+
+* style-engine output
+* business analysis
+
+Output:
+
+* button styles (primary/secondary)
+* card variations per section
+* icon system
+* image treatment
+* section decoration
+
+VALIDATE:
+
+* at least 2 card variations defined
+* button primary ≠ button secondary
+* matches style_mode
 
 ---
 
@@ -207,8 +280,11 @@ Reject if:
 
 Run frontend-dev with:
 
-* layout_json
-* seo_enriched_copy_json
+* layout_json (ui-designer)
+* seo_enriched_copy_json (copywriter + seo-optimizer)
+* style-engine output (style_mode, colors, typography, effects)
+* hero-system output (hero_variant, visual_strategy, trust_elements)
+* component-system output (buttons, cards, icons, images)
 * brief.json
 * config.json
 
