@@ -81,9 +81,43 @@ All agents MUST:
     "phone": "",
     "email": "",
     "address": ""
-  }
+  },
+  "process_steps": [
+    {
+      "step": "",
+      "title": "",
+      "description": ""
+    }
+  ],
+  "comparison": [
+    {
+      "feature": "",
+      "sitiopro": "",
+      "traditional": ""
+    }
+  ],
+  "pricing": [
+    {
+      "name": "",
+      "price": "",
+      "description": "",
+      "features": [],
+      "cta": "",
+      "highlighted": false
+    }
+  ]
 }
 ```
+
+---
+
+## OPTIONAL SECTIONS (AGENCY / SERVICES)
+
+`process_steps` — How it works (3 numbered steps). Required for agency template.
+`comparison` — Side-by-side comparison rows (us vs. traditional). Required for agency template.
+`pricing` — Pricing tiers (2–3 plans). Required for agency template.
+
+These fields are OPTIONAL for healthcare/restaurant templates but REQUIRED for agency template.
 
 ---
 
@@ -91,8 +125,8 @@ All agents MUST:
 
 ### 1. STRUCTURE IS MANDATORY
 
-* No field can be removed
-* No new fields without system update
+* Core fields cannot be removed: hero, services, benefits, trust, testimonials, faq, cta, contact
+* Optional fields (process_steps, comparison, pricing) must be present for agency template
 * Arrays must always exist (even if empty)
 
 ---
@@ -150,6 +184,9 @@ Fills:
 * testimonials
 * faq
 * cta
+* process_steps (agency template)
+* comparison (agency template)
+* pricing (agency template — copy from brief.json if provided)
 
 ---
 

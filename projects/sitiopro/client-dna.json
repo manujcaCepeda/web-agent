@@ -1,49 +1,72 @@
 {
-  "_comment": "Client DNA — optional brand identity file. Defines visual identity beyond brief.json. If present, brand-strategist uses it to make design decisions. Falls back gracefully if missing.",
-  "_version": "1.0",
+  "_comment": "Client DNA — SitioPro brand identity. Reference: https://renewed-mindset-656459.framer.app/ (structure/feel) but with stronger visual identity.",
+  "_version": "1.1",
 
   "brand_strategy": {
-    "positioning": "La plataforma IA líder para agencias web en Ecuador que genera sitios premium en minutos",
-    "brand_archetype": "Creator",
-    "brand_personality": ["innovador", "confiable", "accesible", "directo"],
-    "tone_of_voice": "Seguro y directo — habla con agentes que ya saben de diseño web y no quieren ser vendidos, quieren resultados",
-    "unique_angle": "No más templates genéricos — sitios que parecen diseñados por una agencia premium, generados por IA"
+    "positioning": "La agencia web premium en Ecuador que entrega sitios que convierten — en días, no meses",
+    "brand_archetype": "Creator + Expert",
+    "brand_personality": ["directo", "confiable", "moderno", "orientado a resultados"],
+    "tone_of_voice": "Habla con emprendedores y dueños de negocios que ya saben lo que quieren — directo, sin rodeos, con pruebas concretas",
+    "unique_angle": "Diseño premium sin el precio de una gran agencia. Entrega rápida sin comprometer calidad."
   },
 
   "visual_identity": {
-    "style_preference": "luxury-dark",
-    "energy_level": "high",
-    "feel": "Tech premium — como Vercel o Linear, no como Wix o GoDaddy",
-    "must_feel": ["innovador", "premium", "confiable", "diferente"],
-    "must_not_feel": ["genérico", "corporativo clásico", "template", "WordPress-like"]
+    "style_preference": "corporate-trust",
+    "energy_level": "medium-high",
+    "feel": "Moderno y profesional — como una agencia boutique premium. Limpio, generoso en espacios, con toques de color vivos.",
+    "must_feel": ["profesional", "confiable", "moderno", "diferente a lo genérico"],
+    "must_not_feel": ["oscuro y técnico", "abrumador", "genérico tipo Wix", "demasiado corporativo y frío"],
+    "reference_vibe": "Similar a Upreach/renewed-mindset: limpio, generoso en espacios, stats prominentes, tipografía fuerte — pero con identidad más latina/cálida"
   },
 
   "design_direction": {
-    "hero_preference": "cinematic",
-    "hero_concept": "Dark background con browser mockup flotante mostrando el resultado final — el producto habla por sí mismo",
+    "hero_preference": "split-emotional",
+    "hero_concept": "Split layout: izquierda = headline potente + stats + CTA doble | derecha = browser mockup o imagen de resultado — muestra el producto, no solo palabras",
     "layout_signature": "editorial-list",
-    "visual_break_concept": "Dark band con métricas flotantes animadas — tiempo de generación, sitios creados, NPS score",
-    "typography_personality": "Sans-serif moderno ultra-bold para headlines, contraste extremo entre peso y tamaño",
+    "color_approach": "Fondo blanco principal con secciones que alternan blanco / gris suave / sección oscura de acento. Indigo profundo como primary, amarillo/amber como accent para CTAs.",
+    "visual_break_concept": "Dark band centrada con 4 métricas clave (120+ sitios, 3-7 días, 98%, $0 costos ocultos) — los números más poderosos en grande",
+    "visual_break_position": "after-services",
+    "typography_personality": "Sans-serif moderno (Inter). Headlines muy bold (font-black). Mucho contraste de peso. Jerarquía clara.",
+    "section_spacing": "generous — mucho espacio entre secciones como la referencia, no compacto",
     "forbidden_patterns": [
-      "3 tarjetas idénticas con ícono + texto centrado",
-      "hero con foto de persona sonriendo al fondo",
-      "sección de servicios como grid de 3 columnas con imagen arriba",
-      "fondos gris claro para TODAS las secciones",
-      "CTA button azul Tailwind default #2563EB"
+      "Fondo dark para TODAS las secciones (solo la visual break va dark)",
+      "Hero con foto de persona sonriendo mirando a cámara con fondo degradado",
+      "Grid de 5 tarjetas idénticas con foto arriba y bullets abajo para servicios",
+      "Color primario azul Tailwind #2563EB",
+      "Todas las secciones con el mismo background (alternancia es obligatoria)",
+      "Testimonios como 3 tarjetas blancas iguales sobre fondo degradado de color",
+      "CTA genérico tipo 'Contáctanos' sin beneficio"
     ]
   },
 
+  "color_palette": {
+    "primary": "#4F46E5",
+    "primary_dark": "#3730A3",
+    "accent": "#F59E0B",
+    "bg_main": "#FFFFFF",
+    "bg_alt": "#F8FAFC",
+    "bg_dark": "#0F172A",
+    "text_main": "#0F172A",
+    "text_muted": "#64748B"
+  },
+
   "business_goals": {
-    "primary": "leads — agencias y freelancers que quieren generar sitios web premium para sus clientes",
-    "secondary": "brand positioning como herramienta premium vs competidores genéricos",
-    "conversion_priority": "demo gratis o asesoría sin compromiso",
-    "key_objection": "¿Esto no genera sitios iguales para todos?"
+    "primary": "leads — conseguir que el visitante agende una asesoría gratuita o pida información",
+    "key_objection": "¿Esto no va a ser lo mismo que otras agencias?",
+    "conversion_barrier": "El visitante duda si el precio justifica la inversión",
+    "conversion_trigger": "Ver resultados concretos (números reales) + proceso simple + sin riesgo"
+  },
+
+  "key_sections": {
+    "must_include": ["hero", "trust-stats", "services-editorial", "how-it-works", "comparison-table", "testimonials-with-results", "pricing", "faq", "cta-final", "contact"],
+    "must_exclude": ["team-section", "blog-preview"],
+    "priority_section": "comparison-table — es el mayor diferenciador contra la competencia"
   },
 
   "reference_inspiration": {
-    "brands": ["Vercel", "Linear", "Framer", "Webflow", "Lemon Squeezy"],
-    "feel_references": "Dark premium SaaS landing pages — glassmorphism, glow effects, electric accent colors, browser mockup screenshots",
-    "layout_references": "Editorial hierarchy — big featured items contrasted with smaller supporting elements, never uniform grids",
-    "avoid": "Generic WordPress agency sites, boring blue corporate, photo-heavy lifestyle marketing"
+    "url": "https://renewed-mindset-656459.framer.app/",
+    "what_to_take": "Estructura limpia, espacios generosos, stats prominentes, comparison table, tipografía jerárquica",
+    "what_to_improve": "Añadir más personalidad de marca latinoamericana, comparación más visual, hero con prueba real (mockup de sitio)",
+    "avoid": "Copiar diseño exacto — reinterpretar con identidad propia de SitioPro"
   }
 }

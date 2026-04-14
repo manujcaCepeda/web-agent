@@ -405,9 +405,17 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     testimonials = seo_data.get("testimonials", [])
     faq = seo_data.get("faq", [])
     cta = seo_data.get("cta", {})
+    # Agency-specific sections (fallback to brief.json if not in copywriter output)
+    process_steps = seo_data.get("process_steps") or brief.get("process_steps", [])
+    comparison = seo_data.get("comparison") or brief.get("comparison", [])
+    pricing = seo_data.get("pricing") or brief.get("pricing", [])
     features = config.get("features", {})
     use_lazy_loading = features.get("lazy_loading", True)
     use_schema_org = features.get("schema_org", True)
+
+    process_steps_json = json.dumps(process_steps, indent=2) if process_steps else "[]"
+    comparison_json = json.dumps(comparison, indent=2) if comparison else "[]"
+    pricing_json = json.dumps(pricing, indent=2) if pricing else "[]"
 
     shared_context = (
         f"Business: {business_name}\n"
@@ -416,6 +424,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"WhatsApp: {whatsapp} | Phone: {phone} | Email: {email} | Address: {address}\n"
         f"Meta title: {seo.get('meta_title', '')}\n"
         f"Meta description: {seo.get('meta_description', '')}\n"
+        f"Language: {brief.get('language', 'es')} — ALL text must be in {'Spanish' if brief.get('language','es')=='es' else 'English'}\n"
+        f"Has process_steps: {'YES' if process_steps else 'NO'} | Has comparison: {'YES' if comparison else 'NO'} | Has pricing: {'YES' if pricing else 'NO'}\n"
     )
 
     # Load curated images from core/images.json (normalized — hero and services are plain URL strings)
@@ -655,7 +665,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"{service_cards_instruction}\n"
         f"SERVICES DATA (text content only — use img tags above for images):\n{services_json}\n"
         f"BENEFITS: {benefits_json}\n"
-        f"TRUST: {trust_json}\n\n"
+        f"TRUST: {trust_json}\n"
+        f"PROCESS STEPS (How It Works — 3 steps): {process_steps_json}\n\n"
         f"{forbidden_instruction}"
         f"ANIMATION RULES:\n"
         f"- Do NOT use Tailwind 'opacity-0' or 'translate-y-10' inline classes\n"
@@ -674,7 +685,24 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"4. <section id='trust' class='py-14 bg-gray-50'>:\n"
         f"   4 trust stats: large numbers in primary color, label text, subtle icon\n"
         f"   Use data from trust[] array\n"
-        f"5. End with comment <!-- END PART 2 --> — DO NOT close body or html."
+        + (
+            f"5. <section id='how-it-works' class='py-14 md:py-20 bg-white'>:\n"
+            f"   How It Works — 3 numbered steps horizontal layout:\n"
+            f"   Each step: large number badge, title, description\n"
+            f"   Use PROCESS STEPS data above\n"
+            f"6. "
+            if process_steps else "5. "
+        )
+        + (
+            f"<section id='comparison' class='py-14 md:py-20'>:\n"
+            f"   Side-by-side comparison table — SitioPro vs. Agencias Tradicionales:\n"
+            f"   2-column layout: left=SitioPro (brand color header, checkmarks), right=Traditional (gray header, X marks)\n"
+            f"   Use comparison data: {comparison_json}\n"
+            f"   This section is a KEY DIFFERENTIATOR — make it visually impactful\n"
+            if comparison else
+            f"Final CTA banner before ending Part 2\n"
+        )
+        + f"\nEnd with comment <!-- END PART 2 --> — DO NOT close body or html."
     )
     part2_raw, _ = call_claude(client, system_prompt, part2_msg, "Frontend Part 2 (Services+Benefits)", max_tokens=8000)
     part2_html = extract_html(part2_raw)
@@ -723,30 +751,62 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"LAYOUT DECISIONS (brand_strategy):\n{layout_json_summary}\n\n"
         f"TESTIMONIALS: {testimonials_json}\n"
         f"FAQ: {faq_json}\n"
-        f"CTA: {cta_json}\n\n"
+        f"CTA: {cta_json}\n"
+        f"PRICING PLANS: {pricing_json}\n\n"
         f"ANIMATION RULES:\n"
         f"- Do NOT use Tailwind 'opacity-0' or 'translate-y-10' inline classes\n"
         f"- Use class='reveal-element' for scroll-reveal\n"
         f"- Every <section> MUST open and close in this part\n\n"
-        f"OUTPUT (generate ALL items — NEVER truncate):\n"
-        f"1. <section id='testimonials' class='{testimonials_bg}'>:\n"
-        f"   Style: {testimonials_style}\n"
-        f"{vb_part3_instruction}"
-        f"2. <section id='faq' class='py-14 bg-white'>:\n"
+    )
+
+    # Build numbered output list for Part 3 dynamically
+    n = 1
+    part3_sections = f"OUTPUT (generate ALL items — NEVER truncate):\n"
+    part3_sections += f"{n}. <section id='testimonials' class='{testimonials_bg}'>:\n"
+    part3_sections += f"   Style: {testimonials_style}\n"
+    part3_sections += vb_part3_instruction
+    n += 1
+    if pricing:
+        part3_sections += (
+            f"{n}. <section id='pricing' class='py-14 md:py-20 bg-gray-50'>:\n"
+            f"   3-column pricing grid — use PRICING PLANS data above\n"
+            f"   Highlighted plan gets border-2 border-[--color-primary] and slight scale emphasis\n"
+            f"   Each plan: name, price (large, bold), description, checkmark feature list, CTA button\n"
+        )
+        n += 1
+    part3_sections += (
+        f"{n}. <section id='faq' class='py-14 bg-white'>:\n"
         f"   FAQ accordion — each .faq-item has a button (toggle .open class) and .faq-answer div\n"
         f"   Use data from FAQ array provided\n"
-        f"3. Final CTA section: dark gradient bg, bold headline, subheadline, single primary CTA button\n"
-        f"4. <section id='contact' class='py-20 bg-gray-50'>:\n"
+    )
+    n += 1
+    part3_sections += f"{n}. Final CTA section: dark gradient bg, bold headline, subheadline, single primary CTA button\n"
+    n += 1
+
+    part3_tail = (
+        f"{n}. <section id='contact' class='py-20 bg-gray-50'>:\n"
         f"   Split layout: left=contact form (name/phone/message/submit button), "
         f"right=contact info card (phone:{phone}, email:{email}, address:{address}, hours:24/7)\n"
         f"   Form id='contact-form', submit button id='form-submit-btn'\n"
-        f"5. <footer>: dark gradient bg, logo img src='{logo}' class='h-12 w-auto brightness-0 invert', "
+    )
+    n += 1
+    part3_tail += (
+        f"{n}. <footer>: dark gradient bg, logo img src='{logo}' class='h-12 w-auto brightness-0 invert', "
         f"tagline, nav links in columns, social icons (FB/IG/LinkedIn href='#'), copyright line\n"
-        f"6. WhatsApp button: id='wa-btn', fixed bottom-6 right-6, z-50, rounded-full, green bg, "
+    )
+    n += 1
+    part3_tail += (
+        f"{n}. WhatsApp button: id='wa-btn', fixed bottom-6 right-6, z-50, rounded-full, green bg, "
         f"pulse animation class='wa-pulse', href='https://wa.me/{whatsapp}', target='_blank'\n"
-        f"7. Mobile sticky CTA bar: class='mobile-cta-bar fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg p-3 gap-2':\n"
+    )
+    n += 1
+    part3_tail += (
+        f"{n}. Mobile sticky CTA bar: class='mobile-cta-bar fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg p-3 gap-2':\n"
         f"   Two buttons — Call Now (tel:{phone}) and WhatsApp (wa.me/{whatsapp})\n"
-        f"8. ONE <script> block containing ALL JavaScript:\n"
+    )
+    n += 1
+    part3_tail += (
+        f"{n}. ONE <script> block containing ALL JavaScript:\n"
         f"   a) IntersectionObserver: observe '.reveal-element, .reveal', add 'visible' class at threshold 0.1, "
         f"also immediately activate elements already in viewport on window load\n"
         f"   b) FAQ accordion: querySelectorAll('.faq-item button'), toggle 'open' on parent .faq-item\n"
@@ -754,8 +814,10 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"   d) Sticky header: add shadow class on scroll > 50px\n"
         f"   e) Form submit: prevent default, redirect to https://wa.me/{whatsapp}?text=...\n"
         f"   f) Analytics tracking (insert verbatim):{tracking_js if tracking_js else ' // analytics disabled'}\n"
-        f"9. Close with </body></html>"
     )
+    n += 1
+    part3_tail += f"{n}. Close with </body></html>"
+    part3_msg = part3_msg + part3_sections + part3_tail
     part3_raw, stop3 = call_claude(client, system_prompt, part3_msg, "Frontend Part 3 (Footer+JS)", max_tokens=8000)
     part3_html = extract_html(part3_raw)
 

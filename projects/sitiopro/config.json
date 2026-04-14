@@ -1,8 +1,13 @@
 {
   "client_id": "sitiopro",
-  "template": "services",
+  "template": "agency",
   "language": "es",
   "goal": "leads",
+  "localization": {
+    "country": "EC",
+    "currency": "USD",
+    "region": "Ecuador"
+  },
   "features": {
     "lazy_loading": true,
     "schema_org": true
