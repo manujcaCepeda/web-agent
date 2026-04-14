@@ -1,21 +1,22 @@
 {
-  "_instructions": "Copy this file to /projects/{client_id}/brief.json and fill in all values. Remove the _instructions field.",
+  "_instructions": "Copy this file to /projects/{client_id}/brief.json and fill in all values. Remove _instructions and _optional_sections. Fields marked [OPTIONAL] can be removed if not applicable to the business type.",
 
   "business_name": "",
-  "business_type": "healthcare",
-  "location": "Florida, USA",
-  "language": "English",
+  "business_type": "healthcare | services | restaurant | agency | ecommerce | consulting",
+  "industry": "healthcare | digital-agency | restaurant | finance | retail | education | real-estate",
+  "location": "",
+  "language": "en | es",
 
-  "goal": "leads",
+  "goal": "leads | sales | bookings | signups",
+
+  "value_proposition": "",
+  "emotional_hook": "",
 
   "target_audience": "",
 
   "pain_points": [],
   "desires": [],
   "objections": [],
-
-  "value_proposition": "",
-  "emotional_hook": "",
 
   "differentiation": [],
 
@@ -25,23 +26,76 @@
     {
       "name": "",
       "description": "",
-      "image_query": ""
+      "features": [],
+      "image_url": ""
     }
   ],
 
+  "benefits": [
+    {
+      "icon_concept": "lightning bolt | shield | target | star | palette | smartphone | support | check",
+      "title": "",
+      "description": ""
+    }
+  ],
+
+  "trust": [
+    { "stat": "", "label": "", "icon": "check | clock | star | shield | users" }
+  ],
+
+  "_optional_sections": {
+    "_note": "Include these sections only if relevant to the business type.",
+
+    "process_steps": {
+      "_when": "Required for: agency, consulting, services. Optional for: healthcare. Skip for: restaurant, ecommerce.",
+      "data": [
+        { "step": "01", "title": "", "description": "" },
+        { "step": "02", "title": "", "description": "" },
+        { "step": "03", "title": "", "description": "" }
+      ]
+    },
+
+    "comparison": {
+      "_when": "Required for: agency, saas, consulting. Optional for: services. Skip for: healthcare, restaurant.",
+      "data": [
+        { "feature": "", "us": "", "traditional": "" }
+      ]
+    },
+
+    "pricing": {
+      "_when": "Required for: agency, saas. Optional for: consulting, ecommerce. Skip for: healthcare, restaurant (use contact instead).",
+      "data": [
+        {
+          "name": "",
+          "price": "",
+          "description": "",
+          "features": [],
+          "cta": "",
+          "highlighted": false
+        }
+      ]
+    }
+  },
+
   "cta_primary": "Book a Free Consultation",
-  "cta_secondary": "Talk to a Specialist Today",
+  "cta_secondary": "Learn More",
   "cta_context": "",
 
   "testimonials": [
     {
       "name": "",
+      "role": "",
       "text": "",
-      "role": ""
+      "avatar": "",
+      "result": ""
     }
   ],
 
-  "business_hours": "24/7 Available",
+  "faq": [
+    { "question": "", "answer": "" }
+  ],
+
+  "business_hours": "",
 
   "contact_info": {
     "phone": "",
@@ -60,19 +114,15 @@
   "branding": {
     "logo": "/assets/images/logo.png",
     "primary_color": "#2F7F79",
-    "secondary_color": "#A7D7C5",
-    "style": "calm, trustworthy, professional"
+    "secondary_color": "#F8FAFC",
+    "accent_color": "#F59E0B",
+    "style": "calm, trustworthy, professional",
+    "hero_image_url": ""
   },
 
   "schema": {
-    "type": "LocalBusiness",
-    "price_range": "$$",
-    "founding_year": "2014"
-  },
-
-  "localization": {
-    "country": "US",
-    "state": "Florida",
-    "region": "Southwest Florida"
+    "type": "LocalBusiness | ProfessionalService | Restaurant | MedicalBusiness",
+    "price_range": "$ | $$ | $$$ | $$$$",
+    "founding_year": ""
   }
 }

@@ -3,16 +3,40 @@
   "template": "agency",
   "language": "es",
   "goal": "leads",
-  "localization": {
-    "country": "EC",
-    "currency": "USD",
-    "region": "Ecuador"
+
+  "output": {
+    "format": "html",
+    "include_seo": true,
+    "include_analytics": false
   },
+
   "features": {
+    "whatsapp": true,
+    "form": true,
+    "animations": true,
     "lazy_loading": true,
     "schema_org": true
   },
-  "output": {
-    "include_analytics": false
+
+  "analytics": {
+    "ga4_id": "",
+    "meta_pixel_id": "",
+    "track_cta_clicks": true,
+    "track_form_submit": true,
+    "track_whatsapp_click": true
+  },
+
+  "localization": {
+    "country": "EC",
+    "currency": "USD",
+    "phone_format": "+593 XXX XXX XXXX",
+    "date_format": "DD/MM/YYYY",
+    "region": "Ecuador",
+    "trust_style": "latam"
+  },
+
+  "deployment": {
+    "env": "local",
+    "base_path": "/projects/sitiopro"
   }
 }

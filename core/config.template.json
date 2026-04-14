@@ -1,10 +1,10 @@
 {
-  "_instructions": "Copy this file to /projects/{client_id}/config.json and fill in the values.",
+  "_instructions": "Copy this file to /projects/{client_id}/config.json and fill in the values. Remove the _instructions field.",
 
   "client_id": "your-client-id",
-  "template": "healthcare",
-  "language": "en",
-  "goal": "leads",
+  "template": "healthcare | agency | restaurant | ecommerce | consulting",
+  "language": "en | es",
+  "goal": "leads | sales | bookings | signups",
 
   "output": {
     "format": "html",
@@ -29,11 +29,12 @@
   },
 
   "localization": {
-    "country": "US",
-    "currency": "USD",
+    "country": "US | EC | MX | CO | ES",
+    "currency": "USD | EUR",
     "phone_format": "+1 (XXX) XXX-XXXX",
-    "date_format": "MM/DD/YYYY",
-    "trust_style": "us"
+    "date_format": "MM/DD/YYYY | DD/MM/YYYY",
+    "region": "",
+    "trust_style": "us | latam | eu"
   },
 
   "deployment": {

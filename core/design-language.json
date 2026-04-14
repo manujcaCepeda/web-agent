@@ -190,9 +190,316 @@
     }
   },
 
+    "luxury-dark": {
+      "description": "Tech premium, digital agency, SaaS, web studios, startups. Dark backgrounds, electric accents, glassmorphism.",
+      "personality": ["bold", "modern", "electric", "premium", "tech"],
+      "keywords_trigger": ["agency", "digital", "saas", "software", "app", "tech", "startup", "studio", "web design", "desarrollo web"],
+
+      "colors": {
+        "primary": "#06B6D4",
+        "primary_dark": "#0891B2",
+        "primary_light": "#22D3EE",
+        "secondary": "#1E293B",
+        "secondary_light": "#334155",
+        "accent": "#F97316",
+        "background": "#0F172A",
+        "surface": "#1E293B",
+        "surface_alt": "#111827",
+        "text_heading": "#F8FAFC",
+        "text_body": "#CBD5E1",
+        "text_muted": "#94A3B8",
+        "border": "rgba(6,182,212,0.15)"
+      },
+
+      "typography": {
+        "heading_font": "'Inter', sans-serif",
+        "body_font": "'Inter', sans-serif",
+        "heading_weight": "900",
+        "heading_tracking": "tight",
+        "heading_line_height": "1.1",
+        "body_line_height": "1.7",
+        "accent_style": "background: linear-gradient(90deg, #06B6D4, #6366F1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"
+      },
+
+      "shape": {
+        "card_radius": "rounded-xl",
+        "button_radius": "rounded-lg",
+        "badge_radius": "rounded-full",
+        "image_radius": "rounded-xl"
+      },
+
+      "shadows": {
+        "card": "0 0 0 1px rgba(6,182,212,0.12), 0 4px 24px rgba(0,0,0,0.4)",
+        "hero_image": "0 0 60px rgba(6,182,212,0.25)",
+        "button": "0 0 30px rgba(6,182,212,0.4)",
+        "badge": "0 0 20px rgba(6,182,212,0.3)"
+      },
+
+      "spacing": {
+        "section": "py-14 md:py-20",
+        "section_spacious": "py-20 md:py-28",
+        "card_inner": "p-6",
+        "hero": "py-20 md:py-32"
+      },
+
+      "css_variables": ":root { --color-primary: #06B6D4; --color-primary-dark: #0891B2; --color-secondary: #1E293B; --color-accent: #F97316; --color-bg: #0F172A; --color-bg-card: #1E293B; --color-text: #F8FAFC; --color-text-muted: #94A3B8; --radius-card: 0.75rem; --radius-button: 0.625rem; --shadow-card: 0 0 0 1px rgba(6,182,212,0.12), 0 4px 24px rgba(0,0,0,0.4); --shadow-button: 0 0 30px rgba(6,182,212,0.4); }",
+
+      "hero_variant": "cinematic",
+      "hero_bg": "#0F172A",
+
+      "cta_style": "background: var(--color-primary); color: #0F172A; border-radius: var(--radius-button); padding: 1rem 2rem; font-weight: 700; box-shadow: 0 0 30px rgba(6,182,212,0.4);",
+      "card_style": "background: #1E293B; border-radius: 0.75rem; border: 1px solid rgba(6,182,212,0.15);"
+    },
+
+    "ultra-minimal": {
+      "description": "Apple-like. Design studios, consultants, architects, coaches, photographers, premium personal brands.",
+      "personality": ["sophisticated", "intentional", "clean", "editorial", "quiet"],
+      "keywords_trigger": ["design studio", "architect", "coach", "consultant", "photographer", "portfolio", "personal brand", "creative director"],
+
+      "colors": {
+        "primary": "#111111",
+        "primary_dark": "#000000",
+        "primary_light": "#333333",
+        "secondary": "#F5F5F5",
+        "secondary_light": "#FAFAFA",
+        "accent": "#2563EB",
+        "background": "#FFFFFF",
+        "surface": "#FAFAFA",
+        "surface_alt": "#F3F4F6",
+        "text_heading": "#111111",
+        "text_body": "#374151",
+        "text_muted": "#6B7280",
+        "border": "rgba(0,0,0,0.08)"
+      },
+
+      "typography": {
+        "heading_font": "'Inter', sans-serif",
+        "body_font": "'Inter', sans-serif",
+        "heading_weight": "900",
+        "heading_tracking": "tighter",
+        "heading_line_height": "1.0",
+        "body_line_height": "1.75",
+        "accent_style": "color: #111111; font-weight: 900;"
+      },
+
+      "shape": {
+        "card_radius": "rounded-none",
+        "button_radius": "rounded-sm",
+        "badge_radius": "rounded-sm",
+        "image_radius": "rounded-sm"
+      },
+
+      "shadows": {
+        "card": "none",
+        "hero_image": "none",
+        "button": "none",
+        "badge": "none"
+      },
+
+      "spacing": {
+        "section": "py-16 md:py-24",
+        "section_spacious": "py-24 md:py-32",
+        "card_inner": "py-8",
+        "hero": "py-24 md:py-40"
+      },
+
+      "css_variables": ":root { --color-primary: #111111; --color-primary-dark: #000000; --color-secondary: #F5F5F5; --color-accent: #2563EB; --color-bg: #FFFFFF; --color-text: #111111; --color-text-muted: #6B7280; --radius-card: 0rem; --radius-button: 0.25rem; --shadow-card: none; --shadow-button: none; }",
+
+      "hero_variant": "minimal-luxury",
+      "hero_bg": "#FFFFFF",
+
+      "cta_style": "background: #111111; color: white; border-radius: 0.25rem; padding: 1rem 2.5rem; font-weight: 700; letter-spacing: -0.01em;",
+      "card_style": "border-bottom: 1px solid rgba(0,0,0,0.08); padding: 2rem 0;"
+    },
+
+    "warm-local": {
+      "description": "Restaurants, food, local services, artisans, family businesses, wellness.",
+      "personality": ["inviting", "human", "real", "warm", "local"],
+      "keywords_trigger": ["restaurant", "food", "cafe", "bakery", "artisan", "local", "family business", "wellness", "spa", "beauty"],
+
+      "colors": {
+        "primary": "#C1440E",
+        "primary_dark": "#A33A0C",
+        "primary_light": "#D4541A",
+        "secondary": "#FEF3E2",
+        "secondary_light": "#FFF8F3",
+        "accent": "#D97706",
+        "background": "#FAFAF8",
+        "surface": "#FFFFFF",
+        "surface_alt": "#FFF8F3",
+        "text_heading": "#1C1917",
+        "text_body": "#44403C",
+        "text_muted": "#78716C",
+        "border": "rgba(193,68,14,0.15)"
+      },
+
+      "typography": {
+        "heading_font": "'Inter', sans-serif",
+        "body_font": "'Inter', sans-serif",
+        "heading_weight": "800",
+        "heading_tracking": "tight",
+        "heading_line_height": "1.15",
+        "body_line_height": "1.75",
+        "accent_style": "color: var(--color-primary); font-weight: 800;"
+      },
+
+      "shape": {
+        "card_radius": "rounded-2xl",
+        "button_radius": "rounded-lg",
+        "badge_radius": "rounded-full",
+        "image_radius": "rounded-3xl"
+      },
+
+      "shadows": {
+        "card": "0 2px 16px rgba(193,68,14,0.08)",
+        "hero_image": "0 8px 40px rgba(0,0,0,0.12)",
+        "button": "0 8px 30px rgba(193,68,14,0.30)",
+        "badge": "shadow-md"
+      },
+
+      "spacing": {
+        "section": "py-14 md:py-20",
+        "section_spacious": "py-20 md:py-28",
+        "card_inner": "p-6",
+        "hero": "py-16 md:py-24"
+      },
+
+      "css_variables": ":root { --color-primary: #C1440E; --color-primary-dark: #A33A0C; --color-secondary: #FEF3E2; --color-accent: #D97706; --color-bg: #FAFAF8; --color-text: #1C1917; --color-text-muted: #78716C; --radius-card: 1rem; --radius-button: 0.5rem; --shadow-card: 0 2px 16px rgba(193,68,14,0.08); --shadow-button: 0 8px 30px rgba(193,68,14,0.30); }",
+
+      "hero_variant": "cinematic",
+      "hero_bg": "#1C0F07",
+
+      "cta_style": "background: var(--color-primary); color: white; border-radius: var(--radius-button); padding: 1rem 2rem; font-weight: 700; box-shadow: 0 8px 30px rgba(193,68,14,0.30);",
+      "card_style": "background: white; border-radius: 1rem; border: 1px solid rgba(193,68,14,0.1); box-shadow: 0 2px 16px rgba(193,68,14,0.08);"
+    },
+
+    "corporate-trust": {
+      "description": "Law, finance, insurance, accounting, established professional services.",
+      "personality": ["authoritative", "reliable", "established", "formal", "trustworthy"],
+      "keywords_trigger": ["law", "legal", "finance", "accounting", "insurance", "bank", "investment", "tax", "audit", "compliance"],
+
+      "colors": {
+        "primary": "#0F2D52",
+        "primary_dark": "#091F3A",
+        "primary_light": "#1A4070",
+        "secondary": "#F0F4F9",
+        "secondary_light": "#F8FAFC",
+        "accent": "#B8960C",
+        "background": "#FFFFFF",
+        "surface": "#FFFFFF",
+        "surface_alt": "#F0F4F9",
+        "text_heading": "#0F2D52",
+        "text_body": "#334155",
+        "text_muted": "#64748B",
+        "border": "rgba(15,45,82,0.12)"
+      },
+
+      "typography": {
+        "heading_font": "'Inter', sans-serif",
+        "body_font": "'Inter', sans-serif",
+        "heading_weight": "700",
+        "heading_tracking": "tight",
+        "heading_line_height": "1.2",
+        "body_line_height": "1.7",
+        "accent_style": "color: #B8960C; font-weight: 700;"
+      },
+
+      "shape": {
+        "card_radius": "rounded-lg",
+        "button_radius": "rounded-md",
+        "badge_radius": "rounded-md",
+        "image_radius": "rounded-lg"
+      },
+
+      "shadows": {
+        "card": "0 1px 8px rgba(15,45,82,0.08)",
+        "hero_image": "0 4px 24px rgba(15,45,82,0.12)",
+        "button": "0 4px 20px rgba(15,45,82,0.25)",
+        "badge": "shadow-sm"
+      },
+
+      "spacing": {
+        "section": "py-14 md:py-20",
+        "section_spacious": "py-20 md:py-28",
+        "card_inner": "p-8",
+        "hero": "py-16 md:py-24"
+      },
+
+      "css_variables": ":root { --color-primary: #0F2D52; --color-primary-dark: #091F3A; --color-accent: #B8960C; --color-bg: #FFFFFF; --color-secondary: #F0F4F9; --color-text: #0F2D52; --color-text-muted: #64748B; --radius-card: 0.5rem; --radius-button: 0.375rem; --shadow-card: 0 1px 8px rgba(15,45,82,0.08); --shadow-button: 0 4px 20px rgba(15,45,82,0.25); }",
+
+      "hero_variant": "split-emotional",
+      "hero_bg": "linear-gradient(135deg, #FFFFFF 0%, #F0F4F9 100%)",
+
+      "cta_style": "background: var(--color-primary); color: white; border-radius: var(--radius-button); padding: 1rem 2rem; font-weight: 700;",
+      "card_style": "background: white; border-radius: 0.5rem; border-left: 4px solid #B8960C; box-shadow: 0 1px 8px rgba(15,45,82,0.08);"
+    },
+
+    "creative-bold": {
+      "description": "Creative agencies, fashion, events, youth brands, beauty, entertainment.",
+      "personality": ["expressive", "bold", "playful", "unexpected", "energetic"],
+      "keywords_trigger": ["fashion", "events", "creative", "beauty", "entertainment", "youth", "brand", "art", "music", "photography", "media"],
+
+      "colors": {
+        "primary": "#EC4899",
+        "primary_dark": "#BE185D",
+        "primary_light": "#F472B6",
+        "secondary": "#FDF4FF",
+        "secondary_light": "#FEFCE8",
+        "accent": "#FACC15",
+        "background": "#FFFBF0",
+        "surface": "#FFFFFF",
+        "surface_alt": "#FDF4FF",
+        "text_heading": "#0F0F0F",
+        "text_body": "#1F1F1F",
+        "text_muted": "#6B7280",
+        "border": "rgba(0,0,0,0.15)"
+      },
+
+      "typography": {
+        "heading_font": "'Inter', sans-serif",
+        "body_font": "'Inter', sans-serif",
+        "heading_weight": "900",
+        "heading_tracking": "tighter",
+        "heading_line_height": "1.0",
+        "body_line_height": "1.6",
+        "accent_style": "color: var(--color-primary); font-weight: 900;"
+      },
+
+      "shape": {
+        "card_radius": "rounded-3xl",
+        "button_radius": "rounded-full",
+        "badge_radius": "rounded-full",
+        "image_radius": "rounded-2xl"
+      },
+
+      "shadows": {
+        "card": "4px 4px 0px 0px #0F0F0F",
+        "hero_image": "8px 8px 0px 0px #0F0F0F",
+        "button": "4px 4px 0px 0px #0F0F0F",
+        "badge": "2px 2px 0px 0px #0F0F0F"
+      },
+
+      "spacing": {
+        "section": "py-14 md:py-20",
+        "section_spacious": "py-20 md:py-28",
+        "card_inner": "p-6",
+        "hero": "py-20 md:py-32"
+      },
+
+      "css_variables": ":root { --color-primary: #EC4899; --color-primary-dark: #BE185D; --color-accent: #FACC15; --color-bg: #FFFBF0; --color-text: #0F0F0F; --color-text-muted: #6B7280; --radius-card: 1.5rem; --radius-button: 9999px; --shadow-card: 4px 4px 0px 0px #0F0F0F; --shadow-button: 4px 4px 0px 0px #0F0F0F; }",
+
+      "hero_variant": "split-emotional",
+      "hero_bg": "#FFFBF0",
+
+      "cta_style": "background: var(--color-primary); color: white; border-radius: 9999px; padding: 1rem 2.5rem; font-weight: 700; box-shadow: 4px 4px 0px 0px #0F0F0F;",
+      "card_style": "background: white; border-radius: 1.5rem; border: 2px solid #0F0F0F; box-shadow: 4px 4px 0px 0px #0F0F0F;"
+    }
+  },
+
   "detection_rules": {
-    "priority": "Use business keywords first, then industry, then fallback",
+    "priority": "1. client-dna.json visual_identity.style_preference → 2. brand-strategist output → 3. style-engine keywords → 4. business type → 5. fallback",
     "fallback": "premium-care",
-    "notes": "When in doubt, premium-care is the safest default — it works for most service businesses"
+    "notes": "brand-strategist has final authority. style-engine provides the initial recommendation. design-language.json provides the design tokens. frontend-dev.md renders the CSS.",
+    "conflict_resolution": "If multiple modes could apply, choose the one that makes the site look MOST different from any other site already generated for a similar business type."
   }
 }

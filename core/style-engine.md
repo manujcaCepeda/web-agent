@@ -63,14 +63,29 @@ Return ONLY:
 
 You MUST select ONE primary style using EXACTLY these names:
 
-* `premium-care` → healthcare, wellness, family services (warm, teal, generous spacing)
-* `modern-clinic` → medical clinics, dental, diagnostics (clean, blue, data-dense)
-* `luxury-service` → law, finance, high-end consulting (dark, gold, maximum whitespace)
+| Mode | Use for | Feel |
+|------|---------|------|
+| `premium-care` | Healthcare, senior care, wellness, family services | Warm, teal, generous — human |
+| `modern-clinic` | Medical clinics, dental, diagnostics, physio | Clean, blue, precise, data-dense |
+| `luxury-service` | Law, finance, high-end consulting, wealth management | Dark, gold, serif, maximum whitespace |
+| `luxury-dark` | Tech agencies, SaaS, digital studios, web agencies, startups | Dark navy, electric accent, glassmorphism |
+| `ultra-minimal` | Design studios, coaches, architects, photographers, personal brands | Near-white, ONE bold accent, oversized type |
+| `warm-local` | Restaurants, food, local services, artisans, family businesses | Warm earthy tones, photography-forward |
+| `corporate-trust` | Law, finance, insurance, accounting, established professional services | Navy + gold, left-border cards, authority |
+| `creative-bold` | Creative agencies, fashion, events, youth brands, beauty, entertainment | Unexpected colors, pill buttons, bold offset |
 
-CRITICAL: These names MUST match exactly — they are used by component-system and frontend-dev.
-DO NOT invent new style mode names.
+CRITICAL: Use EXACTLY these names — they are the contract with frontend-dev and component-system.
+DO NOT invent names. If none fit → use `premium-care` as fallback.
 
-The `style_mode` field in your output MUST be one of the three above.
+The `style_mode` field in your output MUST be one of the eight above.
+
+### DETECTION GUIDANCE
+
+* **luxury-dark vs. corporate-trust**: both can apply to agencies. `luxury-dark` = digital/tech. `corporate-trust` = traditional/established.
+* **premium-care vs. modern-clinic**: `premium-care` = home/family feel. `modern-clinic` = clinical, data-driven feel.
+* **ultra-minimal vs. luxury-service**: `ultra-minimal` = light bg, san-serif, Apple-like. `luxury-service` = dark bg, serif, gold.
+* **warm-local**: any food, artisan, or neighborhood business regardless of size.
+* **creative-bold**: reserve for businesses where creativity IS the product.
 
 ---
 
@@ -180,16 +195,37 @@ Define visual behavior:
 
 ---
 
-## 🏥 HEALTHCARE MODE (AUTO APPLY)
+## AUTO-APPLY RULES BY BUSINESS TYPE
 
-If business_type = healthcare:
-
-FORCE:
-
-* style = `premium-care`
+### Healthcare / Wellness
+If business_type = healthcare → FORCE `premium-care` or `modern-clinic`
 * tone = calm, human, trustworthy
 * imagery = warm, real interaction
 * spacing = spacious
+
+### Tech / Digital Agency
+If business_type = digital-agency OR industry = tech → `luxury-dark` preferred
+* tone = confident, results-driven
+* imagery = product/mockup-showcase
+* spacing = generous-editorial
+
+### Restaurant / Food
+If business_type = restaurant → FORCE `warm-local`
+* tone = sensory, inviting, real
+* imagery = photography-forward (food and people)
+* spacing = generous
+
+### Law / Finance / Accounting
+If keywords include [law, legal, finance, accounting, insurance] → `corporate-trust`
+* tone = authoritative, trustworthy, formal
+* imagery = minimal (office, professional)
+* spacing = spacious
+
+### Creative / Fashion / Events
+If business_type = creative → `creative-bold`
+* tone = expressive, bold, energetic
+* imagery = dramatic, editorial
+* spacing = dynamic (varies)
 
 ---
 

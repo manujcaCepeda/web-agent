@@ -1,0 +1,74 @@
+{
+  "_comment": "Client DNA — Fern Private Care brand identity. Healthcare premium. Human, warm, trustworthy.",
+  "_version": "1.0",
+
+  "brand_strategy": {
+    "positioning": "La agencia de cuidado personal más confiable de Florida — cuidadores certificados que tratan a tus seres queridos como propios",
+    "brand_archetype": "Caregiver + Expert",
+    "brand_personality": ["compassionate", "trustworthy", "professional", "warm", "reliable"],
+    "tone_of_voice": "Speaks to adult children worried about their aging parents. Empathetic, reassuring, professional. Never clinical or cold. Uses 'your loved one', not 'the patient'.",
+    "unique_angle": "Personal care that feels like family — professional standards with human warmth. 24/7 availability, background-checked caregivers, flexible in-home or facility options."
+  },
+
+  "visual_identity": {
+    "style_preference": "premium-care",
+    "energy_level": "low-medium",
+    "feel": "Warm, human, deeply trustworthy — like a family member who happens to be a healthcare professional. Generous white space, soft teal tones, real photography of caregivers with seniors.",
+    "must_feel": ["safe", "warm", "professional", "human", "trustworthy", "peaceful"],
+    "must_not_feel": ["clinical", "corporate", "cold", "sterile", "generic stock-photo", "insurance-brochure"]
+  },
+
+  "design_direction": {
+    "hero_preference": "split-emotional",
+    "hero_concept": "Split layout: left = powerful headline addressing the family's fear + key trust signals + CTA | right = warm real photo of caregiver with elderly person, genuine interaction",
+    "layout_signature": "cards-horizontal",
+    "color_approach": "White base with sections alternating white / soft teal-tinted gray / one warm dark accent section. Teal as primary for buttons and highlights. Amber for secondary CTAs.",
+    "visual_break_concept": "Dark teal band with 4 key trust metrics (10+ years, 24/7 availability, background-checked, 100% personalized) — displayed large, centered",
+    "visual_break_position": "after-services",
+    "typography_personality": "Sans-serif (Inter). Headlines bold (font-extrabold). Warm, readable, generous line height. Never tight or aggressive.",
+    "section_spacing": "spacious — plenty of breathing room, never cramped",
+    "forbidden_patterns": [
+      "Generic stock photos of nurses in white uniforms looking at cameras",
+      "Blue/purple color scheme (this is not a tech product)",
+      "Aggressive pricing or limited-time offer language",
+      "Dense text blocks or walls of copy",
+      "Dark backgrounds for most sections (only the trust-metrics band goes dark)",
+      "Testimonials as 3 identical white cards on a colored gradient background",
+      "CTA buttons that say only 'Learn More' with no benefit",
+      "Section backgrounds all the same (alternation is mandatory)",
+      "Photos of empty hospital rooms or sterile medical equipment"
+    ]
+  },
+
+  "color_palette": {
+    "primary": "#2F7F79",
+    "primary_dark": "#236059",
+    "primary_light": "#3a9e97",
+    "accent": "#F59E0B",
+    "bg_main": "#FAFFFE",
+    "bg_alt": "#F0FAF7",
+    "bg_dark": "#1A3A37",
+    "text_main": "#111827",
+    "text_muted": "#6B7280"
+  },
+
+  "business_goals": {
+    "primary": "leads — get the family to book a free consultation or call",
+    "key_objection": "How do I know I can trust a stranger with my loved one?",
+    "conversion_barrier": "Fear and guilt — the family feels guilty for not doing this themselves",
+    "conversion_trigger": "Seeing real caregivers + hearing from other families who made this decision + 24/7 availability removing the fear of emergencies"
+  },
+
+  "key_sections": {
+    "must_include": ["hero", "trust-signals", "services", "how-we-work", "testimonials", "faq", "cta-final", "contact"],
+    "must_exclude": ["pricing", "comparison-table", "blog-preview"],
+    "priority_section": "testimonials — families trust other families more than any marketing claim"
+  },
+
+  "reference_inspiration": {
+    "url": "",
+    "what_to_take": "Generous spacing, real photography, trust signals prominently displayed, warm color palette, emotional copy that addresses the reader's fear first",
+    "what_to_improve": "Add concrete caregiver credentials, 24/7 reassurance messaging throughout, process section showing how easy it is to get started",
+    "avoid": "Anything that feels like a hospital brochure or insurance document"
+  }
+}

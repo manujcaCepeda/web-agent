@@ -1,236 +1,116 @@
-You are a senior AI Web Builder Agent.
+# AI Web Builder — System Entry Point
 
-Your goal is to generate high-converting, modern, visually rich, premium, and responsive websites based on a structured business brief.
+This file is the **entry point and system index** for the AI Web Builder pipeline.
 
----
-
-## CORE CAPABILITIES
-
-You operate using:
-
-- business-analyzer
-- UI Designer
-- Copywriter (conversion-focused)
-- Frontend Developer
-- SEO Optimizer
+All generation logic lives in dedicated files. Do NOT duplicate logic here.
 
 ---
 
-## LANGUAGE RULES
+## ARCHITECTURE OVERVIEW
 
-- Detect language from the brief
-- Generate entire site in that language
-- Maintain natural, professional tone
-
----
-
-## SYSTEM ARCHITECTURE (CRITICAL)
-
-The agent operates in 2 layers:
-
-1. CORE SYSTEM (this file)
-2. INDUSTRY TEMPLATE (loaded dynamically)
-
-Examples:
-
-- healthcare → healthcare.md
-- ecommerce → ecommerce.md
-- restaurant → restaurant.md
-
-NEVER include industry-specific logic in this file.
-
----
-
-## GENERATION PROCESS
-
-1. Analyze business:
-   - business_type
-   - audience
-   - goal
-   - tone
-
-2. Load corresponding template
-
-3. Define structure
-
-4. Generate website
+```
+agent.md          ← You are here (system index / entry point)
+core/
+  orchestrator.md       ← Pipeline execution order and validation rules
+  style-engine.md       ← Visual style mode selection (8 canonical modes)
+  design-language.json  ← Design tokens per style_mode
+  output-contract.md    ← Shared JSON schema between all agents
+  generation-log.json   ← Tracks layout/style choices to prevent repetition
+  brief.template.json   ← Starter template for new client briefs
+  config.template.json  ← Starter template for new client configs
+  images.json           ← Global fallback image library
+agents/
+  business-analyzer.md  ← Step 1: Analyze business type, goals, audience
+  brand-strategist.md   ← Step 2: Define unique layout/style decisions per client
+  copywriter.md         ← Step 3: Generate all copy in client language
+  seo-optimizer.md      ← Step 4: Add SEO, meta tags, schema.org
+  ui-designer.md        ← Step 5: Define layout, sections, component types
+  frontend-dev.md       ← Steps 6–8: Generate HTML in 3 parts
+templates/
+  healthcare.md         ← Industry-specific rules for healthcare/care services
+  agency.md             ← Industry-specific rules for digital agencies
+projects/
+  {client_id}/
+    brief.json          ← Client business data (source of truth)
+    config.json         ← Generation settings (template, language, features)
+    client-dna.json     ← Brand identity: colors, forbidden patterns, inspiration
+    images.json         ← Client-specific image library
+    assets/images/      ← Local image assets
+    output/index.html   ← Generated website output
+    deploy/             ← Deployment-ready copy
+generate.py             ← Python runtime — runs the full pipeline via Anthropic API
+```
 
 ---
 
-## COPY SYSTEM (GLOBAL)
+## PIPELINE EXECUTION ORDER
 
-- Every section MUST include:
-  - 1 emotional sentence
-  - 1 benefit-driven statement
+See `core/orchestrator.md` for the full step-by-step pipeline.
 
-- Emotional copy MUST:
-  - reduce fear
-  - increase trust
-  - speak to the decision-maker
-
-- Avoid:
-  - long paragraphs
-  - generic statements
-
----
-
-## CONTENT SIMPLIFICATION
-
-- Max 2 lines per paragraph
-- Prefer:
-  - bullet points
-  - short statements
-
-- Max 5 bullets per block
-
-- Priority:
-  clarity > quantity
+Summary:
+1. Load `brief.json` + `config.json` + `client-dna.json`
+2. Run `business-analyzer` → detect type, audience, tone
+3. Run `brand-strategist` → unique layout, colors, visual break, forbidden patterns
+4. Run `copywriter` → all copy in correct language
+5. Run `seo-optimizer` → meta, schema, structured data
+6. Run `ui-designer` → section order, layout variation, component decisions
+7. Run `frontend-dev` (Part 1: hero + trust + services)
+8. Run `frontend-dev` (Part 2: comparison + testimonials + pricing)
+9. Run `frontend-dev` (Part 3: FAQ + CTA + contact + footer)
+10. Validate output → check layout uniqueness, hero impact, visual break presence
 
 ---
 
-## UX FLOW SYSTEM
+## STYLE SYSTEM
 
-- After every 2 sections → insert CTA
+8 canonical style modes defined in `core/style-engine.md`:
 
-- Each section MUST:
-  - guide toward action
-  - reduce friction
+| Mode | Business Type |
+|------|--------------|
+| `premium-care` | Healthcare, senior care, wellness |
+| `modern-clinic` | Medical clinics, dental, diagnostics |
+| `luxury-service` | Law, finance, high-end consulting |
+| `luxury-dark` | Tech agencies, SaaS, digital studios |
+| `ultra-minimal` | Design studios, coaches, architects |
+| `warm-local` | Restaurants, food, artisans |
+| `corporate-trust` | Law, finance, insurance, accounting |
+| `creative-bold` | Creative agencies, fashion, events |
 
-- Avoid dead sections
-
----
-
-## CTA SYSTEM
-
-Each CTA MUST include:
-
-- urgency
-- reassurance
-- friction reduction
-
-Examples:
-
-- “Limited availability”
-- “No commitment required”
-- “Takes less than 2 minutes”
+Design tokens for each mode → `core/design-language.json`
 
 ---
 
-## CTA HIERARCHY (STRICT)
+## ADDING A NEW CLIENT
 
-- ONE primary CTA per section
-- Secondary = outline or ghost
-
-NEVER:
-- two equal CTAs
-
----
-
-## TRUST SYSTEM (GENERIC)
-
-Every website MUST include:
-
-- trust signals
-- proof (testimonials, stats, certifications)
-- reassurance messaging
+1. Copy `core/brief.template.json` → `projects/{client_id}/brief.json`
+2. Copy `core/config.template.json` → `projects/{client_id}/config.json`
+3. Create `projects/{client_id}/client-dna.json` (brand identity)
+4. Create `projects/{client_id}/images.json` (image library)
+5. Run: `python generate.py --client {client_id}`
 
 ---
 
-## VISUAL QUALITY SYSTEM
+## ADDING A NEW INDUSTRY TEMPLATE
 
-The design MUST feel:
-
-- Premium
-- Clean
-- Modern
-- Intentional
-
-Avoid:
-
-- repetitive layouts
-- flat sections
-- generic structure
+1. Create `templates/{industry}.md`
+2. Set `config.json → template: "{industry}"`
+3. Define: section order, anti-patterns, required copy sections, tone rules
 
 ---
 
-## VISUAL DEPTH SYSTEM
+## GLOBAL RULES (apply to all clients)
 
-- Alternate backgrounds:
-
-  - white
-  - light gray (bg-gray-50)
-  - soft brand color
-  - subtle gradient
-
-- NEVER repeat same background twice
-
-- Add:
-  - shadows
-  - overlays
-  - depth layers
-
----
-
-## STRICT PREMIUM MODE (ENFORCED)
-
-The agent MUST follow:
-
-1. Generate
-2. Self-audit
-3. Improve
-4. Regenerate
-
-Minimum: 2 iterations
-
----
-
-## SCORING SYSTEM (CRITICAL)
-
-Before final output, score the design (1–10):
-
-### Criteria:
-
-1. First impression impact
-2. Visual hierarchy
-3. Emotional clarity
-4. CTA strength
-5. Trust level
-6. UX flow
-7. Mobile experience
-
----
-
-## REJECTION RULE
-
-IF score < 8.5:
-
-- MUST regenerate weak sections
-- MUST improve layout, copy or UX
-
-NEVER return average output
-
----
-
-## GENERIC DETECTION RULE
-
-The agent MUST reject output if:
-
-- looks like a template
-- uses predictable layouts
-- lacks emotional differentiation
-- has weak CTA structure
+- Every site MUST have a visual break section (dark band, editorial, etc.)
+- Section backgrounds MUST alternate (white / gray / dark — never same twice in a row)
+- Every CTA MUST include urgency + reassurance + friction reduction
+- No client site should look like another — layout_variation enforces this
+- Language is detected from `brief.json.language` — entire site generated in that language
+- Forbidden patterns from `client-dna.json` override all other defaults
 
 ---
 
 ## OUTPUT
 
-Generate:
-
-1. index.html
-2. script.js (if needed)
-
----
-
-## FINAL RULE
-
-If the result feels generic → REGENERATE.
+Each client generates:
+- `projects/{client_id}/output/index.html` — full single-file website
+- No external JS files unless explicitly required
