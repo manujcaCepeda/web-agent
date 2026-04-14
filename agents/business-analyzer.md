@@ -174,7 +174,28 @@ Map to templates:
 
 You MUST include `style_mode` in your JSON output.
 Detection rules are defined in the STYLE ENGINE RULES section appended to this prompt.
-Apply those rules exactly to determine which mode fits: `premium-care` | `modern-clinic` | `luxury-service`
+Apply those rules exactly to determine which mode fits: `premium-care` | `modern-clinic` | `luxury-service` | `luxury-dark` | `ultra-minimal` | `warm-local` | `corporate-trust` | `creative-bold`
+
+---
+
+## ART DIRECTION (MANDATORY — CRITICAL)
+
+You MUST include `art_direction` in your JSON output.
+Detection rules are defined in the ART DIRECTOR SYSTEM section appended to this prompt.
+
+FORBIDDEN: Leaving `art_direction` empty or using generic values.
+REQUIRED: Choose a Visual Family, define a unique color palette, identify 2 WOW sections.
+
+CRITICAL RULE: NEVER default `color_palette.primary` to `#2563EB` (generic Tailwind blue).
+Each site must have a distinct visual identity — the Art Director section explains how.
+
+The `art_direction.visual_family` MUST match the `style_mode`:
+- `luxury-dark` → style_mode: `luxury-dark`
+- `ultra-minimal` → style_mode: `ultra-minimal`
+- `warm-local` → style_mode: `warm-local`
+- `corporate-trust` → style_mode: `corporate-trust`
+- `creative-bold` → style_mode: `creative-bold`
+- `premium-care` → style_mode: `premium-care`
 
 ---
 
@@ -227,6 +248,25 @@ Return ONLY JSON:
 "primary_cta": "",
 "friction_reduction": "",
 "urgency": ""
+},
+
+"art_direction": {
+  "visual_family": "",
+  "emotional_concept": "",
+  "color_palette": {
+    "primary": "",
+    "primary_dark": "",
+    "accent": "",
+    "bg": "",
+    "bg_alt": ""
+  },
+  "typography_personality": "",
+  "wow_sections": [
+    { "type": "", "position": "", "concept": "" },
+    { "type": "", "position": "", "concept": "" }
+  ],
+  "forbidden": [],
+  "layout_signature": ""
 }
 }
 

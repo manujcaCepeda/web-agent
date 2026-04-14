@@ -180,6 +180,168 @@ CTA: gold background with gold glow — `box-shadow: 0 0 30px rgba(184,134,11,0.
 
 ---
 
+### MODE: luxury-dark
+*Tech premium, agency, SaaS, digital studio. Dark backgrounds, electric accents, glassmorphism.*
+```css
+:root {
+  --color-primary: #06B6D4;         /* electric cyan — change per art_direction */
+  --color-primary-dark: #0891B2;
+  --color-primary-light: #22D3EE;
+  --color-secondary: #1E293B;
+  --color-secondary-light: #334155;
+  --color-accent: #F97316;
+  --color-bg: #0F172A;              /* deep navy dark */
+  --color-bg-card: #1E293B;
+  --color-text: #F8FAFC;
+  --color-text-muted: #94A3B8;
+  --radius-card: 0.75rem;
+  --radius-button: 0.625rem;
+  --radius-image: 1rem;
+  --shadow-card: 0 0 0 1px rgba(6,182,212,0.12), 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-button: 0 0 30px rgba(6,182,212,0.4);
+}
+body { background: var(--color-bg); font-family: 'Inter', sans-serif; color: var(--color-text); }
+```
+Card style: `bg-[#1E293B] rounded-xl border border-[rgba(6,182,212,0.15)] hover:border-[rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] transition-all duration-300`
+Section bg alternation: `#0F172A` → `#111827` → `#0F172A` → accent-gradient-band
+Headlines: Use gradient text on hero H1: `bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent`
+CTA primary: electric accent color with glow shadow
+Glassmorphism: `bg-white/5 backdrop-blur-md border border-white/10`
+NEVER use white body background in this mode — ALL sections dark or very dark.
+
+---
+
+### MODE: ultra-minimal
+*Apple-like. Design studios, consultants, architects, photographers, premium coaches.*
+```css
+:root {
+  --color-primary: #111111;
+  --color-primary-dark: #000000;
+  --color-primary-light: #333333;
+  --color-secondary: #F5F5F5;
+  --color-secondary-light: #FAFAFA;
+  --color-accent: #2563EB;          /* only used sparingly */
+  --color-bg: #FFFFFF;
+  --color-text: #111111;
+  --color-text-muted: #6B7280;
+  --radius-card: 0rem;              /* sharp edges for ultra-minimal */
+  --radius-button: 0.25rem;
+  --radius-image: 0.5rem;
+  --shadow-card: none;
+  --shadow-button: none;
+}
+body { background: var(--color-bg); font-family: 'Inter', sans-serif; color: var(--color-text); }
+```
+Card style: `border-b border-gray-200 py-8` (list style, not box cards)
+Section bg: pure white → near-white `#F9FAFB` → pure white. ONE black section for contrast.
+Headlines: Oversized (text-6xl md:text-8xl), ultra-heavy or ultra-light weight contrast
+Hero: Massive headline, minimal elements, tons of whitespace. No background image.
+CTA: Black button with no shadow — clean and confident. Or outlined black border.
+NEVER use rounded-2xl or heavy shadows — they break the minimal aesthetic.
+
+---
+
+### MODE: warm-local
+*Restaurants, food, local services, artisans, family businesses, wellness.*
+```css
+:root {
+  --color-primary: #C1440E;         /* terracotta — or use brief primary_color */
+  --color-primary-dark: #A33A0C;
+  --color-primary-light: #D4541A;
+  --color-secondary: #FEF3E2;
+  --color-secondary-light: #FFF8F3;
+  --color-accent: #D97706;          /* amber */
+  --color-bg: #FAFAF8;
+  --color-text: #1C1917;
+  --color-text-muted: #78716C;
+  --radius-card: 1rem;
+  --radius-button: 0.5rem;
+  --radius-image: 1.5rem;
+  --shadow-card: 0 2px 16px rgba(193,68,14,0.08);
+  --shadow-button: 0 8px 30px rgba(193,68,14,0.30);
+}
+body { background: var(--color-bg); font-family: 'Inter', sans-serif; color: var(--color-text); }
+```
+Card style: `bg-white rounded-2xl shadow-sm border border-[#F5E6D0] hover:shadow-md`
+Section bg: `#FAFAF8` → `#FFF8F3` → white → warm-dark-band (`#1C0F07`)
+Hero: Photography-forward. Large warm-tinted image. Overlay with warm gradient.
+Headlines: Rich, warm tones — use `--color-primary` for key words
+Texture: Subtle grain or warm gradient overlays acceptable.
+
+---
+
+### MODE: corporate-trust
+*Law, finance, insurance, clinics, accounting, established professional services.*
+```css
+:root {
+  --color-primary: #0F2D52;         /* deep navy */
+  --color-primary-dark: #091F3A;
+  --color-primary-light: #1A4070;
+  --color-secondary: #F0F4F9;
+  --color-secondary-light: #F8FAFC;
+  --color-accent: #B8960C;          /* gold */
+  --color-bg: #FFFFFF;
+  --color-text: #0F2D52;
+  --color-text-muted: #64748B;
+  --radius-card: 0.5rem;
+  --radius-button: 0.375rem;
+  --radius-image: 0.5rem;
+  --shadow-card: 0 1px 8px rgba(15,45,82,0.08);
+  --shadow-button: 0 4px 20px rgba(15,45,82,0.25);
+}
+body { background: var(--color-bg); font-family: 'Inter', sans-serif; color: var(--color-text); }
+```
+Card style: `bg-white rounded-lg border-l-4 border-[--color-accent] shadow-sm`
+Section bg: white → `#F0F4F9` → dark navy band (`#0F2D52` with white text) → white
+Authority signals: credentials bar, team section, years of experience as featured stat
+Gold accent: use on borders, underlines, numbered list markers — not as fill color
+NEVER use casual or playful design elements.
+
+---
+
+### MODE: creative-bold
+*Creative agencies, fashion, events, youth brands, beauty, entertainment.*
+```css
+:root {
+  --color-primary: #EC4899;         /* hot pink — override per brief */
+  --color-primary-dark: #BE185D;
+  --color-primary-light: #F472B6;
+  --color-secondary: #FDF4FF;
+  --color-secondary-light: #FEFCE8;
+  --color-accent: #FACC15;          /* electric yellow */
+  --color-bg: #FFFBF0;             /* warm cream — not plain white */
+  --color-text: #0F0F0F;
+  --color-text-muted: #6B7280;
+  --radius-card: 1.5rem;
+  --radius-button: 9999px;         /* pill buttons */
+  --radius-image: 2rem;
+  --shadow-card: 4px 4px 0px 0px #0F0F0F;  /* bold offset shadow */
+  --shadow-button: 4px 4px 0px 0px #0F0F0F;
+}
+body { background: var(--color-bg); font-family: 'Inter', sans-serif; color: var(--color-text); }
+```
+Card style: `bg-white rounded-3xl border-2 border-black shadow-[4px_4px_0_#000]`
+Section bg: cream → full-bleed color block → cream → black section
+Bold moves: oversized typography, diagonal dividers, overlapping elements
+CTA: Pill-shaped with bold offset shadow — NOT standard rounded-lg button
+
+---
+
+### ART DIRECTION INTEGRATION (CRITICAL)
+
+You will receive `art_direction` from the business-analyzer.
+READ IT BEFORE WRITING ANY CSS.
+
+Rules:
+1. `art_direction.color_palette.primary` OVERRIDES the mode default primary color
+2. `art_direction.wow_sections` defines 2 sections you MUST implement with high visual impact
+3. `art_direction.forbidden` lists patterns you MUST avoid for this specific site
+4. `art_direction.layout_signature` describes the unique visual character — implement it
+
+If `art_direction` is provided, the color_palette values take precedence over mode defaults.
+
+---
+
 ### SECTION HEADER SPACING RULE
 Section headers inside `py-12` sections MUST use `mb-10`, never `mb-16`.
 `mb-16` (64px) + `py-12` padding = 112px of dead space before content reaches the user.

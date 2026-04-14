@@ -190,21 +190,26 @@ def load_prompts(template_name: str) -> dict:
     style_engine = load_optional(CORE_DIR / "style-engine.md")
     hero_system = load_optional(CORE_DIR / "hero-system.md")
     component_system = load_optional(CORE_DIR / "component-system.md")
+    art_director = load_optional(CORE_DIR / "art-director.md")
 
-    # Inject style-engine into business-analyzer (authoritative style_mode source)
+    # Inject style-engine + art-director into business-analyzer
     business_analyzer_prompt = read_file(AGENTS_DIR / "business-analyzer.md")
     if style_engine:
         business_analyzer_prompt += f"\n\n---\n\n# STYLE ENGINE RULES (APPLY WHEN DETECTING style_mode)\n\n{style_engine}"
+    if art_director:
+        business_analyzer_prompt += f"\n\n---\n\n# ART DIRECTOR SYSTEM (APPLY WHEN DEFINING art_direction)\n\n{art_director}"
 
     # Inject hero-system into ui-designer (hero variant selection authority)
     ui_designer_prompt = read_file(AGENTS_DIR / "ui-designer.md")
     if hero_system:
         ui_designer_prompt += f"\n\n---\n\n# HERO SYSTEM RULES (USE FOR hero_variant SELECTION)\n\n{hero_system}"
 
-    # Inject component-system into frontend-dev (component behavior specification)
+    # Inject component-system + art-director into frontend-dev
     frontend_dev_prompt = read_file(AGENTS_DIR / "frontend-dev.md")
     if component_system:
         frontend_dev_prompt += f"\n\n---\n\n# COMPONENT SYSTEM SPECIFICATION\n\n{component_system}"
+    if art_director:
+        frontend_dev_prompt += f"\n\n---\n\n# ART DIRECTOR REFERENCE (USE FOR WOW SECTIONS + COLOR PALETTE)\n\n{art_director}"
 
     return {
         "business_analyzer": business_analyzer_prompt,
@@ -617,6 +622,7 @@ def run_pipeline(client_id: str):
     if (CORE_DIR / "style-engine.md").exists(): active_systems.append("style-engine")
     if (CORE_DIR / "hero-system.md").exists(): active_systems.append("hero-system")
     if (CORE_DIR / "component-system.md").exists(): active_systems.append("component-system")
+    if (CORE_DIR / "art-director.md").exists(): active_systems.append("art-director")
     if active_systems:
         print(f"  ✓ Supplementary systems loaded: {', '.join(active_systems)} (injected, no extra API calls)")
 
