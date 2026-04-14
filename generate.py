@@ -182,6 +182,81 @@ def load_client(client_id: str) -> tuple[dict, dict]:
     return config, brief
 
 
+def load_client_dna(client_id: str) -> dict:
+    """Load optional client-dna.json for brand identity overrides.
+    Returns empty dict if not present — system works without it.
+    """
+    dna_path = PROJECTS_DIR / client_id / "client-dna.json"
+    if dna_path.exists():
+        try:
+            dna = json.loads(read_file(dna_path))
+            print(f"  ✓ client-dna.json loaded ({len(json.dumps(dna))} chars)")
+            return dna
+        except Exception as e:
+            print(f"  WARNING: client-dna.json parse error: {e} — continuing without DNA")
+    return {}
+
+
+def load_generation_log() -> list:
+    """Load generation log tracking layout/style choices per client.
+    Used to prevent repetition across clients.
+    """
+    log_path = CORE_DIR / "generation-log.json"
+    if log_path.exists():
+        try:
+            return json.loads(read_file(log_path))
+        except Exception:
+            pass
+    return []
+
+
+def update_generation_log(client_id: str, brand_strategy: dict, business_type: str):
+    """Append current generation to log. Keep last 20 entries."""
+    import datetime
+    log_path = CORE_DIR / "generation-log.json"
+    log = load_generation_log()
+    log.append({
+        "client_id": client_id,
+        "business_type": business_type,
+        "style_mode": brand_strategy.get("style_mode", ""),
+        "layout_variation": brand_strategy.get("layout_variation", ""),
+        "primary_color": brand_strategy.get("primary_color", ""),
+        "hero_variant": brand_strategy.get("hero_variant", ""),
+        "timestamp": datetime.datetime.now().isoformat()
+    })
+    # Keep last 20 entries
+    log = log[-20:]
+    log_path.write_text(json.dumps(log, indent=2), encoding="utf-8")
+
+
+def check_layout_uniqueness(brand_strategy: dict, business_type: str) -> list[str]:
+    """Check if layout choices repeat patterns from recent generations.
+    Returns list of warnings (empty = all good).
+    """
+    log = load_generation_log()
+    warnings = []
+    layout_variation = brand_strategy.get("layout_variation", "")
+    style_mode = brand_strategy.get("style_mode", "")
+
+    # Check last 3 entries for same layout_variation with same business_type
+    recent = [e for e in log[-10:] if e.get("business_type") == business_type]
+    recent_layouts = [e.get("layout_variation") for e in recent[-3:]]
+    if layout_variation and recent_layouts.count(layout_variation) >= 2:
+        warnings.append(
+            f"layout_variation '{layout_variation}' used {recent_layouts.count(layout_variation)} times "
+            f"recently for '{business_type}' — consider: editorial-list, cards-horizontal, stacked-list"
+        )
+
+    # Check last 5 entries for same style_mode
+    recent_modes = [e.get("style_mode") for e in log[-5:]]
+    if style_mode and recent_modes.count(style_mode) >= 4:
+        warnings.append(
+            f"style_mode '{style_mode}' used {recent_modes.count(style_mode)} times in last 5 generations"
+        )
+
+    return warnings
+
+
 def load_prompts(template_name: str) -> dict:
     # Load optional supplementary context files (injected into existing agents — no extra API calls)
     def load_optional(path: Path) -> str:
@@ -191,6 +266,10 @@ def load_prompts(template_name: str) -> dict:
     hero_system = load_optional(CORE_DIR / "hero-system.md")
     component_system = load_optional(CORE_DIR / "component-system.md")
     art_director = load_optional(CORE_DIR / "art-director.md")
+
+    # Brand strategist agent (new — adds 1 API call but enables real per-client variation)
+    brand_strategist_path = AGENTS_DIR / "brand-strategist.md"
+    brand_strategist_prompt = read_file(brand_strategist_path) if brand_strategist_path.exists() else ""
 
     # Inject style-engine + art-director into business-analyzer
     business_analyzer_prompt = read_file(AGENTS_DIR / "business-analyzer.md")
@@ -213,6 +292,7 @@ def load_prompts(template_name: str) -> dict:
 
     return {
         "business_analyzer": business_analyzer_prompt,
+        "brand_strategist": brand_strategist_prompt,
         "copywriter": read_file(AGENTS_DIR / "copywriter.md"),
         "seo_optimizer": read_file(AGENTS_DIR / "seo-optimizer.md"),
         "ui_designer": ui_designer_prompt,
@@ -238,10 +318,78 @@ def call_claude(client: anthropic.Anthropic, system_prompt: str, user_message: s
     return result, stop_reason
 
 
-def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: dict, config: dict, seo_data: dict, layout_data: dict) -> str:
-    """Generate frontend HTML in three focused parts to avoid token limits."""
+def build_services_layout_instruction(layout_variation: str, services: list, service_imgs: list, hero_img: str, img_onerror: str) -> str:
+    """Build dynamic services section instruction based on brand_strategy.layout_variation."""
 
-    primary_color = brief.get("branding", {}).get("primary_color", "#2F7F79")
+    if layout_variation == "editorial-list":
+        return (
+            "<section id='services' class='py-14 md:py-20 bg-[var(--color-bg-alt,#F9FAFB)]'>:\n"
+            "   EDITORIAL LAYOUT (NOT standard card grid):\n"
+            "   1 FEATURED card: full-width horizontal flex (lg:flex-row), left 60% text (heading, description, chip tags, 'Más solicitado' gradient badge), right 40% image — use first service\n"
+            "   Below: grid md:grid-cols-2 of NUMBERED items for remaining services:\n"
+            "     Each: flex gap-5, large number badge (02, 03...) in text-5xl font-black text-[--color-primary]/15, then title + description + 3 chip tags\n"
+            "     NO images on numbered items — typography-forward\n"
+            "   This layout MUST look editorially different from a standard card grid.\n"
+        )
+    elif layout_variation == "cards-horizontal":
+        return (
+            "<section id='services' class='py-14 md:py-20 bg-[var(--color-bg-alt,#F9FAFB)]'>:\n"
+            "   HORIZONTAL ROWS — each service is a full-width row:\n"
+            "   flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-md mb-6\n"
+            "   Image side: md:w-2/5 min-h-[280px] — alternates left/right (odd=left, even=right: md:flex-row-reverse)\n"
+            "   Content side: md:w-3/5 p-8 flex flex-col justify-center\n"
+            "   NEVER stack them as columns — always full-width rows\n"
+        )
+    elif layout_variation == "stacked-list":
+        return (
+            "<section id='services' class='py-14 md:py-20 bg-[var(--color-bg-alt,#F9FAFB)]'>:\n"
+            "   STACKED LIST — no images, typography-forward with dividers:\n"
+            "   divide-y divide-[--color-secondary] container\n"
+            "   Each service: py-8 flex gap-6 items-start\n"
+            "     Number: text-4xl font-black text-[--color-primary] w-12 shrink-0\n"
+            "     Content: h3 font-bold + p description + flex chip tags\n"
+            "   NO card backgrounds, NO shadows — clean list with dividers only\n"
+        )
+    elif layout_variation == "icon-columns":
+        return (
+            "<section id='services' class='py-14 md:py-20 bg-[var(--color-bg-alt,#F9FAFB)]'>:\n"
+            "   ICON COLUMNS — 4+ columns, feature-list style (NOT card boxes):\n"
+            "   grid grid-cols-2 md:grid-cols-4 gap-6\n"
+            "   Each: text-center p-4 (NO shadow, NO heavy border)\n"
+            "     Icon: w-12 h-12 mx-auto mb-3 rounded-xl bg-[--color-primary]/10 centered SVG icon\n"
+            "     Title: font-semibold text-sm mb-1\n"
+            "     Description: text-xs text-muted (1 line max)\n"
+            "   NEVER make these look like cards with full bg — just icon+label\n"
+        )
+    elif layout_variation == "masonry-mixed":
+        return (
+            "<section id='services' class='py-14 md:py-20 bg-[var(--color-bg-alt,#F9FAFB)]'>:\n"
+            "   MASONRY-MIXED — asymmetric grid:\n"
+            "   Row 1: 1 large card (col-span-2) + 1 normal card (col-span-1)\n"
+            "   Row 2: 2 normal cards\n"
+            "   Use CSS grid with grid-cols-3, first card gets col-span-2\n"
+            "   Large card: image top h-72, content below\n"
+            "   Normal cards: image top h-48, content below\n"
+        )
+    else:  # cards-3 (default — only when explicitly chosen)
+        return (
+            "<section id='services' class='py-14 md:py-20 bg-gray-50'>:\n"
+            "   3-column responsive grid (grid md:grid-cols-3 gap-6)\n"
+            "   Each card: overflow-hidden rounded-2xl shadow-md hover:shadow-xl group cursor-pointer transition duration-300\n"
+            "   Image on top (h-52 object-cover), then title + description + bullet list below\n"
+        )
+
+
+def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: dict, config: dict, seo_data: dict, layout_data: dict, brand_strategy: dict = None) -> str:
+    """Generate frontend HTML in three focused parts to avoid token limits."""
+    if brand_strategy is None:
+        brand_strategy = {}
+
+    # Brand strategy overrides brief branding defaults
+    primary_color = (
+        brand_strategy.get("primary_color")
+        or brief.get("branding", {}).get("primary_color", "#2F7F79")
+    )
     secondary_color = brief.get("branding", {}).get("secondary_color", "#A7D7C5")
     logo = brief.get("branding", {}).get("logo", "")
     whatsapp = brief.get("whatsapp", "")
@@ -328,17 +476,42 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     hero_json = json.dumps(hero, indent=2)
     lazy_attr = ' loading="lazy"' if use_lazy_loading else ""
 
-    # Extract layout decisions from ui-designer output
-    hero_variant = layout_data.get("hero_variant", "split-emotional")
-    layout_style = layout_data.get("layout_style", "premium-soft")
-    visual_intensity = layout_data.get("visual_intensity", "medium")
+    # Extract layout decisions — brand_strategy takes priority over ui-designer defaults
+    hero_variant = (
+        brand_strategy.get("hero_variant")
+        or layout_data.get("hero_variant", "split-emotional")
+    )
+    layout_style = (
+        brand_strategy.get("style_mode")
+        or layout_data.get("layout_style", "premium-soft")
+    )
+    visual_intensity = (
+        brand_strategy.get("visual_intensity")
+        or layout_data.get("visual_intensity", "medium")
+    )
+    layout_variation = brand_strategy.get("layout_variation", "cards-3")
+    spacing_scale = brand_strategy.get("spacing_scale", "balanced")
+    image_direction = brand_strategy.get("image_direction", "photography-forward")
+    visual_break = brand_strategy.get("visual_break", {})
+    forbidden_patterns = brand_strategy.get("forbidden_patterns", [])
+    design_concept = brand_strategy.get("design_concept", "")
+
     layout_json_summary = json.dumps({
         "hero_variant": hero_variant,
         "layout_style": layout_style,
         "visual_intensity": visual_intensity,
+        "layout_variation": layout_variation,
+        "spacing_scale": spacing_scale,
+        "image_direction": image_direction,
+        "visual_break": visual_break,
+        "design_concept": design_concept,
+        "forbidden_patterns": forbidden_patterns,
         "sections": [s.get("type", "") for s in layout_data.get("sections", [])]
     }, indent=2)
     print(f"  ✓ Layout: style={layout_style} | intensity={visual_intensity} | hero={hero_variant}")
+    print(f"  ✓ Brand: layout={layout_variation} | spacing={spacing_scale} | image={image_direction}")
+    if visual_break:
+        print(f"  ✓ Visual break: {visual_break.get('type','?')} @ {visual_break.get('position','?')}")
 
     # Build hero instruction based on hero_variant from ui-designer
     if hero_variant == "cinematic":
@@ -443,15 +616,39 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
             f"loading=\"lazy\" {img_onerror}>\n"
         )
 
+    # Build dynamic services section instruction based on brand_strategy.layout_variation
+    services_layout_instruction = build_services_layout_instruction(
+        layout_variation, services, service_imgs, hero_img, img_onerror
+    )
+
+    # Build visual break instruction if it appears in Part 2 position
+    vb_position = visual_break.get("position", "after-benefits")
+    vb_part2_instruction = ""
+    if vb_position in ("after-services",) and visual_break.get("type"):
+        vb_part2_instruction = (
+            f"\nVISUAL BREAK SECTION (place after services, before benefits):\n"
+            f"  Type: {visual_break.get('type')} | Concept: {visual_break.get('concept','')}\n"
+            f"  This MUST look dramatically different from all other sections.\n"
+            f"  Use dark or full-bleed background. Reference the BRAND STRATEGY RENDERING section in your instructions.\n"
+        )
+
+    # Forbidden patterns instruction for Part 2
+    forbidden_instruction = ""
+    if forbidden_patterns:
+        forbidden_instruction = f"\nFORBIDDEN PATTERNS (NEVER generate these):\n"
+        for p in forbidden_patterns:
+            forbidden_instruction += f"  - {p}\n"
+
     part2_msg = (
         f"Generate ONLY Part 2 of an index.html. Start immediately after <!-- END PART 1 -->.\n"
         f"NO DOCTYPE, NO html tag, NO head tag. Start directly with a <section> tag.\n\n"
         f"CONTEXT: {shared_context}\n"
-        f"LAYOUT DECISIONS: {layout_json_summary}\n\n"
+        f"LAYOUT DECISIONS (brand_strategy takes priority):\n{layout_json_summary}\n\n"
         f"IMAGE RULES (ABSOLUTE — NEVER VIOLATE):\n"
         f"- COPY the exact <img> tags provided below — NEVER change src URLs\n"
         f"- NEVER use source.unsplash.com (deprecated and broken)\n"
         f"- NEVER generate your own image URLs from image_query or any query\n"
+        f"- Image direction: '{image_direction}' — if 'illustration-icon' or 'minimal-no-image', use SVG icons instead of photos\n"
         f"- ALL images MUST have {img_onerror} as fallback\n"
         f"- ALL images MUST have loading='lazy' (except hero in Part 1)\n"
         f"- If you cannot find the img tag for a card → use the fallback gradient div\n\n"
@@ -459,22 +656,24 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"SERVICES DATA (text content only — use img tags above for images):\n{services_json}\n"
         f"BENEFITS: {benefits_json}\n"
         f"TRUST: {trust_json}\n\n"
+        f"{forbidden_instruction}"
         f"ANIMATION RULES:\n"
         f"- Do NOT use Tailwind 'opacity-0' or 'translate-y-10' inline classes\n"
         f"- Use class='reveal-element' for scroll-reveal animations\n"
         f"- Every <section> MUST have both opening AND closing tags\n\n"
         f"OUTPUT (generate ALL items fully before ending):\n"
-        f"1. <section id='services' class='py-20 md:py-28 bg-gray-50'>:\n"
-        f"   3-column responsive grid, each card: overflow-hidden rounded-2xl shadow-md hover:shadow-xl "
-        f"group cursor-pointer transition duration-300, image on top, then title+description+bullet list\n"
+        f"1. SERVICES section — use this EXACT layout pattern:\n"
+        f"   {services_layout_instruction}\n"
+        f"{vb_part2_instruction}"
         f"2. Inline CTA banner: gradient bg (primary to secondary), headline, subheadline, button → href='#contact'\n"
-        f"3. <section id='benefits' class='py-20 md:py-28 bg-white'>:\n"
-        f"   Section title + subtitle, then 6 benefit cards in 3-column grid\n"
-        f"   Each card: icon (SVG or emoji in colored circle), bold title, description paragraph\n"
+        f"3. <section id='benefits' class='py-14 md:py-20 bg-white'>:\n"
+        f"   Section title + subtitle, then benefit items using layout from brand_strategy.section_layout_overrides.benefits\n"
+        f"   Default: icon-list (icon in colored circle, bold title, description) in grid md:grid-cols-3\n"
+        f"   Each card MUST have class='group' for hover effects to work\n"
         f"   MUST be fully generated — do not leave this section empty\n"
-        f"4. <section id='trust' class='py-16 bg-gray-50'>:\n"
-        f"   4 stat cards: '500+ Families Served', '10+ Years Experience', '24/7 Available', '4.9★ Rating'\n"
-        f"   Each card: large number in primary color, label text, subtle icon\n"
+        f"4. <section id='trust' class='py-14 bg-gray-50'>:\n"
+        f"   4 trust stats: large numbers in primary color, label text, subtle icon\n"
+        f"   Use data from trust[] array\n"
         f"5. End with comment <!-- END PART 2 --> — DO NOT close body or html."
     )
     part2_raw, _ = call_claude(client, system_prompt, part2_msg, "Frontend Part 2 (Services+Benefits)", max_tokens=8000)
@@ -494,11 +693,34 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         if analytics.get("track_whatsapp_click", True):
             tracking_js += "\n    // Track WhatsApp click\n    document.querySelector('#wa-btn')?.addEventListener('click', () => gtag('event', 'whatsapp_click'));"
 
+    # Visual break in Part 3 position
+    vb_part3_instruction = ""
+    if vb_position in ("after-testimonials", "after-benefits") and visual_break.get("type"):
+        vb_part3_instruction = (
+            f"\nVISUAL BREAK SECTION (place after testimonials):\n"
+            f"  Type: {visual_break.get('type')} | Concept: {visual_break.get('concept','')}\n"
+            f"  This MUST be the most dramatic section on the page.\n"
+            f"  Full-bleed, dark or vivid background — completely different from white/gray sections.\n"
+            f"  Reference the BRAND STRATEGY RENDERING section in your instructions.\n"
+        )
+
+    # Testimonials layout from brand_strategy
+    testimonials_variant = brand_strategy.get("section_layout_overrides", {}).get("testimonials", "cards-gradient")
+    if testimonials_variant == "dark-band":
+        testimonials_bg = f"py-20 bg-[{primary_color}]"
+        testimonials_style = "Dark background, white text quotes, large quotation marks, horizontal rule separators between testimonials"
+    elif testimonials_variant == "magazine-feature":
+        testimonials_bg = "py-20 bg-gray-50"
+        testimonials_style = "1 large featured testimonial (col-span-2) + 2 smaller testimonials in row, subtle card style"
+    else:  # cards-gradient (default)
+        testimonials_bg = f"py-20 bg-gradient-to-br from-[{primary_color}] to-[{secondary_color}]"
+        testimonials_style = "White card grid, ★★★★★ stars, testimonial text, name+role, hover shadow"
+
     part3_msg = (
         f"Generate ONLY Part 3 (the FINAL part) of an index.html. Start immediately after <!-- END PART 2 -->.\n"
         f"NO DOCTYPE, NO html, NO head. Start with a <section> tag. MUST end with </body></html>.\n\n"
         f"CONTEXT: {shared_context}\n"
-        f"LAYOUT DECISIONS: {layout_json_summary}\n\n"
+        f"LAYOUT DECISIONS (brand_strategy):\n{layout_json_summary}\n\n"
         f"TESTIMONIALS: {testimonials_json}\n"
         f"FAQ: {faq_json}\n"
         f"CTA: {cta_json}\n\n"
@@ -507,9 +729,10 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"- Use class='reveal-element' for scroll-reveal\n"
         f"- Every <section> MUST open and close in this part\n\n"
         f"OUTPUT (generate ALL items — NEVER truncate):\n"
-        f"1. <section id='testimonials' class='py-20 bg-gradient-to-br from-[{primary_color}] to-[{secondary_color}]'>:\n"
-        f"   White card grid, ★★★★★ stars, testimonial text, name+role, hover shadow\n"
-        f"2. <section id='faq' class='py-20 bg-white'>:\n"
+        f"1. <section id='testimonials' class='{testimonials_bg}'>:\n"
+        f"   Style: {testimonials_style}\n"
+        f"{vb_part3_instruction}"
+        f"2. <section id='faq' class='py-14 bg-white'>:\n"
         f"   FAQ accordion — each .faq-item has a button (toggle .open class) and .faq-answer div\n"
         f"   Use data from FAQ array provided\n"
         f"3. Final CTA section: dark gradient bg, bold headline, subheadline, single primary CTA button\n"
@@ -608,11 +831,13 @@ def run_pipeline(client_id: str):
     client = anthropic.Anthropic(api_key=api_key)
 
     # Load client data
-    print("\n[1/6] Loading client data...")
+    print("\n[1/7] Loading client data...")
     config, brief = load_client(client_id)
+    client_dna = load_client_dna(client_id)
     template_name = config["template"]
     prompts = load_prompts(template_name)
     brief_str = json.dumps(brief, indent=2)
+    dna_str = json.dumps(client_dna, indent=2) if client_dna else "{}"
     print(f"  ✓ Template: {template_name} | Language: {config['language']} | Goal: {config['goal']}")
     print(f"  ✓ Features: lazy_loading={config.get('features',{}).get('lazy_loading')} | "
           f"schema_org={config.get('features',{}).get('schema_org')} | "
@@ -623,11 +848,13 @@ def run_pipeline(client_id: str):
     if (CORE_DIR / "hero-system.md").exists(): active_systems.append("hero-system")
     if (CORE_DIR / "component-system.md").exists(): active_systems.append("component-system")
     if (CORE_DIR / "art-director.md").exists(): active_systems.append("art-director")
+    if (AGENTS_DIR / "brand-strategist.md").exists(): active_systems.append("brand-strategist")
+    if client_dna: active_systems.append("client-dna")
     if active_systems:
-        print(f"  ✓ Supplementary systems loaded: {', '.join(active_systems)} (injected, no extra API calls)")
+        print(f"  ✓ Active systems: {', '.join(active_systems)}")
 
     # STEP 1 — Business Analysis
-    print("\n[2/6] Business Analysis")
+    print("\n[2/7] Business Analysis")
     analysis_raw, _ = call_claude(
         client,
         system_prompt=prompts["business_analyzer"],
@@ -641,8 +868,43 @@ def run_pipeline(client_id: str):
         print("  WARNING: Could not parse analysis JSON, using raw text")
         analysis = {"raw": analysis_raw}
 
+    # STEP 1.2 — Brand Strategy (NEW)
+    brand_strategy = {}
+    if prompts.get("brand_strategist"):
+        print("\n[2.5/7] Brand Strategy")
+        brand_raw, _ = call_claude(
+            client,
+            system_prompt=prompts["brand_strategist"],
+            user_message=(
+                f"Define brand strategy and design decisions for this client. Return ONLY valid JSON.\n\n"
+                f"BUSINESS ANALYSIS:\n{json.dumps(analysis, indent=2)}\n\n"
+                f"CLIENT BRIEF:\n{brief_str}\n\n"
+                f"CLIENT DNA:\n{dna_str}\n\n"
+                f"Return JSON with: style_mode, design_concept, hero_variant, layout_variation, "
+                f"visual_intensity, spacing_scale, image_direction, primary_color, accent_color, "
+                f"visual_break, section_layout_overrides, forbidden_patterns, layout_notes"
+            ),
+            step_name="Brand Strategist",
+        )
+        brand_json_str = extract_json(brand_raw)
+        try:
+            brand_strategy = json.loads(brand_json_str)
+            # Layout uniqueness check
+            warnings = check_layout_uniqueness(brand_strategy, analysis.get("business_type", ""))
+            for w in warnings:
+                print(f"  ⚠  UNIQUENESS WARNING: {w}")
+            print(f"  ✓ Brand: {brand_strategy.get('style_mode')} | "
+                  f"layout={brand_strategy.get('layout_variation')} | "
+                  f"hero={brand_strategy.get('hero_variant')} | "
+                  f"color={brand_strategy.get('primary_color')}")
+        except json.JSONDecodeError:
+            print("  WARNING: Brand strategist returned invalid JSON — continuing without brand strategy")
+            brand_strategy = {}
+    else:
+        print("\n  ℹ  brand-strategist.md not found — skipping brand strategy step")
+
     # STEP 2 — Copywriting
-    print("\n[3/6] Copy Generation")
+    print("\n[3/7] Copy Generation")
     copy_raw, _ = call_claude(
         client,
         system_prompt=prompts["copywriter"],
@@ -674,7 +936,7 @@ def run_pipeline(client_id: str):
         print("  ✓ Output contract validated")
 
     # STEP 3 — SEO Optimization
-    print("\n[4/6] SEO Optimization")
+    print("\n[4/7] SEO Optimization")
     seo_raw, _ = call_claude(
         client,
         system_prompt=prompts["seo_optimizer"],
@@ -704,12 +966,14 @@ def run_pipeline(client_id: str):
     seo_data["contact"] = brief.get("contact_info", {})
 
     # STEP 4 — UI Design
-    print("\n[5/6] UI Layout Design")
+    print("\n[5/7] UI Layout Design")
+    brand_strategy_summary = json.dumps(brand_strategy, indent=2) if brand_strategy else "{}"
     layout_raw, _ = call_claude(
         client,
         system_prompt=prompts["ui_designer"],
         user_message=(
-            f"Design the layout for this website. Return JSON with layout_style, visual_intensity, and sections array.\n\n"
+            f"Design the layout for this website. Return JSON with layout_style, visual_intensity, hero_variant, and sections array.\n\n"
+            f"BRAND STRATEGY (READ FIRST — overrides defaults):\n{brand_strategy_summary}\n\n"
             f"COPY & SEO DATA:\n{json.dumps(seo_data, indent=2)}\n\n"
             f"BUSINESS ANALYSIS:\n{json.dumps(analysis, indent=2)}\n\n"
             f"INDUSTRY TEMPLATE:\n{prompts['template']}"
@@ -724,8 +988,10 @@ def run_pipeline(client_id: str):
         layout_data = {"layout_style": "premium-soft", "visual_intensity": "medium", "sections": []}
 
     # STEP 5 — Frontend Generation (3-part strategy)
-    print("\n[6/6] Frontend Generation")
-    html_content = generate_frontend(client, prompts["frontend_dev"], brief, config, seo_data, layout_data)
+    print("\n[6/7] Frontend Generation")
+    html_content = generate_frontend(
+        client, prompts["frontend_dev"], brief, config, seo_data, layout_data, brand_strategy
+    )
 
     # Save output
     output_dir = PROJECTS_DIR / client_id / "output"
@@ -733,10 +999,19 @@ def run_pipeline(client_id: str):
     output_file = output_dir / "index.html"
     output_file.write_text(html_content, encoding="utf-8")
 
+    # Update generation log for uniqueness tracking
+    print("\n[7/7] Updating generation log...")
+    if brand_strategy:
+        update_generation_log(client_id, brand_strategy, analysis.get("business_type", "unknown"))
+        print(f"  ✓ Generation logged: {brand_strategy.get('style_mode')} / {brand_strategy.get('layout_variation')}")
+
     print(f"\n{'='*60}")
     print(f"  PIPELINE COMPLETE")
     print(f"  Output: projects/{client_id}/output/index.html")
     print(f"  Size: {len(html_content):,} characters")
+    if brand_strategy:
+        print(f"  Brand: {brand_strategy.get('design_concept', '')}")
+        print(f"  Style: {brand_strategy.get('style_mode')} | layout={brand_strategy.get('layout_variation')} | color={brand_strategy.get('primary_color')}")
     print(f"{'='*60}\n")
 
 

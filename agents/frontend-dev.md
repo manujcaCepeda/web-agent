@@ -27,6 +27,7 @@ You will receive:
 * layout JSON (ui-designer)
 * copy JSON (copywriter)
 * SEO data (seo-optimizer)
+* **brand_strategy** (brand-strategist) — READ THIS FIRST
 * style system (style-engine) — `style_mode`, colors, typography, effects
 * hero system (hero-system) — `hero_variant`, trust_elements, mobile_behavior
 * component system (component-system) — buttons, cards, icons, images
@@ -35,9 +36,13 @@ You will receive:
 
 ALL inputs MUST be used.
 
-PRIORITY RULE:
-- Read `style_mode` from style-engine (NOT from business-analyzer)
-- Read `hero_variant` from hero-system (NOT from ui-designer defaults)
+PRIORITY RULE (STRICT ORDER):
+1. `brand_strategy.primary_color` → overrides ALL color defaults
+2. `brand_strategy.style_mode` → overrides style-engine mode
+3. `brand_strategy.hero_variant` → overrides hero-system default
+4. `brand_strategy.layout_variation` → controls services section HTML structure
+5. `brand_strategy.forbidden_patterns` → NEVER generate matching HTML
+6. `brand_strategy.spacing_scale` → controls section padding values
 
 ---
 
@@ -413,20 +418,213 @@ NEVER use py-20 md:py-28 or larger as default — sections become too tall on de
 
 ---
 
+## 🎯 BRAND STRATEGY RENDERING (CRITICAL — NEW)
+
+Before writing ANY HTML, read `brand_strategy` and apply:
+
+### 1. Services section — dynamic layout based on `layout_variation`
+
+**`editorial-list`**:
+```html
+<!-- Featured card: full-width, horizontal layout -->
+<div class="flex flex-col lg:flex-row gap-0 rounded-2xl overflow-hidden shadow-xl mb-8">
+  <div class="lg:w-3/5 p-10 flex flex-col justify-center bg-[--color-bg-card]">
+    <span class="badge">Más solicitado</span>
+    <h3 class="text-2xl font-bold mt-3 mb-4">{{services[0].name}}</h3>
+    <p class="text-muted mb-6">{{services[0].description}}</p>
+    <div class="flex flex-wrap gap-2"><!-- chip tags --></div>
+  </div>
+  <div class="lg:w-2/5 min-h-[280px] bg-cover bg-center"><!-- image --></div>
+</div>
+<!-- Remaining services: numbered list items -->
+<div class="grid md:grid-cols-2 gap-6">
+  <!-- For each remaining service: number badge (02, 03...) + title + description + chips -->
+  <div class="flex gap-5 p-6 bg-[--color-bg-alt] rounded-xl">
+    <span class="text-5xl font-black text-[--color-primary]/20 leading-none">02</span>
+    <div>...</div>
+  </div>
+</div>
+```
+
+**`cards-horizontal`**:
+```html
+<!-- Each service: full-width row, image alternates L/R -->
+<div class="flex flex-col md:flex-row gap-0 rounded-2xl overflow-hidden shadow-md mb-6 [even:flex-row-reverse]">
+  <div class="md:w-2/5"><img ...></div>
+  <div class="md:w-3/5 p-8 flex flex-col justify-center">...</div>
+</div>
+```
+
+**`stacked-list`**:
+```html
+<!-- Numbered list with dividers — no images, typography-forward -->
+<div class="divide-y divide-[--color-secondary]">
+  <div class="py-8 flex gap-6 items-start">
+    <span class="text-4xl font-black text-[--color-primary] w-12 shrink-0">01</span>
+    <div>
+      <h3 class="text-xl font-bold mb-2">{{service.name}}</h3>
+      <p class="text-muted">{{service.description}}</p>
+    </div>
+  </div>
+</div>
+```
+
+**`icon-columns`**:
+```html
+<!-- 4+ columns, icon + title + 1-line description — feature-list style, NOT cards -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+  <div class="text-center p-4">
+    <div class="w-12 h-12 mx-auto mb-3 rounded-xl bg-[--color-primary]/10 flex items-center justify-center">
+      <!-- icon svg -->
+    </div>
+    <h4 class="font-semibold text-sm mb-1">{{service.name}}</h4>
+    <p class="text-xs text-muted">{{short description}}</p>
+  </div>
+</div>
+```
+
+**`cards-3`** (ONLY if brand_strategy explicitly specifies this):
+Standard 3-column card grid with image top + content below.
+
+---
+
+### 2. Visual Break section — render based on `visual_break.type`
+
+**`dark-metrics-band`**:
+```html
+<section class="py-20 bg-[--color-bg-dark]">
+  <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div>
+      <div class="text-5xl font-black text-[--color-primary] mb-2 counter" data-target="{{n}}">0</div>
+      <div class="text-sm text-white/60 uppercase tracking-widest">{{label}}</div>
+    </div>
+    <!-- ... repeat for each metric -->
+  </div>
+</section>
+```
+
+**`editorial-manifesto`**:
+```html
+<section class="py-24 bg-[--color-bg-dark] overflow-hidden">
+  <div class="max-w-5xl mx-auto px-6">
+    <p class="text-5xl md:text-7xl font-black text-white leading-tight">
+      "{{brand_strategy.design_concept}}"
+    </p>
+    <div class="mt-12 w-24 h-1 bg-[--color-primary]"></div>
+  </div>
+</section>
+```
+
+**`browser-mockup-showcase`**:
+```html
+<section class="py-20 bg-[--color-bg-dark]">
+  <div class="browser-frame max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl
+              border border-white/10">
+    <div class="browser-bar flex items-center gap-2 px-4 py-3 bg-[#1E293B]">
+      <span class="w-3 h-3 rounded-full bg-red-500"></span>
+      <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+      <span class="w-3 h-3 rounded-full bg-green-500"></span>
+      <div class="flex-1 bg-[#0F172A] rounded-md mx-2 py-1 px-3 text-xs text-white/50">
+        {{business_url}}
+      </div>
+    </div>
+    <img src="{{screenshot}}" class="w-full" loading="lazy">
+  </div>
+</section>
+```
+
+**`split-proof`**:
+```html
+<section class="grid md:grid-cols-2 min-h-[400px]">
+  <div class="bg-[--color-bg-dark] flex items-center p-12">
+    <div>
+      <h2 class="text-4xl font-black text-white mb-4">{{concept_headline}}</h2>
+      <p class="text-white/60">{{concept_description}}</p>
+    </div>
+  </div>
+  <div class="bg-[--color-secondary-light] flex items-center p-12">
+    <!-- stats, testimonials excerpt, or results -->
+  </div>
+</section>
+```
+
+---
+
+### 3. Spacing Scale — apply to ALL sections
+
+| `spacing_scale` | Section padding |
+|-----------------|-----------------|
+| `compact` | `py-10 md:py-14` |
+| `balanced` | `py-14 md:py-20` |
+| `generous` | `py-20 md:py-28` |
+| `editorial` | Hero `py-28+`, others vary — some `py-10`, some `py-24` |
+
+---
+
+### 4. Forbidden Patterns — active checks before writing HTML
+
+For EACH item in `brand_strategy.forbidden_patterns`:
+
+* If pattern = "3 identical rounded cards" → MUST NOT generate 3 visually identical card divs in a row
+* If pattern = "centered h2+grid for every section" → alternate left-aligned headers
+* If pattern = "all sections bg-gray-50/bg-white" → at least 2 sections must use brand color or dark bg
+* If pattern = "primary color #2563EB" → NEVER use this hex anywhere in the HTML/CSS
+* If pattern references a layout type → use a different layout type for that section
+
+---
+
+## 🖼️ IMAGE CONTROL SYSTEM (CRITICAL — REPLACES RANDOM IMAGES)
+
+### Rule 1: NEVER generate Unsplash URLs
+
+NEVER call `source.unsplash.com`, `images.unsplash.com` with your own query parameters,
+or generate any image URL that doesn't come from the provided data.
+
+### Rule 2: Use ONLY provided image URLs
+
+Images come from:
+1. `services[n]._image_url` — curated URL for each service card (provided verbatim)
+2. `hero_img` — the hero image URL (provided verbatim)
+3. `brand_strategy.image_direction` hints — determines HOW to use images, not WHICH
+
+### Rule 3: image_direction behavior
+
+| Direction | How to render images |
+|-----------|---------------------|
+| `photography-forward` | Full bleed, large, emotional. Overlay is light or none. |
+| `product-showcase` | Inside browser mockup frame or device frame. Shows UI. |
+| `illustration-icon` | Use SVG icons instead of photos. No `<img>` for service cards. |
+| `minimal-no-image` | Hero has NO `<img>` — typography only. Cards have NO images. |
+| `dark-glow` | Images with dark overlay + glow effect. `box-shadow: 0 0 40px rgba(primary,0.3)` |
+
+### Rule 4: Fallback strategy
+
+Every `<img>` MUST have:
+```html
+onerror="this.onerror=null;this.style.background='{{fallback_gradient}}';this.removeAttribute('src')"
+```
+
+If `image_direction` is `illustration-icon` or `minimal-no-image`:
+→ Do NOT include `<img>` tags for service cards. Use SVG icons instead.
+
+---
+
 ## 🎯 VARIATION SYSTEM (CRITICAL)
 
 You MUST introduce controlled variation:
 
-### Cards variation:
+### Cards variation (per brand_strategy):
 
-* rounded-xl or rounded-2xl
-* shadow-md or shadow-lg
-* subtle border optional
+* radius: follows `--radius-card` CSS variable — NEVER hardcode `rounded-2xl` if mode uses `rounded-sm`
+* shadow: follows `--shadow-card` CSS variable
+* border: if `corporate-trust` mode → use `border-l-4 border-[--color-accent]`
+* Never use same card HTML pattern for 3+ consecutive sections
 
 ### Section variation:
 
-* alternate text alignment (left / center)
-* alternate image position (left / right)
+* alternate text alignment (left / center) — at least 2 sections left-aligned
+* alternate image position (left / right) for split layouts
+* alternate background: dark → light → brand-soft → dark (NEVER same bg 3 times in a row)
 
 ### CTA variation:
 

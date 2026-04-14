@@ -1,0 +1,49 @@
+{
+  "_comment": "Client DNA — optional brand identity file. Defines visual identity beyond brief.json. If present, brand-strategist uses it to make design decisions. Falls back gracefully if missing.",
+  "_version": "1.0",
+
+  "brand_strategy": {
+    "positioning": "La plataforma IA líder para agencias web en Ecuador que genera sitios premium en minutos",
+    "brand_archetype": "Creator",
+    "brand_personality": ["innovador", "confiable", "accesible", "directo"],
+    "tone_of_voice": "Seguro y directo — habla con agentes que ya saben de diseño web y no quieren ser vendidos, quieren resultados",
+    "unique_angle": "No más templates genéricos — sitios que parecen diseñados por una agencia premium, generados por IA"
+  },
+
+  "visual_identity": {
+    "style_preference": "luxury-dark",
+    "energy_level": "high",
+    "feel": "Tech premium — como Vercel o Linear, no como Wix o GoDaddy",
+    "must_feel": ["innovador", "premium", "confiable", "diferente"],
+    "must_not_feel": ["genérico", "corporativo clásico", "template", "WordPress-like"]
+  },
+
+  "design_direction": {
+    "hero_preference": "cinematic",
+    "hero_concept": "Dark background con browser mockup flotante mostrando el resultado final — el producto habla por sí mismo",
+    "layout_signature": "editorial-list",
+    "visual_break_concept": "Dark band con métricas flotantes animadas — tiempo de generación, sitios creados, NPS score",
+    "typography_personality": "Sans-serif moderno ultra-bold para headlines, contraste extremo entre peso y tamaño",
+    "forbidden_patterns": [
+      "3 tarjetas idénticas con ícono + texto centrado",
+      "hero con foto de persona sonriendo al fondo",
+      "sección de servicios como grid de 3 columnas con imagen arriba",
+      "fondos gris claro para TODAS las secciones",
+      "CTA button azul Tailwind default #2563EB"
+    ]
+  },
+
+  "business_goals": {
+    "primary": "leads — agencias y freelancers que quieren generar sitios web premium para sus clientes",
+    "secondary": "brand positioning como herramienta premium vs competidores genéricos",
+    "conversion_priority": "demo gratis o asesoría sin compromiso",
+    "key_objection": "¿Esto no genera sitios iguales para todos?"
+  },
+
+  "reference_inspiration": {
+    "brands": ["Vercel", "Linear", "Framer", "Webflow", "Lemon Squeezy"],
+    "feel_references": "Dark premium SaaS landing pages — glassmorphism, glow effects, electric accent colors, browser mockup screenshots",
+    "layout_references": "Editorial hierarchy — big featured items contrasted with smaller supporting elements, never uniform grids",
+    "avoid": "Generic WordPress agency sites, boring blue corporate, photo-heavy lifestyle marketing"
+  }
+}

@@ -23,11 +23,17 @@ Design layouts that:
 You will receive:
 
 * structured content (STRICT output-contract JSON)
-* business analysis
+* business analysis (from business-analyzer)
+* **brand_strategy** (from brand-strategist — READ THIS FIRST)
 * industry template
 * brief.json
 
 You MUST use ALL inputs.
+
+**PRIORITY ORDER:**
+1. `brand_strategy` — overrides all layout defaults
+2. `business_analysis.art_direction` — secondary design guidance
+3. Template defaults — only use if no brand_strategy provided
 
 ---
 
@@ -110,6 +116,22 @@ Rules:
 
 ---
 
+# 🎯 BRAND STRATEGY INTEGRATION (READ BEFORE DESIGNING ANYTHING)
+
+When `brand_strategy` is provided, you MUST:
+
+1. Use `brand_strategy.hero_variant` as `"hero_variant"` in output (NOT your own selection)
+2. Use `brand_strategy.layout_variation` as the services section pattern
+3. Use `brand_strategy.visual_intensity` as `"visual_intensity"` in output
+4. Use `brand_strategy.spacing_scale` to determine section padding density
+5. Place the `visual_break` section at `brand_strategy.visual_break.position`
+6. Apply all patterns in `brand_strategy.forbidden_patterns` — REJECT any section that matches
+
+The brand-strategist has already done the visual decision-making.
+Your job is to MAP those decisions into the section structure JSON.
+
+---
+
 # 🔁 VARIATION SYSTEM (CRITICAL)
 
 You MUST introduce variation:
@@ -119,44 +141,92 @@ You MUST introduce variation:
 ## RULES
 
 * DO NOT repeat same layout pattern more than 2 times
+* NEVER use `cards-3` for ALL sections — alternate structures
 * Alternate between:
 
   * grid
-  * split
-  * stacked
+  * split (image left / right alternating)
+  * stacked (vertical list)
+  * editorial (asymmetric — 1 large + N small)
 * Mix image-heavy and text-heavy sections
+* EVERY page MUST have at least 1 section where text is left-aligned and at least 1 where it's centered
+
+---
+
+## VISUAL BREAK SECTION (MANDATORY)
+
+Every page MUST have exactly 1 "visual break" — a section that is structurally and visually unlike everything else.
+
+This is the standout section. The WOW moment.
+
+Use `brand_strategy.visual_break.type` and `.concept` to define it:
+
+```json
+{
+  "id": "visual-break",
+  "type": "visual-break",
+  "layout": "[brand_strategy.visual_break.type]",
+  "background": "dark-full-bleed",
+  "density": "spacious",
+  "composition": {
+    "text_position": "center",
+    "image_position": "background",
+    "emphasis": "balanced"
+  },
+  "content_mapping": {
+    "concept": "[brand_strategy.visual_break.concept]"
+  }
+}
+```
+
+Place at position defined by `brand_strategy.visual_break.position`.
+If brand_strategy is missing → place after benefits, use type `dark-metrics-band`.
 
 ---
 
 ## HERO VARIANT (MANDATORY OUTPUT FIELD)
 
 You MUST include `"hero_variant"` in your layout JSON output.
-Value MUST be one of: `"cinematic"` | `"split-emotional"` | `"minimal-luxury"`
 
+If `brand_strategy.hero_variant` is provided → USE IT, do not override.
+Otherwise: value MUST be one of `"cinematic"` | `"split-emotional"` | `"minimal-luxury"`.
 Selection rules are defined in the HERO SYSTEM RULES section appended to this prompt.
-Apply those rules to determine the correct variant for the business type and brand tone.
 
 ---
 
 ## SERVICES VARIATION
 
-Choose ONE:
+Read from `brand_strategy.layout_variation`:
 
-* cards-3
-* cards-4
-* cards-horizontal
-* stacked-list
+* `editorial-list` → 1 featured item (full-width, horizontal) + N numbered items (list style, no images)
+* `cards-horizontal` → Full-width rows, image L or R alternating
+* `stacked-list` → Vertical numbered list, dividers between items, NO images
+* `masonry-mixed` → Asymmetric grid: wide + narrow cells
+* `icon-columns` → 4+ icon+title+1-line columns (feature-style, NOT card-style)
+* `cards-3` → Standard 3-column grid (ONLY if explicitly specified — avoid as default)
 
 ---
 
 ## BENEFITS VARIATION
 
-Choose ONE:
+Read from `brand_strategy.section_layout_overrides.benefits`. Choose:
 
-* icon-list
-* split-image
-* checklist
-* cards-soft
+* `icon-list` → icon + bold title + 2-line description, list style (NOT cards)
+* `split-image` → 50/50 split: image left, benefits list right
+* `checklist` → Checkbox-style list with strong benefit statements
+* `cards-soft` → Soft card grid with hover lift (more visual than icon-list)
+* `numbered-editorial` → Large numbers (01, 02…) as visual anchors, bold titles
+
+---
+
+## TESTIMONIALS VARIATION
+
+Read from `brand_strategy.section_layout_overrides.testimonials`. Choose:
+
+* `cards-gradient` → White cards on brand gradient background (standard)
+* `dark-band` → Dark background, quote marks, horizontal rule separators
+* `magazine-feature` → 1 large featured testimonial + 2 smaller below
+* `logo-wall` → Client logos + short quote below each (B2B appropriate)
 
 ---
 
