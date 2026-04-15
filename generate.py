@@ -1198,6 +1198,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     if vb_position in ("after-services",) and visual_break.get("type"):
         vb_part2_instruction = (
             f"\nVISUAL BREAK SECTION (place after services, before benefits):\n"
+            f"  REQUIRED: <section id='visual-break' ...> — use this exact id attribute\n"
             f"  Type: {visual_break.get('type')} | Concept: {visual_break.get('concept','')}\n"
             f"  This MUST look dramatically different from all other sections.\n"
             f"  Use dark or full-bleed background. Reference the BRAND STRATEGY RENDERING section in your instructions.\n"
@@ -1253,10 +1254,24 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         )
         p2_n += 1
     if "stats-bar" in part2_sections or "trust-band" in part2_sections:
+        # FIX B4: trust stats MUST differ from visual-break stats to avoid duplication
+        vb_stats_note = ""
+        if visual_break.get("stats"):
+            vb_stat_labels = [s.get("label", "") for s in visual_break["stats"] if isinstance(s, dict)]
+            if vb_stat_labels:
+                vb_stats_note = (
+                    f"   CRITICAL — ANTI-DUPLICATION RULE: The visual-break section already shows: {', '.join(vb_stat_labels)}.\n"
+                    f"   The trust section MUST use DIFFERENT metrics — e.g. countries served, years in market,\n"
+                    f"   client satisfaction rating, on-time delivery rate, or payment security guarantee.\n"
+                    f"   NEVER repeat the same stat labels or numbers as the visual-break section.\n"
+                )
         p2_items.append(
             f"{p2_n}. <section id='trust' class='py-14 bg-gray-50'>:\n"
-            f"   4 trust stats: large numbers (text-5xl+) in primary color, label text, stagger animation\n"
-            f"   Use data from trust[] array — EXACT values, no inflation\n"
+            f"   Trust strip — use a horizontal icon+label layout (not a large-number grid).\n"
+            f"   Show 4 trust signals with icons: e.g. shield (secure payments), globe (countries served),\n"
+            f"   star (satisfaction rating), clock (fast delivery). Keep labels short (1 line each).\n"
+            f"   Use data from trust[] array — EXACT values, no inflation.\n"
+            + vb_stats_note
         )
         p2_n += 1
     if "how-it-works" in part2_sections and process_steps:
@@ -1284,7 +1299,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     p2_items.append(f"\nEnd with comment <!-- END PART 2 --> — DO NOT close body or html.")
 
     part2_msg = (
-        f"Generate ONLY Part 2 of an index.html. Start immediately after <!-- END PART 1 -->.\n"
+        f"Generate ONLY Part 2 of an index.html. The previous part ended with <!-- END PART 1 -->.\n"
+        f"Start generating immediately after that comment — DO NOT echo or repeat <!-- END PART 1 --> itself.\n"
         f"NO DOCTYPE, NO html tag, NO head tag. Start directly with a <section> tag.\n\n"
         f"TOKEN DISCIPLINE (ABSOLUTE RULE): If you are running low on output space:\n"
         f"  1. STOP adding new content immediately\n"
@@ -1339,6 +1355,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     if vb_position in ("after-testimonials", "after-benefits") and visual_break.get("type"):
         vb_part3_instruction = (
             f"\nVISUAL BREAK SECTION (place after testimonials):\n"
+            f"  REQUIRED: <section id='visual-break' ...> — use this exact id attribute\n"
             f"  Type: {visual_break.get('type')} | Concept: {visual_break.get('concept','')}\n"
             f"  This MUST be the most dramatic section on the page.\n"
             f"  Full-bleed, dark or vivid background — completely different from white/gray sections.\n"
@@ -1358,7 +1375,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         testimonials_style = "White card grid, ★★★★★ stars, testimonial text, name+role, hover shadow"
 
     part3_msg = (
-        f"Generate ONLY Part 3 (the FINAL part) of an index.html. Start immediately after <!-- END PART 2 -->.\n"
+        f"Generate ONLY Part 3 of an index.html. The previous part ended with <!-- END PART 2 -->.\n"
+        f"Start generating immediately after that comment — DO NOT echo or repeat <!-- END PART 2 --> itself.\n"
         f"NO DOCTYPE, NO html, NO head. Start with a <section> tag. MUST end with </body></html>.\n\n"
         f"TOKEN DISCIPLINE (ABSOLUTE RULE): If you are running low on output space:\n"
         f"  1. STOP the current section immediately — close all open tags\n"
@@ -1526,12 +1544,24 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     if stop3 == "max_tokens":
         print("  WARNING: Part 3 hit token limit — some sections may be missing")
 
+    # FIX: Strip any <footer> that Part 3 incorrectly generated despite instructions.
+    # Part 4 is the authoritative source of footer + JS — duplicates cause invalid HTML.
+    if "<footer" in part3_html:
+        # Try to cut at the footer section comment first, fallback to <footer> tag
+        _cut = part3_html.find("<!-- ═══")
+        if _cut == -1 or _cut > part3_html.find("<footer"):
+            _cut = part3_html.find("<footer")
+        if _cut != -1:
+            print("  → Trimming Part 3: stripped premature footer (Part 4 owns footer+JS)")
+            part3_html = part3_html[:_cut].rstrip()
+
     # ── PART 4: FOOTER + WHATSAPP + MOBILE CTA + JS ──────────────────────────
     print("\n  → Part 4: Footer + WhatsApp + JS...")
 
     part4_msg = (
         f"Generate ONLY Part 4 (the ABSOLUTE FINAL closing part) of an index.html.\n"
-        f"Start immediately after <!-- END PART 3 -->.\n"
+        f"The previous part ended with <!-- END PART 3 -->.\n"
+        f"Start generating immediately after that comment — DO NOT echo or repeat <!-- END PART 3 --> itself.\n"
         f"NO DOCTYPE, NO html tag, NO head tag, NO opening body tag.\n"
         f"Start directly with <footer>. MUST end with </body></html>.\n\n"
         f"CONTEXT: {shared_context}\n\n"

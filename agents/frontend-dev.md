@@ -351,7 +351,7 @@ DO NOT use generic `font-family: 'Inter'` for all modes — that is the #1 cause
 | `luxury-dark` | Space Grotesk | Inter | Technical, modern, electric — geometric punch |
 | `ultra-minimal` | Inter (extreme contrast) | Inter Light | 900 vs 200 weight contrast IS the identity |
 | `warm-local` | Playfair Display | Lato | Editorial, artisanal, warm — feels handcrafted |
-| `corporate-trust` | Merriweather | Inter | Established, formal, newspaper-trustworthy |
+| `corporate-trust` | Inter (900, tight) | Inter | Data-driven authority — weight contrast IS the identity. No serif. |
 | `creative-bold` | Syne | Inter | Expressive, asymmetric — creativity as identity |
 
 ### Google Fonts imports (copy exactly for active mode)
@@ -419,11 +419,14 @@ h1 { font-weight: 900; }
 ```html
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 ```
 ```css
-body { font-family: 'Inter', sans-serif; }
-h1, h2, h3 { font-family: 'Merriweather', serif; font-weight: 700; color: var(--color-primary); }
+body { font-family: 'Inter', sans-serif; font-weight: 400; }
+h1 { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; }
+h2 { font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+h3 { font-family: 'Inter', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+/* NO Merriweather — weight contrast is the identity, not serif */
 ```
 
 **creative-bold:**
