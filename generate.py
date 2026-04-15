@@ -271,6 +271,82 @@ def load_client_images(client_id: str) -> dict:
     return result
 
 
+def load_reference_screenshots(url: str, client_id: str) -> list[bytes]:
+    """Capture the full reference site as multiple section screenshots using Playwright.
+
+    Strategy: render at 1440px wide, measure total page height, then take
+    overlapping viewport-sized clips that together cover the entire page.
+    Each clip is saved as reference-screenshot-N.png for inspection.
+
+    Returns a list of PNG bytes (one per section). Empty list on failure.
+    The screenshots are cached — delete them to force a fresh capture.
+    """
+    if not url or not url.startswith("http"):
+        return []
+
+    ref_dir = PROJECTS_DIR / client_id
+    VIEWPORT_W, VIEWPORT_H = 1440, 900
+
+    # Check cache — all section files must exist
+    cached = sorted(ref_dir.glob("reference-screenshot-*.png"))
+    if cached:
+        result = [f.read_bytes() for f in cached]
+        print(f"  ✓ Reference screenshots (cached): {len(result)} sections from {url}")
+        return result
+
+    # Also accept the old single-file cache for backwards compat
+    old_cache = ref_dir / "reference-screenshot.png"
+    if old_cache.exists():
+        old_cache.unlink()  # delete old single screenshot to force re-capture
+
+    print(f"  → Capturing full reference site: {url}")
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            page = browser.new_page()
+            page.set_viewport_size({"width": VIEWPORT_W, "height": VIEWPORT_H})
+            page.goto(url, wait_until="networkidle", timeout=40000)
+            page.wait_for_timeout(3000)  # let lazy-loaded content + animations settle
+
+            # Measure total page height
+            total_height = page.evaluate("document.documentElement.scrollHeight")
+            print(f"  → Page height: {total_height}px — capturing sections...")
+
+            # Distribute up to 6 scroll positions evenly across full page height
+            MAX_SECTIONS = 6
+            if total_height <= VIEWPORT_H:
+                offsets = [0]
+            else:
+                # Evenly spaced: first at top, last near bottom
+                offsets = [
+                    int(i * (total_height - VIEWPORT_H) / (MAX_SECTIONS - 1))
+                    for i in range(MAX_SECTIONS)
+                ]
+
+            sections = []
+            for i, y_offset in enumerate(offsets):
+                # Scroll to position, wait for any scroll-triggered animations
+                page.evaluate(f"window.scrollTo(0, {y_offset})")
+                page.wait_for_timeout(800)
+                # Screenshot captures exactly what's visible in the viewport
+                png = page.screenshot(full_page=False)
+                path = ref_dir / f"reference-screenshot-{i+1:02d}.png"
+                path.write_bytes(png)
+                sections.append(png)
+                print(f"  ✓ Section {i+1}/{len(offsets)}: scroll y={y_offset}px → {len(png)//1024}KB")
+
+            browser.close()
+
+        print(f"  ✓ Reference capture complete: {len(sections)} sections, "
+              f"total {sum(len(s) for s in sections)//1024}KB")
+        return sections
+
+    except Exception as e:
+        print(f"  WARNING: Could not capture reference screenshots: {e}")
+        return []
+
+
 def load_generation_log() -> list:
     """Load generation log tracking layout/style choices per client.
     Used to prevent repetition across clients.
@@ -376,14 +452,44 @@ def load_prompts(template_name: str) -> dict:
     }
 
 
-def call_claude(client: anthropic.Anthropic, system_prompt: str, user_message: str, step_name: str, max_tokens: int = 8192) -> str:
+def call_claude(client: anthropic.Anthropic, system_prompt: str, user_message: str, step_name: str, max_tokens: int = 8192, image_bytes: bytes | None = None, image_bytes_list: list[bytes] | None = None) -> str:
+    """Call Claude API. Supports vision via image_bytes (single) or image_bytes_list (multiple).
+
+    When multiple images are provided, they are sent in order before the text message
+    so Claude can analyze all sections of a reference site in one call.
+    """
     print(f"\n  → Running: {step_name}...")
+
+    import base64
+
+    def _img_block(png: bytes) -> dict:
+        return {
+            "type": "image",
+            "source": {
+                "type": "base64",
+                "media_type": "image/png",
+                "data": base64.standard_b64encode(png).decode("utf-8"),
+            },
+        }
+
+    # Build content list
+    images = image_bytes_list or ([image_bytes] if image_bytes else [])
+    if images:
+        content = []
+        if len(images) > 1:
+            content.append({"type": "text", "text": f"The following {len(images)} images show the reference website from top to bottom (section by section):"})
+        for png in images:
+            content.append(_img_block(png))
+        content.append({"type": "text", "text": user_message})
+        print(f"  → Vision: {len(images)} image(s) attached")
+    else:
+        content = user_message
 
     message = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=max_tokens,
         system=system_prompt,
-        messages=[{"role": "user", "content": user_message}],
+        messages=[{"role": "user", "content": content}],
     )
 
     result = message.content[0].text
@@ -1343,6 +1449,36 @@ def run_pipeline(client_id: str):
     prompts = load_prompts(template_name)
     brief_str = json.dumps(brief, indent=2)
     dna_str = json.dumps(client_dna, indent=2) if client_dna else "{}"
+
+    # Extract reference inspiration from DNA — used to ground brand-strategist decisions
+    ref_inspiration = client_dna.get("reference_inspiration", {}) if client_dna else {}
+    ref_url = ref_inspiration.get("url", "")
+    ref_screenshots: list[bytes] = []
+    if ref_url:
+        ref_screenshots = load_reference_screenshots(ref_url, client_id)
+
+    # Build a formatted design reference block — injected prominently into brand-strategist
+    if ref_inspiration:
+        _what_take = ref_inspiration.get("what_to_take", "")
+        _what_improve = ref_inspiration.get("what_to_improve", "")
+        _avoid = ref_inspiration.get("avoid", "")
+        reference_design_block = (
+            f"\n{'='*60}\n"
+            f"DESIGN REFERENCE (MANDATORY — translate every point into JSON decisions):\n"
+            f"  URL: {ref_url}\n"
+            f"  TAKE (replicate these structural patterns):\n    {_what_take}\n"
+            f"  IMPROVE (go further than the reference here):\n    {_what_improve}\n"
+            f"  AVOID (do NOT copy these literally):\n    {_avoid}\n"
+            + (f"  ⚠ {len(ref_screenshots)} screenshots of the full reference site are attached in order\n"
+               f"    (top → bottom). Analyze every section: hero, services, metrics, testimonials,\n"
+               f"    footer. Extract layout grid, spacing rhythm, color palette, and typography scale.\n"
+               if ref_screenshots else "")
+            + f"{'='*60}\n"
+        )
+        print(f"  ✓ Reference inspiration loaded: {ref_url} | {len(ref_screenshots)} sections captured")
+    else:
+        reference_design_block = ""
+
     print(f"  ✓ Template: {template_name} | Language: {config['language']} | Goal: {config['goal']}")
     print(f"  ✓ Features: lazy_loading={config.get('features',{}).get('lazy_loading')} | "
           f"schema_org={config.get('features',{}).get('schema_org')} | "
@@ -1357,6 +1493,7 @@ def run_pipeline(client_id: str):
     if client_dna: active_systems.append("client-dna")
     if client_facts: active_systems.append("client-facts")
     if client_images.get("header_logo") or client_images.get("services"): active_systems.append("client-images")
+    if ref_url: active_systems.append(f"reference-site({len(ref_screenshots)} sections)" if ref_screenshots else "reference-site(text-only)")
     if active_systems:
         print(f"  ✓ Active systems: {', '.join(active_systems)}")
 
@@ -1379,19 +1516,22 @@ def run_pipeline(client_id: str):
     brand_strategy = {}
     if prompts.get("brand_strategist"):
         print("\n[2.5/7] Brand Strategy")
+        brand_msg = (
+            f"Define brand strategy and design decisions for this client. Return ONLY valid JSON.\n\n"
+            f"BUSINESS ANALYSIS:\n{json.dumps(analysis, indent=2)}\n\n"
+            f"CLIENT BRIEF:\n{brief_str}\n\n"
+            f"CLIENT DNA:\n{dna_str}\n\n"
+            + reference_design_block
+            + f"Return JSON with: style_mode, design_concept, hero_variant, layout_variation, "
+            f"visual_intensity, spacing_scale, image_direction, primary_color, accent_color, "
+            f"visual_break, section_layout_overrides, forbidden_patterns, layout_notes, reference_applied"
+        )
         brand_raw, _ = call_claude(
             client,
             system_prompt=prompts["brand_strategist"],
-            user_message=(
-                f"Define brand strategy and design decisions for this client. Return ONLY valid JSON.\n\n"
-                f"BUSINESS ANALYSIS:\n{json.dumps(analysis, indent=2)}\n\n"
-                f"CLIENT BRIEF:\n{brief_str}\n\n"
-                f"CLIENT DNA:\n{dna_str}\n\n"
-                f"Return JSON with: style_mode, design_concept, hero_variant, layout_variation, "
-                f"visual_intensity, spacing_scale, image_direction, primary_color, accent_color, "
-                f"visual_break, section_layout_overrides, forbidden_patterns, layout_notes"
-            ),
+            user_message=brand_msg,
             step_name="Brand Strategist",
+            image_bytes_list=ref_screenshots if ref_screenshots else None,
         )
         brand_json_str = extract_json(brand_raw)
         try:
@@ -1408,6 +1548,8 @@ def run_pipeline(client_id: str):
                   f"layout={brand_strategy.get('layout_variation')} | "
                   f"hero={brand_strategy.get('hero_variant')} | "
                   f"color={brand_strategy.get('primary_color')}")
+            if brand_strategy.get("reference_applied"):
+                print(f"  ✓ Reference applied: {brand_strategy['reference_applied'][:100]}")
         except json.JSONDecodeError:
             print("  WARNING: Brand strategist returned invalid JSON — continuing without brand strategy")
             brand_strategy = {}

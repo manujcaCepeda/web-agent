@@ -42,11 +42,28 @@ If `client_dna` is present → it takes priority over analysis defaults.
 - What is explicitly forbidden?
 - What layout signature was chosen?
 
-### 3. Check against the repetition rules below
+### 3. APPLY REFERENCE INSPIRATION (CRITICAL — if present in DNA or prompt)
+
+If a `reference_inspiration` block OR a `DESIGN REFERENCE ANALYSIS` section is provided:
+
+**You MUST extract and apply these signals:**
+- `what_to_take` → the structural and visual patterns to replicate in spirit (not copy exactly)
+- `what_to_improve` → areas where this site should go FURTHER than the reference
+- `avoid` → what must NOT be copied verbatim
+
+**Concrete actions:**
+- If reference uses clean whitespace → set `spacing_scale: "generous"` or `"editorial"`
+- If reference has prominent stats → include `visual_break.type: "dark-metrics-band"` with those stats
+- If reference has a comparison table → include it in `layout_notes` and `key_sections`
+- If a screenshot of the reference is provided → analyze the layout grid, hero structure, and color palette directly
+
+**DO NOT** treat this as informational. Translate every `what_to_take` point into a concrete JSON field decision.
+
+### 4. Check against the repetition rules below
 - Would this output look like any previous client?
 - If yes → choose a different layout_variation, hero_variant, or visual_break concept
 
-### 4. Define concrete, specific decisions
+### 5. Define concrete, specific decisions
 - Not "professional" — say **which** colors, **which** layout structure, **which** section patterns
 - Every field must be specific enough to generate unique HTML
 
@@ -172,7 +189,8 @@ Return ONLY valid JSON — no markdown, no explanations:
     "testimonials": ""
   },
   "forbidden_patterns": [],
-  "layout_notes": ""
+  "layout_notes": "",
+  "reference_applied": ""
 }
 ```
 
@@ -195,6 +213,7 @@ Return ONLY valid JSON — no markdown, no explanations:
 | `section_layout_overrides` | Per-section layout variation names |
 | `forbidden_patterns` | Patterns specifically banned for this client |
 | `layout_notes` | Any additional instruction for UI designer / frontend dev |
+| `reference_applied` | 1-2 sentences: what you took from the reference and how it appears in your decisions |
 
 ---
 

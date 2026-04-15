@@ -87,11 +87,21 @@
     .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease; }
     .card-hover:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(15,45,82,0.12); }
 
-    .hero-bg { background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%); }
-
     .nav-link { position: relative; }
     .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--color-primary); transition: width 0.25s ease; border-radius: 1px; }
     .nav-link:hover::after { width: 100%; }
+
+    /* Browser mockup */
+    .browser-frame { background:#fff; border-radius:12px; box-shadow:0 24px 80px rgba(15,23,42,0.18), 0 0 0 1px rgba(15,23,42,0.07); overflow:hidden; }
+    .browser-bar { background:#F1F5F9; padding:10px 14px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #E2E8F0; }
+    .browser-dot { width:10px; height:10px; border-radius:50%; }
+    .browser-url { flex:1; background:#fff; border-radius:6px; padding:4px 10px; font-size:11px; color:#94A3B8; font-family:monospace; border:1px solid #E2E8F0; }
+
+    /* Stat floating card */
+    .stat-card-float { position:absolute; background:#fff; border-radius:14px; box-shadow:0 12px 40px rgba(15,23,42,0.14); padding:14px 18px; display:flex; align-items:center; gap:12px; border:1px solid #F1F5F9; z-index:10; }
+
+    /* Logo brand strip */
+    .logo-strip-item { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:10px; background:#F8FAFC; border:1px solid #E8EDF4; font-weight:700; font-size:13px; color:#475569; white-space:nowrap; }
   </style>
   <script type="application/ld+json">
 {
@@ -184,88 +194,157 @@
 </header>
 
 <!-- ═══════════════════════════════════════════════════════ HERO -->
-<section id="hero" class="hero-bg overflow-hidden py-14 md:py-20 lg:py-24">
+<section id="hero" class="bg-white overflow-hidden pt-16 pb-0 md:pt-24 md:pb-0">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-10 xl:gap-16 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-center min-h-[82vh]">
 
-      <!-- Text Column -->
-      <div class="order-last lg:order-first">
+      <!-- ── Left Column ── -->
+      <div class="order-last lg:order-first pb-16 lg:pb-24">
 
-        <!-- Trust Pill Badge -->
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-7 border"
-          style="background:rgba(79,70,229,0.08); color:#4F46E5; border-color:rgba(79,70,229,0.2);">
-          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
-          </svg>
-          5 años entregando sitios en Ecuador, Colombia y Perú
+        <!-- Eyebrow pill -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8 border"
+          style="background:rgba(79,70,229,0.07); color:#4F46E5; border-color:rgba(79,70,229,0.18);">
+          <span class="w-2 h-2 rounded-full flex-shrink-0 animate-pulse" style="background:#4F46E5;"></span>
+          Agencia web premium — Ecuador
         </div>
 
-        <!-- H1 -->
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 leading-tight tracking-tight mb-6">
-          Tu negocio en Ecuador merece un sitio web que venda
-          <span class="block mt-2" style="color:var(--color-primary);">— no solo uno que exista</span>
+        <!-- H1 — very large, like reference -->
+        <h1 class="font-black leading-[1.05] tracking-tight mb-6" style="font-size:clamp(2.6rem,5.5vw,4rem); color:#0F172A;">
+          Tu negocio merece<br>
+          un sitio que venda,<br>
+          <span style="color:#4F46E5;">no solo que exista.</span>
         </h1>
 
-        <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-2xl">
-          Diseñamos tu sitio web profesional en <strong class="text-gray-900">7 días hábiles</strong>, a medida, sin plantillas genéricas. Más de <strong class="text-gray-900">47 negocios en Ecuador</strong> ya tienen presencia digital que genera contactos reales.
+        <p class="text-lg text-gray-500 leading-relaxed mb-10 max-w-lg">
+          Diseñamos sitios web profesionales en <strong class="text-gray-800 font-semibold">7 días hábiles</strong>, a medida,
+          sin plantillas. Ya son <strong class="text-gray-800 font-semibold">47 negocios</strong> en Ecuador con presencia digital que genera contactos reales.
         </p>
 
         <!-- CTAs -->
-        <div class="flex flex-col sm:flex-row gap-4 mb-8">
-          <a href="#contact" class="btn-primary px-8 py-4 text-base">
-            Agenda tu asesoría gratuita
-            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+        <div class="flex flex-col sm:flex-row gap-4 mb-12">
+          <a href="#contact" class="btn-primary px-8 py-4 text-base font-bold">
+            Agenda tu asesoría gratis
+            <svg class="w-4 h-4 ml-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
             </svg>
           </a>
-          <a href="#pricing" class="btn-outline px-8 py-4 text-base justify-center">Ver planes y precios</a>
+          <a href="#pricing" class="btn-outline px-8 py-4 text-base font-semibold justify-center">Ver planes y precios</a>
         </div>
 
-        <!-- Star Rating -->
-        <div class="flex items-center gap-3">
-          <div class="flex text-amber-400 text-lg leading-none">★★★★★</div>
-          <span class="text-sm font-semibold text-gray-700">100% de proyectos entregados en plazo · 47 clientes atendidos</span>
+        <!-- 4 quick stats row — like reference -->
+        <div class="flex flex-wrap gap-x-8 gap-y-4 pt-8 border-t border-gray-100">
+          <div>
+            <p class="text-3xl font-black leading-none" style="color:#0F172A;">47+</p>
+            <p class="text-xs text-gray-500 font-medium mt-1">Sitios entregados</p>
+          </div>
+          <div>
+            <p class="text-3xl font-black leading-none" style="color:#0F172A;">7 días</p>
+            <p class="text-xs text-gray-500 font-medium mt-1">Tiempo de entrega</p>
+          </div>
+          <div>
+            <p class="text-3xl font-black leading-none" style="color:#0F172A;">100%</p>
+            <p class="text-xs text-gray-500 font-medium mt-1">A tiempo, siempre</p>
+          </div>
+          <div>
+            <p class="text-3xl font-black leading-none" style="color:#0F172A;">$0</p>
+            <p class="text-xs text-gray-500 font-medium mt-1">Costos ocultos</p>
+          </div>
         </div>
       </div>
 
-      <!-- Image Column -->
-      <div class="relative order-first lg:order-last">
-        <div class="img-zoom rounded-2xl overflow-hidden shadow-xl" style="border:2px solid rgba(79,70,229,0.15);">
-          <img
-            src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1200&h=800&fit=crop&crop=center&auto=format&q=85"
-            alt="Diseño web profesional en Ecuador — SitioPro"
-            class="w-full h-[380px] sm:h-[440px] lg:h-[520px] object-cover object-top"
-            loading="eager"
-            onerror="this.onerror=null;this.style.background='linear-gradient(135deg,#4F46E5 0%,#818CF8 100%)';this.removeAttribute('src')">
-          <div class="absolute inset-0 rounded-2xl pointer-events-none" style="background:linear-gradient(180deg, transparent 55%, rgba(79,70,229,0.12) 100%);"></div>
+      <!-- ── Right Column — Browser Mockup ── -->
+      <div class="relative order-first lg:order-last flex items-end justify-center lg:justify-end self-end">
+
+        <!-- Decorative blob -->
+        <div class="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none -z-0"
+          style="background:radial-gradient(circle at 70% 30%, rgba(79,70,229,0.10) 0%, rgba(79,70,229,0.02) 60%, transparent 80%);"></div>
+
+        <!-- Browser mockup -->
+        <div class="browser-frame w-full max-w-[520px] relative z-10 -mb-px">
+          <!-- Browser bar -->
+          <div class="browser-bar">
+            <span class="browser-dot" style="background:#FF5F56;"></span>
+            <span class="browser-dot" style="background:#FFBD2E;"></span>
+            <span class="browser-dot" style="background:#27C93F;"></span>
+            <span class="browser-url">sitiopro.ec/tu-negocio</span>
+          </div>
+          <!-- Screenshot placeholder — preview of a real web project -->
+          <div class="relative overflow-hidden" style="aspect-ratio:16/10;">
+            <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1040&h=650&fit=crop&crop=top&auto=format&q=90"
+              alt="Sitio web profesional Ecuador — SitioPro"
+              class="w-full h-full object-cover object-top"
+              loading="eager"
+              onerror="this.onerror=null;this.style.background='linear-gradient(135deg,#4F46E5 0%,#818CF8 100%)';this.removeAttribute('src')">
+            <!-- Subtle overlay so it feels like a preview -->
+            <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(to bottom, transparent 70%, rgba(15,23,42,0.06) 100%);"></div>
+          </div>
         </div>
 
-        <!-- Floating Stat Badge -->
-        <div class="stat-badge-float">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(245,158,11,0.15);">
-            <svg class="w-6 h-6" style="color:var(--color-accent);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        <!-- Floating card 1 — top left -->
+        <div class="stat-card-float" style="top:-1.5rem; left:-1.5rem; max-width:180px;">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(79,70,229,0.1);">
+            <svg class="w-5 h-5" style="color:#4F46E5;" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
           <div>
-            <p class="text-2xl font-black leading-none" style="color:var(--color-primary);">7 días</p>
-            <p class="text-xs text-gray-500 font-medium mt-0.5 leading-tight">Entrega promedio<br>garantizada</p>
+            <p class="text-sm font-black leading-none" style="color:#0F172A;">7 días hábiles</p>
+            <p class="text-xs text-gray-400 mt-0.5">Entrega garantizada</p>
           </div>
         </div>
 
-        <!-- Decorative Accent -->
-        <div class="absolute -top-4 -right-4 w-24 h-24 rounded-full opacity-40 pointer-events-none z-0"
-          style="background:radial-gradient(circle, rgba(79,70,229,0.25) 0%, transparent 70%);"></div>
-        <div class="absolute -bottom-2 right-8 w-16 h-16 rounded-full opacity-30 pointer-events-none z-0"
-          style="background:radial-gradient(circle, rgba(245,158,11,0.4) 0%, transparent 70%);"></div>
-      </div>
+        <!-- Floating card 2 — bottom right -->
+        <div class="stat-card-float" style="bottom:2rem; right:-1.5rem; max-width:196px;">
+          <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style="background:rgba(245,158,11,0.12);">
+            <svg class="w-5 h-5" style="color:#F59E0B;" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-sm font-black leading-none" style="color:#0F172A;">47 negocios</p>
+            <p class="text-xs text-gray-400 mt-0.5">Ya tienen su sitio online</p>
+          </div>
+        </div>
 
+      </div>
     </div>
   </div>
 </section>
 
-<!-- END PART 1 -->
-<!-- END PART 1 -->
+<!-- ═══════════════════════════════════════════ LOGO / PROOF BAND -->
+<section class="py-10 border-y border-gray-100" style="background:#F8FAFC;">
+  <div class="max-w-6xl mx-auto px-6">
+    <p class="text-center text-xs font-bold tracking-widest uppercase text-gray-400 mb-7">
+      Negocios que ya confían en SitioPro
+    </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <span class="logo-strip-item">
+        <svg class="w-4 h-4 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3z"/></svg>
+        Restaurante El Sabor
+      </span>
+      <span class="logo-strip-item">
+        <svg class="w-4 h-4 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+        Clínica DentalPlus
+      </span>
+      <span class="logo-strip-item">
+        <svg class="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"/><path fill-rule="evenodd" d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" clip-rule="evenodd"/></svg>
+        TecnoStore Ecuador
+      </span>
+      <span class="logo-strip-item">
+        <svg class="w-4 h-4 text-indigo-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/></svg>
+        Consultoría MKT Pro
+      </span>
+      <span class="logo-strip-item">
+        <svg class="w-4 h-4 text-rose-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"/></svg>
+        Spa & Wellness Quito
+      </span>
+      <span class="logo-strip-item">
+        <svg class="w-4 h-4 text-sky-500" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
+        Inmobiliaria BienVivir
+      </span>
+    </div>
+  </div>
+</section>
 
 <!-- ==================== SERVICES SECTION ==================== -->
 <section id="services" class="py-14 md:py-20" style="background:#F8FAFC;">
@@ -377,43 +456,71 @@
 </section>
 
 <!-- ==================== VISUAL BREAK — DARK METRICS BAND ==================== -->
-<section id="metrics" class="relative py-20" style="background:#0F172A; border-top:1px solid rgba(79,70,229,0.25); border-bottom:1px solid rgba(79,70,229,0.25);">
+<section id="metrics" class="relative py-24" style="background:#0F172A;">
+  <!-- Top border glow -->
+  <div class="absolute inset-x-0 top-0 h-px" style="background:linear-gradient(to right, transparent, #4F46E5, #F59E0B, #4F46E5, transparent);"></div>
+
   <div class="max-w-7xl mx-auto px-6">
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-10 text-center">
+    <!-- Headline above stats -->
+    <div class="text-center mb-16 reveal-element">
+      <p class="text-xs font-bold uppercase tracking-widest mb-4" style="color:#F59E0B;">Los números no mienten</p>
+      <h2 class="text-3xl md:text-4xl font-black leading-tight" style="color:#F8FAFC;">
+        Resultados reales.<br>
+        <span style="color:#818CF8;">Sin humo. Sin demoras.</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
 
       <!-- Stat 1 -->
-      <div class="reveal-element" style="transition-delay:0ms;">
-        <p class="text-5xl md:text-7xl font-black leading-none mb-3" style="color:#F59E0B;">47</p>
-        <p class="text-xs font-bold uppercase tracking-widest" style="color:#CBD5E1;">Sitios Entregados</p>
+      <div class="reveal-element group" style="transition-delay:0ms;">
+        <p class="text-6xl md:text-8xl font-black leading-none mb-4" style="color:#F59E0B;">47</p>
+        <div class="w-8 h-0.5 mx-auto mb-3 rounded-full" style="background:rgba(79,70,229,0.5);"></div>
+        <p class="text-xs font-bold uppercase tracking-widest" style="color:#94A3B8;">Sitios entregados</p>
+        <p class="text-xs mt-1" style="color:rgba(148,163,184,0.5);">Ecuador, Colombia y Perú</p>
       </div>
 
       <!-- Stat 2 -->
-      <div class="reveal-element" style="transition-delay:120ms;">
-        <p class="text-5xl md:text-7xl font-black leading-none mb-3" style="color:#F59E0B;">7</p>
-        <p class="text-xs font-bold uppercase tracking-widest" style="color:#CBD5E1;">Días Promedio de Entrega</p>
+      <div class="reveal-element group" style="transition-delay:100ms;">
+        <p class="text-6xl md:text-8xl font-black leading-none mb-4" style="color:#F59E0B;">7</p>
+        <div class="w-8 h-0.5 mx-auto mb-3 rounded-full" style="background:rgba(79,70,229,0.5);"></div>
+        <p class="text-xs font-bold uppercase tracking-widest" style="color:#94A3B8;">Días de entrega</p>
+        <p class="text-xs mt-1" style="color:rgba(148,163,184,0.5);">Promedio garantizado</p>
       </div>
 
       <!-- Stat 3 -->
-      <div class="reveal-element" style="transition-delay:240ms;">
-        <p class="text-5xl md:text-7xl font-black leading-none mb-3" style="color:#F59E0B;">100%</p>
-        <p class="text-xs font-bold uppercase tracking-widest" style="color:#CBD5E1;">Proyectos a Tiempo</p>
+      <div class="reveal-element group" style="transition-delay:200ms;">
+        <p class="text-6xl md:text-8xl font-black leading-none mb-4" style="color:#F59E0B;">100%</p>
+        <div class="w-8 h-0.5 mx-auto mb-3 rounded-full" style="background:rgba(79,70,229,0.5);"></div>
+        <p class="text-xs font-bold uppercase tracking-widest" style="color:#94A3B8;">Proyectos a tiempo</p>
+        <p class="text-xs mt-1" style="color:rgba(148,163,184,0.5);">Cero retrasos</p>
       </div>
 
       <!-- Stat 4 -->
-      <div class="reveal-element" style="transition-delay:360ms;">
-        <p class="text-5xl md:text-7xl font-black leading-none mb-3" style="color:#F59E0B;">$0</p>
-        <p class="text-xs font-bold uppercase tracking-widest" style="color:#CBD5E1;">Costos Ocultos</p>
+      <div class="reveal-element group" style="transition-delay:300ms;">
+        <p class="text-6xl md:text-8xl font-black leading-none mb-4" style="color:#F59E0B;">$0</p>
+        <div class="w-8 h-0.5 mx-auto mb-3 rounded-full" style="background:rgba(79,70,229,0.5);"></div>
+        <p class="text-xs font-bold uppercase tracking-widest" style="color:#94A3B8;">Costos ocultos</p>
+        <p class="text-xs mt-1" style="color:rgba(148,163,184,0.5);">Precio fijo desde el día 1</p>
       </div>
 
     </div>
 
-    <!-- Supporting line -->
-    <p class="text-center mt-12 text-sm font-medium" style="color:rgba(148,163,184,0.7);">
-      Datos reales de proyectos entregados desde 2019 en Ecuador, Colombia y Perú.
-    </p>
-
+    <!-- CTA inside dark band -->
+    <div class="mt-16 text-center reveal-element">
+      <a href="#contact" class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-sm transition-all duration-200 hover:-translate-y-0.5"
+        style="background:#4F46E5; color:#fff; box-shadow:0 0 40px rgba(79,70,229,0.4);">
+        Empezá hoy — asesoría sin costo
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+    </div>
   </div>
+
+  <!-- Bottom border glow -->
+  <div class="absolute inset-x-0 bottom-0 h-px" style="background:linear-gradient(to right, transparent, #4F46E5, #F59E0B, #4F46E5, transparent);"></div>
 </section>
 
 <!-- ==================== INLINE CTA BANNER ==================== -->
