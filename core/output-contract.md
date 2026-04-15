@@ -117,8 +117,27 @@ All agents MUST:
 `process_steps` — How it works (3 numbered steps). Required for agency template.
 `comparison` — Side-by-side comparison rows (us vs. traditional). Required for agency template.
 `pricing` — Pricing tiers (2–3 plans). Required for agency template.
+`portfolio` — Work samples / case studies (2–3 projects). **REQUIRED for digital-agency / creative-studio template. OPTIONAL for other types.**
 
 These fields are OPTIONAL for healthcare/restaurant templates but REQUIRED for agency template.
+
+### Portfolio field structure:
+```json
+"portfolio": [
+  {
+    "title": "",
+    "category": "",
+    "outcome": "",
+    "image": "",
+    "url": "#"
+  }
+]
+```
+- `title` — Project/client name (e.g. "Mariscos Don Pepe")
+- `category` — Industry type (e.g. "Restaurante", "Clínica", "Tienda Online")
+- `outcome` — 1 measurable result (e.g. "47 pedidos/semana desde Google")
+- `image` — Resolved image URL (screenshot or industry photo)
+- `url` — Link to live project or "#" if not public
 
 ---
 

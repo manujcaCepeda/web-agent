@@ -756,7 +756,7 @@ def build_section_flow(page_personality: str, section_order: list, has_process: 
     # Part 1 always: hero (fixed)
     # Part 2: services-region sections
     # FIX #2: logo-band added — was silently dropped from section_order if included
-    part2_ids = {"services", "cta-banner", "benefits", "trust-band", "stats-bar", "how-it-works", "comparison", "badge-grid", "logo-band"}
+    part2_ids = {"services", "cta-banner", "benefits", "trust-band", "stats-bar", "how-it-works", "comparison", "badge-grid", "logo-band", "portfolio"}
     # Part 3: testimonials-region sections
     # FIX B1: visual-break removed — the post-processing block (lines below) handles placement
     # exclusively. Having it here caused it to appear in BOTH part2 AND part3 simultaneously.
@@ -852,6 +852,19 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     process_steps = seo_data.get("process_steps") or brief.get("process_steps", [])
     comparison = seo_data.get("comparison") or brief.get("comparison", [])
     pricing = seo_data.get("pricing") or brief.get("pricing", [])
+    # Portfolio: from brief.json or auto-generated from testimonials if empty
+    portfolio = brief.get("portfolio", [])
+    if not portfolio and "portfolio" in (brand_strategy.get("section_order") or []):
+        # Auto-generate portfolio items from testimonials (same clients, consistent narrative)
+        testimonials_raw = seo_data.get("testimonials", [])
+        for i, t in enumerate(testimonials_raw[:3]):
+            portfolio.append({
+                "title": t.get("business", t.get("name", f"Proyecto {i+1}")),
+                "category": t.get("role", "Sitio Web"),
+                "outcome": t.get("result", t.get("text", "")[:60] + "..."),
+                "image": "",
+                "url": "#"
+            })
     features = config.get("features", {})
     use_lazy_loading = features.get("lazy_loading", True)
     use_schema_org = features.get("schema_org", True)
@@ -859,6 +872,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     process_steps_json = json.dumps(process_steps, indent=2) if process_steps else "[]"
     comparison_json = json.dumps(comparison, indent=2) if comparison else "[]"
     pricing_json = json.dumps(pricing, indent=2) if pricing else "[]"
+    portfolio_json = json.dumps(portfolio, indent=2) if portfolio else "[]"
 
     # Build verified facts block — injected into all 3 parts as single source of truth
     facts_section = (
@@ -1240,6 +1254,26 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"{vb_part2_instruction}"
     )
     p2_n += 1
+    if "portfolio" in part2_sections:
+        p2_items.append(
+            f"{p2_n}. <section id='portfolio' class='py-14 md:py-20 bg-gray-50'>:\n"
+            f"   PORTFOLIO / WORK SHOWCASE — the #1 trust signal for a design agency.\n"
+            f"   Section header: NO pill badge — enter directly with a large H2 (Pattern B).\n"
+            f"   Layout: 3-column grid of project cards (md:grid-cols-3).\n"
+            f"   Each card structure:\n"
+            f"     1. BROWSER MOCKUP FRAME (CSS-only, no external images):\n"
+            f"        - Top bar: dark bg (#1E2330), 3 colored dots (red/yellow/green), fake URL field\n"
+            f"        - Content: <img> with project image, height 200px, object-cover\n"
+            f"     2. PROJECT INFO below mockup:\n"
+            f"        - Category badge (pill, indigo tint)\n"
+            f"        - Project title (font-bold, text-gray-900)\n"
+            f"        - Outcome chip: small green badge with the result metric\n"
+            f"   Card hover: translateY(-4px) + shadow-xl\n"
+            f"   Use portfolio data: {portfolio_json[:400]}\n"
+            f"   CRITICAL: If portfolio data has no image URL, use the onerror fallback gradient.\n"
+            f"   See PORTFOLIO blueprint in your instructions for exact HTML structure.\n"
+        )
+        p2_n += 1
     if "cta-banner" in part2_sections:
         p2_items.append(
             f"{p2_n}. Inline CTA banner: gradient bg (primary to secondary), headline, subheadline, button → href='#contact'\n"

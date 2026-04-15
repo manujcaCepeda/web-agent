@@ -202,7 +202,7 @@ section_order: ["hero", "services", "how-it-works", "cta-banner", "stats-bar", "
 
 **`product`** — demo-driven, proof-heavy:
 ```
-section_order: ["hero", "logo-band", "services", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
+section_order: ["hero", "logo-band", "services", "portfolio", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
 ```
 
 **RULES:**
@@ -210,6 +210,12 @@ section_order: ["hero", "logo-band", "services", "how-it-works", "visual-break",
 - `authority` → MUST include stats-bar with large numbers early
 - `storytelling` → MUST include wow-section + emotional quote
 - `product` → MUST include how-it-works and MAY include comparison table
+- `product` + `business_type = digital-agency` → MUST include `portfolio` after services — this is the single most important trust signal for a creative agency
+
+### Portfolio data rule (digital-agency / creative-studio):
+If the brief does NOT include `portfolio[]` items, generate 2–3 fictitious but plausible projects using the testimonial clients as the basis (same names, industries, outcomes from `brief.testimonials[]`). This ensures the portfolio is always populated and consistent with testimonials.
+
+Example: if testimonials mention "Carlos Mendoza — Mariscos Don Pepe", the portfolio should include a "Mariscos Don Pepe" card with restaurant category and the outcome from that testimonial.
 
 ---
 

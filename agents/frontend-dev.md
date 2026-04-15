@@ -1801,6 +1801,119 @@ HERO RULES (ALL VARIANTS):
 
 ---
 
+### PORTFOLIO
+
+**TRIGGER:** Render when `section_order` includes `"portfolio"`. Required for `digital-agency` / `creative-studio` business types.
+
+**CONCEPT:** Proof of work. A design agency that doesn't show its designs doesn't exist. This section is the single strongest trust signal — it makes every copywriting claim concrete and visual. Place it immediately after services.
+
+**SECTION HEADER:** Pattern B (NO pill badge — enter directly with large H2):
+```html
+<div class="mb-12 reveal-element">
+  <h2 class="text-4xl md:text-5xl font-black leading-tight mb-4" style="color:#0F172A;">
+    Nuestro trabajo,<br>por sí solo.
+  </h2>
+  <p class="text-lg" style="color:var(--color-text-muted);">Proyectos reales. Resultados reales.</p>
+</div>
+```
+
+**PORTFOLIO CARD BLUEPRINT (repeat for each `brief.portfolio[]` item):**
+```html
+<!-- ═══════════════════════════════════════ PORTFOLIO -->
+<section id="portfolio" class="py-14 md:py-20 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Header: Pattern B — no pill -->
+    <div class="mb-12 reveal-element">
+      <h2 class="text-4xl md:text-5xl font-black leading-tight mb-4" style="color:#0F172A;">
+        Nuestro trabajo,<br>por sí solo.
+      </h2>
+      <p class="text-lg" style="color:var(--color-text-muted);">Proyectos reales. Resultados reales.</p>
+    </div>
+
+    <!-- 3-col project grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      {{#each brief.portfolio}}
+      <!-- Portfolio card -->
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 reveal-element"
+        style="transition-delay:{{@index}}00ms; border:1px solid rgba(0,0,0,0.06);">
+
+        <!-- Browser mockup frame -->
+        <div class="relative">
+          <!-- Chrome bar -->
+          <div class="flex items-center gap-2 px-4 py-2.5" style="background:#1E2330;">
+            <div class="flex gap-1.5">
+              <div class="w-2.5 h-2.5 rounded-full" style="background:#FF5F57;"></div>
+              <div class="w-2.5 h-2.5 rounded-full" style="background:#FEBC2E;"></div>
+              <div class="w-2.5 h-2.5 rounded-full" style="background:#28C840;"></div>
+            </div>
+            <div class="flex-1 mx-2 px-3 py-1 rounded text-xs truncate"
+              style="background:#2D3347; color:rgba(255,255,255,0.35); font-size:10px;">
+              {{url}}
+            </div>
+          </div>
+          <!-- Screenshot area -->
+          <div class="overflow-hidden" style="height:200px;">
+            <img src="{{image}}"
+              alt="{{title}} — SitioPro"
+              class="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #4F46E5 0%, #3730A3 100%)';this.removeAttribute('src')">
+          </div>
+        </div>
+
+        <!-- Card info -->
+        <div class="p-5">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <span class="inline-block text-xs font-bold px-3 py-1 rounded-full"
+              style="background:rgba(79,70,229,0.08); color:var(--color-primary);">{{category}}</span>
+            {{#if outcome}}
+            <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full"
+              style="background:rgba(16,185,129,0.08); color:#059669;">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+              {{outcome}}
+            </span>
+            {{/if}}
+          </div>
+          <h3 class="font-bold text-gray-900 text-base leading-tight">{{title}}</h3>
+        </div>
+      </div>
+      {{/each}}
+
+    </div>
+
+    <!-- Bottom link -->
+    <div class="text-center mt-10 reveal-element">
+      <p class="text-sm text-gray-500 mb-4">¿Querés ver más proyectos?</p>
+      <a href="#contact" class="btn-outline px-8 py-3 text-sm font-semibold inline-flex items-center gap-2">
+        Hablemos de tu proyecto
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+```
+
+**DATA MAPPING:**
+- `{{title}}` → `brief.portfolio[].title`
+- `{{category}}` → `brief.portfolio[].category`
+- `{{outcome}}` → `brief.portfolio[].outcome`
+- `{{image}}` → `brief.portfolio[].image`
+- `{{url}}` → `brief.portfolio[].url` (show in browser bar — shorten to domain only, e.g. "mariscosdonpepe.ec")
+
+**STYLE NOTES:**
+- Never skip this section for digital-agency clients even if `portfolio[]` is empty — render 3 cards with gradient fallback backgrounds
+- onerror fallback: indigo gradient `linear-gradient(135deg, #4F46E5 0%, #3730A3 100%)` — looks like a branded placeholder, not a broken image
+- Card hover: combined translateY + shadow — the group-hover:scale-105 on the image creates a zoom effect
+
+---
+
 ### HOW-IT-WORKS
 
 **TRIGGER:** Render when `section_order` includes `"how-it-works"` AND `brief.process_steps[]` is not empty.
