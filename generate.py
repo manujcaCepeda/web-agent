@@ -662,6 +662,18 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     email = brief.get("contact_info", {}).get("email", "")
     address = brief.get("contact_info", {}).get("address", "")
     business_name = brief.get("business_name", "")
+
+    # EmailJS config — optional, read from config.json
+    emailjs_cfg = config.get("emailjs", {})
+    emailjs_public_key = emailjs_cfg.get("public_key", "")
+    emailjs_service_id = emailjs_cfg.get("service_id", "")
+    emailjs_template_id = emailjs_cfg.get("template_id", "")
+    has_emailjs = bool(emailjs_public_key and emailjs_service_id and emailjs_template_id
+                       and not emailjs_public_key.startswith("YOUR_"))
+    if has_emailjs:
+        print(f"  ✓ EmailJS configured: service={emailjs_service_id} | template={emailjs_template_id}")
+    else:
+        print(f"  ℹ  EmailJS not configured — add emailjs keys to config.json to enable email on form submit")
     seo = seo_data.get("seo", {})
     hero = seo_data.get("hero", {})
     services = seo_data.get("services", [])
@@ -915,7 +927,12 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"     {schema_block}\n"
         f"   - Analytics — insert EXACTLY as-is:\n"
         f"     {analytics_snippet if analytics_snippet else '<!-- analytics disabled -->'}\n"
-        f"2. <body> opens\n"
+        + (
+            f"   - EmailJS library — insert EXACTLY as-is (required for contact form email):\n"
+            f"     <script src='https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js'></script>\n"
+            if has_emailjs else ""
+        )
+        + f"2. <body> opens\n"
         f"{header_instruction}"
         f"4. Mobile nav dropdown (#mobile-menu hidden by default, same bg as header)\n"
         f"{hero_instruction}"
@@ -1125,11 +1142,17 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     part3_sections += f"{n}. Final CTA section: dark gradient bg, bold headline, subheadline, single primary CTA button\n"
     n += 1
 
+    _success_text = "✓ ¡Mensaje enviado! Te contactamos en breve." if _is_es else "✓ Message sent! We'll contact you shortly."
     part3_tail = (
         f"{n}. <section id='contact' class='py-20 bg-gray-50'>:\n"
-        f"   Split layout: left=contact form (name/phone/message/submit button), "
-        f"right=contact info card (phone:{phone}, email:{email}, address:{address}, hours:24/7)\n"
-        f"   Form id='contact-form', submit button id='form-submit-btn'\n"
+        f"   Split layout: left=contact form, right=contact info card (phone:{phone}, email:{email}, address:{address}, hours:24/7)\n"
+        f"   Form MUST have:\n"
+        f"     - id='contact-form'\n"
+        f"     - Name field:    <input type='text' name='from_name' required ...>\n"
+        f"     - Phone field:   <input type='tel' name='phone' ...>\n"
+        f"     - Message field: <textarea name='message' ...></textarea>\n"
+        f"     - Submit button id='form-submit-btn'\n"
+        f"     - Success message (hidden by default): <p id='form-success' class='hidden text-sm font-semibold text-center py-2' style='color:{{primary_color}};'>{_success_text}</p>\n"
     )
     n += 1
     part3_tail += (
@@ -1147,6 +1170,82 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"   Two buttons — Call Now (tel:{phone}) and WhatsApp (wa.me/{whatsapp})\n"
     )
     n += 1
+    # Build language-aware strings for JS
+    _is_es = brief.get("language", "es") == "es"
+    _sending = "Enviando…" if _is_es else "Sending…"
+    _sent    = "✓ ¡Enviado!" if _is_es else "✓ Sent!"
+    _hello   = "¡Hola" if _is_es else "Hello"
+    _phone_l = "Teléfono" if _is_es else "Phone"
+    _wa_fallback = (
+        f"`{_hello} {business_name}! Me interesa sus servicios.`"
+        if _is_es else
+        f"`{_hello} {business_name}! I'd like to learn more about your services.`"
+    )
+
+    # Build the form submit JS block based on whether EmailJS is configured
+    if has_emailjs:
+        _form_submit_js = (
+            f"   e) Contact form — EmailJS + WhatsApp (COPY VERBATIM — do not modify):\n"
+            f"      emailjs.init('{emailjs_public_key}');\n"
+            f"      const form = document.getElementById('contact-form');\n"
+            f"      if (form) {{\n"
+            f"        form.addEventListener('submit', function(e) {{\n"
+            f"          e.preventDefault();\n"
+            f"          const btn = document.getElementById('form-submit-btn');\n"
+            f"          const successMsg = document.getElementById('form-success');\n"
+            f"          const origText = btn.textContent;\n"
+            f"          btn.disabled = true; btn.textContent = '{_sending}';\n"
+            f"          btn.classList.add('opacity-75','cursor-not-allowed');\n"
+            f"          emailjs.sendForm('{emailjs_service_id}', '{emailjs_template_id}', form)\n"
+            f"            .then(function() {{\n"
+            f"              if (successMsg) successMsg.classList.remove('hidden');\n"
+            f"              btn.textContent = '{_sent}';\n"
+            f"              setTimeout(function() {{\n"
+            f"                const name    = form.querySelector('[name=\"from_name\"]')?.value || '';\n"
+            f"                const phone   = form.querySelector('[name=\"phone\"]')?.value     || '';\n"
+            f"                const message = form.querySelector('[name=\"message\"]')?.value   || '';\n"
+            f"                const waText  = encodeURIComponent(\n"
+            f"                  `{_hello} {business_name}! ${{name ? ('{('Soy' if _is_es else 'I am')} ' + name + '.') : ''}}` +\n"
+            f"                  (phone   ? `\\n{_phone_l}: ${{phone}}.` : '') +\n"
+            f"                  (message ? `\\n\\n${{message}}` : '')\n"
+            f"                );\n"
+            f"                window.open(`https://wa.me/{whatsapp}?text=${{waText}}`, '_blank');\n"
+            f"                form.reset();\n"
+            f"                btn.disabled = false; btn.textContent = origText;\n"
+            f"                btn.classList.remove('opacity-75','cursor-not-allowed');\n"
+            f"                if (successMsg) successMsg.classList.add('hidden');\n"
+            f"              }}, 1500);\n"
+            f"            }})\n"
+            f"            .catch(function(err) {{\n"
+            f"              console.error('EmailJS error:', err);\n"
+            f"              btn.disabled = false; btn.textContent = origText;\n"
+            f"              btn.classList.remove('opacity-75','cursor-not-allowed');\n"
+            f"              const name = form.querySelector('[name=\"from_name\"]')?.value || '';\n"
+            f"              window.open(`https://wa.me/{whatsapp}?text=${{encodeURIComponent({_wa_fallback})}}`, '_blank');\n"
+            f"            }});\n"
+            f"        }});\n"
+            f"      }}\n"
+        )
+    else:
+        _form_submit_js = (
+            f"   e) Contact form — WhatsApp only (no EmailJS configured):\n"
+            f"      const form = document.getElementById('contact-form');\n"
+            f"      if (form) {{\n"
+            f"        form.addEventListener('submit', function(e) {{\n"
+            f"          e.preventDefault();\n"
+            f"          const name    = form.querySelector('[name=\"from_name\"]')?.value || '';\n"
+            f"          const phone   = form.querySelector('[name=\"phone\"]')?.value     || '';\n"
+            f"          const message = form.querySelector('[name=\"message\"]')?.value   || '';\n"
+            f"          const waText  = encodeURIComponent(\n"
+            f"            `{_hello} {business_name}! ${{name ? ('{('Soy' if _is_es else 'I am')} ' + name + '.') : ''}}` +\n"
+            f"            (phone   ? `\\n{_phone_l}: ${{phone}}.` : '') +\n"
+            f"            (message ? `\\n\\n${{message}}` : '')\n"
+            f"          );\n"
+            f"          window.open(`https://wa.me/{whatsapp}?text=${{waText}}`, '_blank');\n"
+            f"        }});\n"
+            f"      }}\n"
+        )
+
     part3_tail += (
         f"{n}. ONE <script> block containing ALL JavaScript:\n"
         f"   a) IntersectionObserver: observe '.reveal-element, .reveal', add 'visible' class at threshold 0.1, "
@@ -1154,8 +1253,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"   b) FAQ accordion: querySelectorAll('.faq-item button'), toggle 'open' on parent .faq-item\n"
         f"   c) Mobile menu toggle: hamburger button toggles #mobile-menu visibility\n"
         f"   d) Sticky header: add shadow class on scroll > 50px\n"
-        f"   e) Form submit: prevent default, redirect to https://wa.me/{whatsapp}?text=...\n"
-        f"   f) Analytics tracking (insert verbatim):{tracking_js if tracking_js else ' // analytics disabled'}\n"
+        + _form_submit_js
+        + f"   f) Analytics tracking (insert verbatim):{tracking_js if tracking_js else ' // analytics disabled'}\n"
     )
     n += 1
     part3_tail += f"{n}. Close with </body></html>"

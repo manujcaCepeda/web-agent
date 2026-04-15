@@ -18,6 +18,12 @@
     "schema_org": true
   },
 
+  "emailjs": {
+    "public_key": "AbfZRwaJ3s6go1X2r",
+    "service_id": "service_g509z2f",
+    "template_id": "template_73vulg8"
+  },
+
   "analytics": {
     "ga4_id": "",
     "meta_pixel_id": "",

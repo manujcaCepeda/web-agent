@@ -798,6 +798,25 @@ SECTION COMPLETION PRIORITY ORDER (Part 3):
 6. WhatsApp button + Mobile CTA bar — REQUIRED
 7. JavaScript block — REQUIRED (all JS in ONE script tag at end)
 
+## 📧 CONTACT FORM — EMAILJS + WHATSAPP DUAL SUBMISSION
+
+Every contact form MUST:
+- Submit via **EmailJS** (keys injected by pipeline into JS instruction — copy verbatim)
+- Then open **WhatsApp** with pre-filled message from form data
+- Show a success message (`id="form-success"`) after send
+- Fall back to WhatsApp-only if EmailJS fails
+
+**Form field names (REQUIRED — EmailJS template depends on them):**
+- Name: `name="from_name"` with `required`
+- Phone: `name="phone"`
+- Message: `name="message"`
+- Submit button: `id="form-submit-btn"`
+- Success paragraph: `id="form-success"` class `hidden`
+
+**DO NOT** use `name="name"` — the EmailJS template uses `from_name`.
+**DO NOT** add FormSubmit.co hidden fields.
+**DO NOT** use `fetch()` for email — use `emailjs.sendForm()` with the keys from the JS instruction.
+
 ---
 
 ## 🎬 MICRO UX SYSTEM (PREMIUM)
