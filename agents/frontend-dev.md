@@ -768,11 +768,29 @@ ANIMATION RULES (CRITICAL):
 * The CSS for `.reveal-element` and `.reveal` is defined in Part 1 — do not redefine it
 * Using Tailwind opacity classes conflicts with the CSS animation system and creates invisible sections
 
-SECTION RULES (CRITICAL):
+SECTION RULES (CRITICAL — NO EXCEPTIONS):
 
 * EVERY `<section>` tag MUST have both an opening and closing tag in the SAME part
 * NEVER leave a section unclosed at the end of a part
-* If you are running low on tokens, close all open tags before stopping
+* If you are running low on tokens: STOP adding new content, close ALL open tags (`</div></section>`), then add the part-end comment
+* NEVER cut a section header mid-sentence — if you cannot complete a section, do not start it
+* PARTIAL SECTIONS ARE WORSE THAN MISSING SECTIONS — an unclosed `<section>` breaks layout for everything below it
+
+SECTION COMPLETION PRIORITY ORDER (Part 2):
+1. Services section — REQUIRED (highest priority)
+2. Visual break / metrics band — REQUIRED
+3. Benefits section — complete with ALL cards or skip entirely
+4. How-it-works — if process_steps data provided
+5. Comparison — only if comparison data provided
+
+SECTION COMPLETION PRIORITY ORDER (Part 3):
+1. Testimonials — REQUIRED
+2. FAQ — REQUIRED (at minimum 3 questions)
+3. Final CTA section — REQUIRED
+4. Contact section — REQUIRED (leads goal — cannot be skipped)
+5. Footer — REQUIRED
+6. WhatsApp button + Mobile CTA bar — REQUIRED
+7. JavaScript block — REQUIRED (all JS in ONE script tag at end)
 
 ---
 
