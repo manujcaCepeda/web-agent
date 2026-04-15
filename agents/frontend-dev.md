@@ -494,6 +494,68 @@ Without `group`, the `.group:hover .icon-circle` CSS selector fires on NOTHING.
   <div class="w-14 h-14 rounded-2xl ...">{{icon}}</div>
 ```
 
+### BENEFITS SECTION — LAYOUT VARIETY RULE
+NEVER render all benefits as identical equal-size cards in a uniform grid. This creates a "list" feel, not a designed section.
+
+**REQUIRED PATTERN: Featured first + mixed grid**
+
+```html
+<!-- Benefit 1: FEATURED — full width, dark bg, big number anchor -->
+<div class="rounded-2xl overflow-hidden mb-6 reveal-element" style="background:#0F172A;">
+  <div class="flex flex-col md:flex-row items-center">
+    <!-- Left: big number or large icon as visual anchor -->
+    <div class="flex-shrink-0 w-full md:w-48 flex items-center justify-center py-10 md:h-44"
+      style="background:rgba(var(--color-primary-rgb),0.15);">
+      <span class="font-black" style="font-size:5rem; color:var(--color-primary);">{{key_number}}</span>
+    </div>
+    <!-- Right: content -->
+    <div class="flex-1 p-8">
+      <span class="...badge...">Nuestra promesa #1</span>
+      <h3 class="text-xl font-black text-white mb-2">{{benefit_1_title}}</h3>
+      <p class="text-sm" style="color:rgba(255,255,255,0.55);">{{benefit_1_description}}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Benefits 2-4: 3-col grid with standard cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
+  <!-- standard benefit cards -->
+</div>
+
+<!-- Benefits 5-6: 2-col horizontal cards (icon left + text right) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+  <div class="flex items-start gap-5 p-6 rounded-xl ...">
+    <div class="icon-circle ...">{{icon}}</div>
+    <div><h3 ...>{{title}}</h3><p ...>{{description}}</p></div>
+  </div>
+</div>
+```
+
+**The key_number for the featured card** = the most impactful metric from the brief (e.g. "7" for 7 days, "5" for 5 years, etc.)
+
+### TRUST BAND — VISUAL WEIGHT RULE
+The trust band (id="trust") MUST have visual weight proportional to its position in the page flow. After a large dark section, a `py-8 border-y` strip is invisible.
+
+**REQUIRED:** Use `py-12 md:py-16` with a soft indigo gradient background:
+```html
+<section id="trust" class="py-12 md:py-16" style="background:linear-gradient(135deg,#F5F7FF 0%,#EEF0FF 100%); border-top:1px solid rgba(79,70,229,0.08); border-bottom:1px solid rgba(79,70,229,0.08);">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <!-- Each trust item: icon square + large stat text + label -->
+      <div class="flex flex-col items-center text-center gap-2 reveal-element">
+        <div class="w-12 h-12 rounded-2xl flex items-center justify-center mb-1"
+          style="background:rgba(79,70,229,0.1);">
+          {{icon}}
+        </div>
+        <p class="text-2xl font-black" style="color:#0F172A;">{{stat_value}}</p>
+        <p class="text-xs font-semibold uppercase tracking-wider" style="color:var(--color-text-muted);">{{stat_label}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+```
+RULE: Each trust item shows a number/value at `text-2xl font-black` — NOT a small text label with an inline icon. Size = credibility.
+
 ### REVEAL ANIMATION CONSISTENCY RULE
 Use ONLY `translate-y-10` for scroll-reveal elements — NEVER `translate-y-6` or other values.
 The IntersectionObserver JS removes `opacity-0` and `translate-y-10` specifically.
