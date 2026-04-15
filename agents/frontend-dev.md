@@ -1790,6 +1790,119 @@ TRUST RULES:
 
 ---
 
+### COMPARISON
+
+**TRIGGER:** Render this section ONLY when `brief.comparison[]` array exists AND `section_order` includes `"comparison"`.
+
+**CONCEPT:** Two-panel split. Left panel = what traditional/competitor offers (problems, dark background). Right panel = what this brand offers (solutions, light background). Side-by-side makes the advantage undeniable without the user having to search for it.
+
+**CRITICAL RULES:**
+- Left panel MUST use the brand's dark color (`var(--color-bg-dark, #0F172A)`) — dark but NOT black
+- Right panel uses white or `--color-secondary`
+- Each row is a feature from `brief.comparison[]` — render ALL rows
+- Left side rows: red/gray × icon + `traditional` value
+- Right side rows: green/primary ✓ icon + `sitiopro` / brand value
+- Section header sits ABOVE the two panels, full width, centered
+- CTA button at bottom of right panel: drives to contact/pricing
+
+```html
+<!-- ═══════════════════════════════════════ COMPARISON SECTION -->
+<section id="comparison" class="py-20 md:py-28" style="background:#F8FAFC;">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="text-center mb-14 reveal-on-scroll opacity-0 translate-y-6">
+      <p class="text-xs font-bold uppercase tracking-widest mb-3" style="color:var(--color-primary);">Por qué elegirnos</p>
+      <h2 class="text-3xl md:text-5xl font-black text-gray-900 leading-tight">
+        La diferencia es <span style="color:var(--color-primary);">clara</span>
+      </h2>
+      <p class="mt-4 text-gray-500 text-lg max-w-xl mx-auto">No todas las agencias son iguales. Aquí lo ves de frente.</p>
+    </div>
+
+    <!-- Split comparison panels -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden shadow-2xl reveal-on-scroll opacity-0 translate-y-6">
+
+      <!-- LEFT — Traditional / Problems -->
+      <div class="p-8 md:p-12" style="background:var(--color-bg-dark, #0F172A);">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-10 h-10 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
+            <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </div>
+          <p class="text-white/60 font-bold text-sm uppercase tracking-widest">Otras agencias</p>
+        </div>
+        <div class="flex flex-col gap-5">
+          <!-- Repeat for each comparison row -->
+          {{#each brief.comparison}}
+          <div class="flex items-start gap-4 pb-5 border-b border-white/10 last:border-0 last:pb-0">
+            <div class="w-6 h-6 rounded-full bg-red-500/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-white/40 text-xs uppercase tracking-wide font-semibold mb-1">{{feature}}</p>
+              <p class="text-white/75 font-medium leading-snug">{{traditional}}</p>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- RIGHT — Brand / Solutions -->
+      <div class="p-8 md:p-12 bg-white">
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background:rgba(var(--color-primary-rgb,79,70,229),0.12);">
+            <svg class="w-5 h-5" style="color:var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <p class="font-bold text-sm uppercase tracking-widest" style="color:var(--color-primary);">{{business_name}}</p>
+        </div>
+        <div class="flex flex-col gap-5">
+          {{#each brief.comparison}}
+          <div class="flex items-start gap-4 pb-5 border-b border-gray-100 last:border-0 last:pb-0">
+            <div class="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background:rgba(var(--color-primary-rgb,79,70,229),0.1);">
+              <svg class="w-3.5 h-3.5" style="color:var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-gray-400 text-xs uppercase tracking-wide font-semibold mb-1">{{feature}}</p>
+              <p class="text-gray-900 font-semibold leading-snug">{{sitiopro}}</p>
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        <!-- CTA at bottom of right panel -->
+        <div class="mt-8 pt-6 border-t border-gray-100">
+          <a href="#contact" class="btn-primary w-full py-4 text-sm font-bold text-center">
+            Empezar ahora — sin compromiso
+          </a>
+          <p class="text-center text-xs text-gray-400 mt-3">Sin contratos. Sin costos ocultos.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+```
+
+**DATA MAPPING:**
+- `{{business_name}}` → `brief.business_name`
+- `{{feature}}` → each `brief.comparison[].feature`
+- `{{traditional}}` → each `brief.comparison[].traditional`
+- `{{sitiopro}}` → the brand's column key (may be named after the business — use whichever key is NOT `"traditional"` and NOT `"feature"`)
+- If `brief.comparison` uses a different key name (e.g. `"us"`, `"sitiopro"`, `"brand"`): use the first non-feature/non-traditional key
+
+**STYLE NOTES:**
+- If `style_mode` is `luxury-dark`: flip — right panel goes dark, left stays light but muted
+- If `style_mode` is `ultra-minimal`: remove card shadows, use a thin `1px border border-gray-200` instead of `shadow-2xl`
+- The `--color-bg-dark` variable is set in Part 1 CSS vars — always `#0F172A` for dark modes, `#1B2334` for corporate-trust
+
+---
+
 ### TESTIMONIALS
 
 * shadow-md
@@ -1799,6 +1912,71 @@ TRUST RULES:
 Include:
 
 ★★★★★
+
+---
+
+### TRUST-BAND
+
+**TRIGGER:** Render when `section_order` includes `"trust-band"` (typically used in `conversion-fast` personality directly below hero).
+
+**CONCEPT:** A thin, full-width strip of 3–4 trust pills. No section heading. Pure social proof signal before the user scrolls.
+
+```html
+<!-- ═══════════════════════════════════════ TRUST BAND -->
+<div class="py-4 border-y border-gray-100 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-wrap items-center justify-center gap-6 md:gap-10">
+      <div class="flex items-center gap-2.5 text-gray-600 text-sm font-semibold">
+        <svg class="w-5 h-5 flex-shrink-0" style="color:var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        {{trust_signal_1}}
+      </div>
+      <div class="flex items-center gap-2.5 text-gray-600 text-sm font-semibold">
+        <svg class="w-5 h-5 flex-shrink-0" style="color:var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        {{trust_signal_2}}
+      </div>
+      <div class="flex items-center gap-2.5 text-gray-600 text-sm font-semibold">
+        <svg class="w-5 h-5 flex-shrink-0" style="color:var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        {{trust_signal_3}}
+      </div>
+      <div class="flex items-center gap-2.5 text-gray-600 text-sm font-semibold">
+        <svg class="w-5 h-5 flex-shrink-0" style="color:var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        {{trust_signal_4}}
+      </div>
+    </div>
+  </div>
+</div>
+```
+**DATA:** Use `brief.trust_signals[]` or `brief.differentiation[]` — pick the shortest, most powerful items. Max 5 words per pill.
+
+---
+
+### LOGO-BAND
+
+**TRIGGER:** Render when `section_order` includes `"logo-band"` (typically used in `product` personality, after hero).
+
+**CONCEPT:** A subtle horizontal strip showing client/partner/integration logos. Signals credibility through association. No heading needed — or a single muted label above.
+
+```html
+<!-- ═══════════════════════════════════════ LOGO BAND -->
+<div class="py-10 border-y border-gray-100 bg-white overflow-hidden">
+  <div class="max-w-7xl mx-auto px-6">
+    <p class="text-center text-xs font-bold uppercase tracking-widest text-gray-400 mb-7">Confían en nosotros</p>
+    <div class="flex flex-wrap items-center justify-center gap-6 md:gap-10">
+      <!-- Logo pill — repeat for each client/partner -->
+      <div class="logo-strip-item opacity-60 hover:opacity-100 transition-opacity duration-300">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+        {{client_name}}
+      </div>
+      <!-- If no real logos available: use industry-relevant brand-name pills -->
+    </div>
+  </div>
+</div>
+```
+**STYLE NOTES:**
+- Logos should be muted (`opacity-60`) by default, full opacity on hover — feels premium, not pushy
+- If `brief.testimonials[].role` mentions company names → extract those as the logo labels
+- If no client logos are available: render a strip of "technology/tool" logos relevant to the business (e.g., for a web agency: Tailwind, React, Framer, Webflow)
+- In `luxury-dark` mode: use `bg-transparent border-y border-white/10`, text white/40
 
 ---
 

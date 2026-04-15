@@ -448,7 +448,8 @@ def load_prompts(template_name: str) -> dict:
         "seo_optimizer": read_file(AGENTS_DIR / "seo-optimizer.md"),
         "ui_designer": ui_designer_prompt,
         "frontend_dev": frontend_dev_prompt,
-        "output_contract": read_file(CORE_DIR / "output-contract.md"),
+        # FIX #7: use load_optional so a missing output-contract.md fails gracefully instead of crashing
+        "output_contract": load_optional(CORE_DIR / "output-contract.md"),
         "template": read_file(TEMPLATES_DIR / f"{template_name}.md"),
     }
 
@@ -747,13 +748,15 @@ def build_section_flow(page_personality: str, section_order: list, has_process: 
         elif page_personality == "authority":
             section_order = ["hero", "stats-bar", "services", "visual-break", "benefits", "badge-grid", "testimonials", "cta", "contact"]
         elif page_personality == "product":
-            section_order = ["hero", "services", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
+            # FIX #6: logo-band added to match brand-strategist.md product personality definition
+            section_order = ["hero", "logo-band", "services", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
         else:  # storytelling (default)
             section_order = ["hero", "services", "how-it-works", "cta-banner", "stats-bar", "benefits", "badge-grid", "wow-section", "testimonials", "faq", "cta", "contact"]
 
     # Part 1 always: hero (fixed)
     # Part 2: services-region sections
-    part2_ids = {"services", "cta-banner", "benefits", "trust-band", "stats-bar", "how-it-works", "comparison", "badge-grid"}
+    # FIX #2: logo-band added — was silently dropped from section_order if included
+    part2_ids = {"services", "cta-banner", "benefits", "trust-band", "stats-bar", "how-it-works", "comparison", "badge-grid", "logo-band"}
     # Part 3: testimonials-region sections
     part3_ids = {"testimonials", "wow-section", "faq", "pricing", "cta", "visual-break", "contact"}
 
@@ -901,6 +904,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     service_imgs = img_set.get("services", [])
     fallback_color = img_set.get("fallback_color", "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)")
     img_onerror = f'onerror="this.onerror=null;this.style.background=\'{fallback_color}\';this.removeAttribute(\'src\')"'
+    # FIX #1: client_service_imgs must be defined BEFORE the print that references it
+    client_service_imgs = client_images.get("services", [])
     print(f"  ✓ Hero image: {hero_img[:80]}..." if len(hero_img) > 80 else f"  ✓ Hero image: {hero_img}")
     print(f"  ✓ Service images: {len(client_service_imgs)} client | {sum(1 for s in services if s.get('image_url'))} brief.json | {len(service_imgs)} curated")
 
@@ -925,7 +930,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     #           2) client-provided images by position (assets/images/services/)
     #           3) curated images.json library by position
     #           4) hero image as last fallback
-    client_service_imgs = client_images.get("services", [])
+    # NOTE: client_service_imgs already defined above (before the print statement)
     for i, svc in enumerate(services):
         if svc.get("image_url"):
             raw_url = svc["image_url"]
@@ -1025,6 +1030,38 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
             f"   Optional: small geometric decorative element (circle or line pattern, opacity 0.05).\n"
             f"   NO hero image needed. Brand identity comes from typography and whitespace.\n"
         )
+    # FIX #5: Added explicit instructions for 3 new hero variants — previously fell through to split-emotional else branch
+    elif hero_variant == "browser-mockup":
+        hero_instruction = (
+            f"5. Hero <section id='hero'> — BROWSER MOCKUP VARIANT: dark background (var(--color-bg)), product inside browser frame.\n"
+            f"   Layout: left 50% = headline (text-4xl md:text-5xl font-black text-white) + subheadline + CTA buttons.\n"
+            f"   Right 50% = browser chrome frame (.browser-frame) containing a screenshot or product UI inside.\n"
+            f"   Use the browser-frame, browser-bar, browser-dot, browser-url CSS classes already defined.\n"
+            f"   Browser image: <img src='{hero_img}' class='w-full' {img_onerror} loading='eager'>\n"
+            f"   Add 2 floating stat cards (.stat-card-float) positioned absolutely over the browser frame.\n"
+            f"   Section: min-h-[85vh] py-20 overflow-hidden. Section bg must be dark (var(--color-bg)).\n"
+            f"   DO NOT add loading='lazy' to the hero image.\n"
+        )
+    elif hero_variant == "stats-hero":
+        hero_instruction = (
+            f"5. Hero <section id='hero'> — STATS HERO VARIANT: clean light background, NO hero image.\n"
+            f"   Layout: left 55% = large headline (text-5xl md:text-6xl font-black leading-tight) + subheadline + CTA.\n"
+            f"   Right 45% = 2×2 grid of large metric boxes — each box: metric value (text-5xl font-black primary color), label below.\n"
+            f"   Use EXACT values from TRUST data: {trust_json[:300]}\n"
+            f"   Metric boxes: bg-white rounded-2xl shadow-md p-8 text-center border border-gray-100.\n"
+            f"   Section: py-20 md:py-28 bg-gradient-to-br from-white to-gray-50. No bg image.\n"
+            f"   DO NOT use a hero image — the stats ARE the visual element.\n"
+        )
+    elif hero_variant == "editorial-statement":
+        hero_instruction = (
+            f"5. Hero <section id='hero'> — EDITORIAL STATEMENT VARIANT: asymmetric 2-column, NO hero image.\n"
+            f"   Left 40%: oversized H1 where EACH KEY WORD is on its own line (text-6xl md:text-8xl font-black leading-none).\n"
+            f"   H1 must span at least 3 lines — split the headline at natural emphasis points.\n"
+            f"   Right 60%: subheadline (text-xl leading-relaxed max-w-lg) + CTA buttons + optional thin accent line.\n"
+            f"   Section: py-24 md:py-36 bg-[var(--color-bg)]. No images, no background.\n"
+            f"   The typography scale IS the design — no decorative elements needed.\n"
+            f"   DO NOT add any background images.\n"
+        )
     else:  # split-emotional (default)
         hero_instruction = (
             f"5. Hero <section id='hero'> — SPLIT EMOTIONAL VARIANT: 60% text left / 40% image right grid.\n"
@@ -1032,7 +1069,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
             f"   Subheadline below. 2 CTA buttons: primary (filled) + secondary (outline). Star rating + review count below CTAs.\n"
             f"   Image column: portrait aspect (rounded-2xl shadow-xl), floating stat badge positioned -bottom-6 -left-6.\n"
             f"   Hero image EXACT URL: {hero_img}\n"
-            f"   Hero img tag: <img src='{hero_img}' alt='Senior care' class='w-full h-full object-cover object-top rounded-2xl' {img_onerror} loading='eager'>\n"
+            f"   Hero img tag: <img src='{hero_img}' alt='{business_name}' class='w-full h-full object-cover object-top rounded-2xl' {img_onerror} loading='eager'>\n"
             f"   On mobile: image appears ABOVE text (order-first lg:order-last on image div).\n"
             f"   DO NOT add loading='lazy' to the hero image.\n"
         )
@@ -1181,7 +1218,18 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     # ── Build Part 2 section list dynamically from page_personality ─────────
     p2_items = []
     p2_n = 1
-    # Services is always first in Part 2
+    # FIX #2 (cont): logo-band must render BEFORE services when present in section_order
+    if "logo-band" in part2_sections:
+        p2_items.append(
+            f"{p2_n}. <div id='logo-band' class='py-10 border-y border-gray-100 bg-white overflow-hidden'>:\n"
+            f"   Thin strip of client/partner logos or technology logos relevant to the business.\n"
+            f"   Label above: small muted text 'Confían en nosotros' (or English equivalent).\n"
+            f"   Logos as flex-wrap row, each as .logo-strip-item pill (icon + name, opacity-60 hover:opacity-100).\n"
+            f"   If no real client logos exist: use technology/tool names relevant to {business_name}.\n"
+            f"   See LOGO-BAND blueprint in your instructions for exact HTML.\n"
+        )
+        p2_n += 1
+    # Services section — always included in Part 2
     p2_items.append(
         f"{p2_n}. SERVICES section — use EXACT layout pattern:\n"
         f"   {services_layout_instruction}\n"
@@ -1223,9 +1271,11 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     if "comparison" in part2_sections and comparison:
         p2_items.append(
             f"{p2_n}. <section id='comparison' class='py-14 md:py-20'>:\n"
-            f"   Side-by-side comparison table — use comparison data: {comparison_json}\n"
-            f"   2-column: left=brand (brand color header, checkmarks), right=competitors (gray, X marks)\n"
-            f"   KEY DIFFERENTIATOR — make visually impactful\n"
+            f"   Side-by-side split comparison — use comparison data: {comparison_json}\n"
+            f"   FIX #4: LEFT panel = competitors/traditional (dark background, red X icons, problems)\n"
+            f"           RIGHT panel = brand (white background, primary-color checkmarks, CTA button at bottom)\n"
+            f"   See COMPARISON blueprint in your instructions for the exact HTML structure.\n"
+            f"   KEY DIFFERENTIATOR — make visually impactful, not a generic table\n"
         )
         p2_n += 1
     p2_items.append(f"\nEnd with comment <!-- END PART 2 --> — DO NOT close body or html.")
@@ -1532,7 +1582,10 @@ def extract_html(text: str) -> str:
 
 
 def validate_copy_json(copy_json: dict) -> list[str]:
-    """Validate that the output contract is respected."""
+    """Validate that the output contract is respected.
+    FIX #8: Added visibility checks for comparison, pricing, process_steps
+    which were silently falling back to brief.json without any warning.
+    """
     errors = []
     required_keys = ["hero", "services", "benefits", "trust", "testimonials", "faq", "cta"]
     for key in required_keys:
@@ -1547,6 +1600,11 @@ def validate_copy_json(copy_json: dict) -> list[str]:
     for array_key in ["services", "benefits", "trust", "testimonials", "faq"]:
         if not isinstance(copy_json.get(array_key), list):
             errors.append(f"'{array_key}' must be an array")
+
+    # Visibility warnings for optional but important sections (WARN, not FAIL)
+    for optional_key in ["process_steps", "comparison", "pricing"]:
+        if optional_key not in copy_json:
+            errors.append(f"WARN: '{optional_key}' not in copywriter output — falling back to brief.json data")
 
     return errors
 
@@ -1648,9 +1706,11 @@ def run_pipeline(client_id: str):
             f"CLIENT BRIEF:\n{brief_str}\n\n"
             f"CLIENT DNA:\n{dna_str}\n\n"
             + reference_design_block
-            + f"Return JSON with: style_mode, design_concept, hero_variant, layout_variation, "
+            # FIX #3: page_personality and section_order added — were missing so LLM never included them
+            + f"Return JSON with ALL of these fields: style_mode, design_concept, hero_variant, layout_variation, "
             f"visual_intensity, spacing_scale, image_direction, primary_color, accent_color, "
-            f"visual_break, section_layout_overrides, forbidden_patterns, layout_notes, reference_applied"
+            f"visual_break, section_layout_overrides, page_personality, section_order, "
+            f"forbidden_patterns, layout_notes, reference_applied"
         )
         brand_raw, _ = call_claude(
             client,
