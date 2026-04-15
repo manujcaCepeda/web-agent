@@ -92,10 +92,11 @@ All agents MUST:
   "comparison": [
     {
       "feature": "",
-      "sitiopro": "",
+      "brand": "",
       "traditional": ""
     }
   ],
+  "_comparison_note": "Use 'brand' as the key for this business's column. If brief.json uses a different key (e.g. 'sitiopro', 'us', 'agency'), preserve that key exactly — do not rename.",
   "pricing": [
     {
       "name": "",

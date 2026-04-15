@@ -189,7 +189,7 @@ If brand_strategy is missing → place after benefits, use type `dark-metrics-ba
 You MUST include `"hero_variant"` in your layout JSON output.
 
 If `brand_strategy.hero_variant` is provided → USE IT, do not override.
-Otherwise: value MUST be one of `"cinematic"` | `"split-emotional"` | `"minimal-luxury"`.
+Otherwise: value MUST be one of `"cinematic"` | `"split-emotional"` | `"minimal-luxury"` | `"browser-mockup"` | `"stats-hero"` | `"editorial-statement"`.
 Selection rules are defined in the HERO SYSTEM RULES section appended to this prompt.
 
 ---

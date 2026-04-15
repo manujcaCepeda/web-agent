@@ -54,7 +54,8 @@ Return ONLY:
 }
 ```
 
-NOTE: `hero_variant` MUST be one of: `cinematic` | `split-emotional` | `minimal-luxury`
+NOTE: `hero_variant` MUST be one of:
+`cinematic` | `split-emotional` | `minimal-luxury` | `browser-mockup` | `stats-hero` | `editorial-statement`
 This field is consumed by ui-designer and frontend-dev — the name must match exactly.
 
 ---

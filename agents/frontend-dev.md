@@ -1700,6 +1700,271 @@ HERO RULES (ALL VARIANTS):
 
 ---
 
+### HOW-IT-WORKS
+
+**TRIGGER:** Render when `section_order` includes `"how-it-works"` AND `brief.process_steps[]` is not empty.
+
+**CONCEPT:** 3-step numbered horizontal process. Removes fear of complexity — shows the client exactly what happens, in order, with no surprises. Each step has a large number as visual anchor.
+
+```html
+<!-- ═══════════════════════════════════════ HOW IT WORKS -->
+<section id="how-it-works" class="py-20 md:py-28 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="text-center mb-16 reveal-element">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4"
+        style="background:rgba(var(--color-primary-rgb,79,70,229),0.08); color:var(--color-primary);">
+        Cómo funciona
+      </span>
+      <h2 class="text-3xl md:text-4xl font-black text-gray-900">Simple. Rápido. Sin sorpresas.</h2>
+      <p class="mt-4 text-gray-500 max-w-xl mx-auto">Tres pasos y tu negocio está en línea.</p>
+    </div>
+
+    <!-- Steps grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative">
+
+      <!-- Connector line (desktop only) -->
+      <div class="hidden md:block absolute top-10 left-1/6 right-1/6 h-px" style="background:linear-gradient(90deg, transparent, var(--color-primary), transparent); opacity:0.25;"></div>
+
+      <!-- Step — repeat for each process_step -->
+      {{#each brief.process_steps}}
+      <div class="flex flex-col items-center text-center gap-4 reveal-element" style="transition-delay:{{@index}}00ms;">
+        <!-- Step number circle -->
+        <div class="w-20 h-20 rounded-full flex items-center justify-center flex-shrink-0 font-black text-3xl relative z-10"
+          style="background:var(--color-primary); color:#fff; box-shadow:0 0 0 8px rgba(var(--color-primary-rgb,79,70,229),0.1);">
+          {{step}}
+        </div>
+        <h3 class="text-xl font-bold text-gray-900 mt-2">{{title}}</h3>
+        <p class="text-gray-500 leading-relaxed text-sm max-w-xs">{{description}}</p>
+      </div>
+      {{/each}}
+    </div>
+
+    <!-- Bottom CTA nudge -->
+    <div class="text-center mt-14 reveal-element">
+      <a href="#contact" class="btn-primary px-8 py-4 text-sm font-bold inline-flex items-center gap-2">
+        Empezar ahora
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</section>
+```
+
+**DATA MAPPING:** Each `process_steps[].step` (e.g. "01"), `.title`, `.description` directly rendered. If only 3 steps exist → use all 3. Never truncate.
+
+**STYLE NOTES:**
+- `corporate-trust` / `authority` personality: keep step numbers navy, remove connector line glow
+- `warm-local`: use rounded-3xl cards instead of circles, warmer bg tint per step
+- `luxury-dark`: dark section bg (`var(--color-bg)`), white text, cyan step circles
+
+---
+
+### CTA-BANNER
+
+**TRIGGER:** Render when `section_order` includes `"cta-banner"` (mid-page inline CTA strip, NOT the final CTA section).
+
+**CONCEPT:** A full-width contrasting strip that interrupts the scroll rhythm and re-focuses attention on conversion. Shorter than the final CTA — no subheadline needed. Just a punchy line and a button.
+
+```html
+<!-- ═══════════════════════════════════════ CTA BANNER (mid-page) -->
+<div id="cta-banner" class="py-12 relative overflow-hidden"
+  style="background:linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark, #3730A3) 100%);">
+
+  <!-- Decorative background circle -->
+  <div class="absolute -right-24 -top-24 w-96 h-96 rounded-full opacity-10"
+    style="background:rgba(255,255,255,0.3);"></div>
+
+  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 reveal-element">
+    <div>
+      <p class="text-white/60 text-xs font-bold uppercase tracking-widest mb-2">¿Listo para empezar?</p>
+      <h2 class="text-2xl md:text-3xl font-black text-white leading-tight">
+        Tu sitio listo en <span class="underline decoration-2 decoration-white/40">3 a 7 días.</span>
+      </h2>
+    </div>
+    <div class="flex items-center gap-4 flex-shrink-0">
+      <a href="#contact"
+        class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-sm transition-all duration-200 hover:-translate-y-1"
+        style="background:#fff; color:var(--color-primary); box-shadow:0 8px 30px rgba(0,0,0,0.2);">
+        Agenda gratis
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+```
+
+**STYLE NOTES:**
+- This is NOT `id="cta"` (the final CTA section) — it uses `id="cta-banner"` and is a `<div>` not a `<section>`
+- In `ultra-minimal` mode: replace gradient with solid near-black (`#111`), white button
+- In `warm-local` mode: use terracotta → dark-red gradient, cream button
+- The CTA text should come from `brief.cta_primary` or `seo_data.cta.button`, not hardcoded
+
+---
+
+### WOW-SECTION
+
+**TRIGGER:** Render when `section_order` includes `"wow-section"` (used in `storytelling` personality between badge-grid and testimonials).
+
+**CONCEPT:** Full-bleed emotional moment. No layout grid. Pure atmosphere. A pull quote or manifesto statement over a dark image background — the only section with no product messaging. Creates emotional resonance before the proof section (testimonials).
+
+```html
+<!-- ═══════════════════════════════════════ WOW SECTION -->
+<section id="wow-section" class="relative py-28 md:py-40 overflow-hidden">
+
+  <!-- Background image with dark overlay -->
+  <div class="absolute inset-0">
+    <img src="{{hero_img}}" alt="" class="w-full h-full object-cover object-center" loading="lazy">
+    <div class="absolute inset-0" style="background:linear-gradient(135deg, rgba(15,23,42,0.88) 0%, rgba(15,23,42,0.70) 100%);"></div>
+  </div>
+
+  <!-- Content — centered, narrow column -->
+  <div class="relative z-10 max-w-3xl mx-auto px-6 text-center reveal-element">
+
+    <!-- Large decorative quotation mark -->
+    <svg class="w-16 h-16 mx-auto mb-8 opacity-30" fill="currentColor" style="color:var(--color-primary);" viewBox="0 0 24 24">
+      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+    </svg>
+
+    <!-- Emotional pull quote — from cta or brief emotional_hook -->
+    <blockquote class="text-2xl md:text-4xl font-black text-white leading-tight mb-8">
+      "{{brief.emotional_hook}}"
+    </blockquote>
+
+    <!-- Thin brand-color rule -->
+    <div class="w-16 h-1 mx-auto rounded-full mb-8" style="background:var(--color-primary);"></div>
+
+    <!-- Single CTA button — white background -->
+    <a href="#contact"
+      class="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-bold text-sm"
+      style="background:#fff; color:var(--color-primary);">
+      {{cta.button}}
+    </a>
+  </div>
+
+</section>
+```
+
+**CRITICAL RULES:**
+- NEVER use a headline or eyebrow above the quote — only the quote itself
+- The background image is the hero image (reused) — this section has no unique image requirement
+- The quote comes from `brief.emotional_hook` or `cta.headline` — NEVER invent a quote
+- NO section grid, NO cards, NO icons — pure typography and image
+- In `luxury-dark` mode: reduce overlay to 0.75 opacity, use cyan accent rule color
+
+---
+
+### PRICING
+
+**TRIGGER:** Render when `section_order` includes `"pricing"` AND `brief.pricing[]` is not empty.
+
+**CONCEPT:** 3-column pricing tiers. The highlighted/recommended plan is visually elevated — larger border, accent color, slight vertical lift. The goal is to make the middle-tier feel like the obvious, safe choice.
+
+```html
+<!-- ═══════════════════════════════════════ PRICING -->
+<section id="pricing" class="py-20 md:py-28" style="background:#F8FAFC;">
+  <div class="max-w-7xl mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="text-center mb-14 reveal-element">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4"
+        style="background:rgba(var(--color-primary-rgb,79,70,229),0.08); color:var(--color-primary);">
+        Planes y precios
+      </span>
+      <h2 class="text-3xl md:text-5xl font-black text-gray-900">Inversión transparente.<br>Sin sorpresas.</h2>
+      <p class="mt-4 text-gray-500 max-w-xl mx-auto">Elige el plan que mejor se adapta a tu negocio. Sin contratos, sin costos ocultos.</p>
+    </div>
+
+    <!-- Pricing grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+
+      <!-- Pricing card — repeat for each plan. Use highlighted: true for the featured plan -->
+      {{#each brief.pricing}}
+      <div class="relative flex flex-col rounded-2xl p-8 reveal-element"
+        style="transition-delay:{{@index}}00ms;
+               {{#if highlighted}}
+               border:2px solid var(--color-primary);
+               background:#fff;
+               box-shadow:0 20px 60px rgba(var(--color-primary-rgb,79,70,229),0.15);
+               transform:scale(1.04);
+               {{else}}
+               border:1px solid #E2E8F0;
+               background:#fff;
+               {{/if}}">
+
+        <!-- "Most popular" badge — only on highlighted plan -->
+        {{#if highlighted}}
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+          <span class="px-4 py-1.5 rounded-full text-xs font-bold text-white"
+            style="background:var(--color-primary);">El más elegido</span>
+        </div>
+        {{/if}}
+
+        <!-- Plan name -->
+        <p class="text-sm font-bold uppercase tracking-widest mb-2"
+          style="color:{{#if highlighted}}var(--color-primary){{else}}#94A3B8{{/if}};">
+          {{name}}
+        </p>
+
+        <!-- Price -->
+        <p class="text-5xl font-black text-gray-900 leading-none mb-1">{{price}}</p>
+        <p class="text-xs text-gray-400 mb-6">{{description}}</p>
+
+        <!-- Divider -->
+        <div class="h-px bg-gray-100 mb-6"></div>
+
+        <!-- Feature list -->
+        <ul class="flex flex-col gap-3 flex-1 mb-8">
+          {{#each features}}
+          <li class="flex items-start gap-3 text-sm text-gray-600">
+            <svg class="w-4 h-4 flex-shrink-0 mt-0.5" style="color:var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+            </svg>
+            {{this}}
+          </li>
+          {{/each}}
+        </ul>
+
+        <!-- CTA button -->
+        <a href="#contact"
+          class="{{#if highlighted}}btn-primary{{else}}btn-outline{{/if}} w-full py-3.5 text-sm font-bold text-center rounded-xl">
+          {{cta}}
+        </a>
+
+      </div>
+      {{/each}}
+    </div>
+
+    <!-- Trust note below grid -->
+    <p class="text-center text-xs text-gray-400 mt-10">
+      Sin contratos de permanencia · Soporte incluido · Resultados garantizados
+    </p>
+
+  </div>
+</section>
+```
+
+**DATA MAPPING:**
+- `{{name}}` → `brief.pricing[].name`
+- `{{price}}` → `brief.pricing[].price`
+- `{{description}}` → `brief.pricing[].description`
+- `{{features}}` → `brief.pricing[].features[]` (array of strings)
+- `{{cta}}` → `brief.pricing[].cta`
+- `{{highlighted}}` → `brief.pricing[].highlighted` (boolean — true = featured plan)
+
+**STYLE NOTES:**
+- In `luxury-dark` mode: all cards use `bg-[#1E293B]`, featured card uses `border-[var(--color-primary)]` with glow shadow
+- In `ultra-minimal` mode: remove rounded corners, use `border-t-4` instead of full border, no scale transform
+- The trust note below the grid MUST always render — it reduces purchase anxiety
+
+---
+
 ### TRUST BLOCKS (CRITICAL — 3 mandatory components)
 
 A trust section MUST include ALL of the following. Never just icons with text.

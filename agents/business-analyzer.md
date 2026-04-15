@@ -160,13 +160,16 @@ Examples:
 
 ## TEMPLATE SELECTION
 
-Map to templates:
+Map to templates (these are the EXACT filenames in templates/ — use them verbatim):
 
-* healthcare → caregiver
+* healthcare → healthcare
 * ecommerce → ecommerce
 * restaurant → restaurant
-* services → generic
-* personal_brand → generic
+* services → services
+* personal_brand → services
+* agency / digital agency → agency
+
+NOTE: `recommended_template` is informational only. The actual template loaded is defined in `config.json["template"]`.
 
 ---
 
