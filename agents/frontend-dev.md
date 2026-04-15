@@ -1138,20 +1138,43 @@ CONSISTENCY RULE: All service card image wrappers MUST use `h-52`. Never `h-48`,
   onerror="this.style.background='var(--color-secondary)';this.removeAttribute('src')">
 ```
 
-#### SECTION EYEBROW LABELS (visual hierarchy — MANDATORY)
-Every H2 section header MUST use this 3-level structure:
+#### SECTION EYEBROW LABELS (visual hierarchy — CONTROLLED VARIATION)
+
+**ANTI-PATTERN: Do NOT use the pill badge on every section.** Using the same `[pill] + [h2] + [p]` structure 9 times makes the user blind to all of them by section 3.
+
+**RULE — Maximum 50% of sections may use the pill badge eyebrow.** Distribute across the page:
+
+| Sections with pill badge | Sections WITHOUT pill (enter directly) |
+|---|---|
+| Services, Benefits, How-it-works, Pricing | Visual-break, Testimonials, Final CTA, Portfolio |
+
+**Section header patterns — use VARIETY:**
+
 ```html
-<!-- Level 1: Eyebrow — pill badge, never plain text -->
-<span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
-  style="background:rgba(47,127,121,0.1); color:var(--color-primary);">
-  Section Label
-</span>
-<!-- Level 2: H2 — large, bold, max 2 lines -->
-<h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight mb-4">{{headline}}</h2>
-<!-- Level 3: Subtext — muted, short -->
-<p class="text-gray-500 text-lg leading-relaxed max-w-2xl mx-auto">{{subtext}}</p>
+<!-- Pattern A: Full 3-level (pill + h2 + subtext) — use on structural sections -->
+<div class="mb-10 reveal-element">
+  <span class="inline-block text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
+    style="background:rgba(79,70,229,0.08); color:var(--color-primary);">Section Label</span>
+  <h2 class="text-3xl md:text-4xl font-black leading-tight" style="color:var(--color-text);">{{headline}}</h2>
+  <p class="mt-3 text-base max-w-xl" style="color:var(--color-text-muted);">{{subtext}}</p>
+</div>
+
+<!-- Pattern B: Direct H2 only — use on high-impact sections (testimonials, CTA) -->
+<div class="mb-10 reveal-element">
+  <h2 class="text-3xl md:text-5xl font-black leading-tight" style="color:var(--color-text);">{{headline}}</h2>
+  <p class="mt-4 text-lg" style="color:var(--color-text-muted);">{{subtext}}</p>
+</div>
+
+<!-- Pattern C: Large number + text — use on stats or process sections -->
+<div class="mb-10 reveal-element">
+  <p class="text-8xl font-black leading-none opacity-10 select-none" style="color:var(--color-primary);">01</p>
+  <h2 class="text-3xl md:text-4xl font-black -mt-6" style="color:var(--color-text);">{{headline}}</h2>
+</div>
 ```
-RULE: Eyebrow MUST be a pill (rounded-full + background tint). Plain uppercase text with just color = visually weak. Every section must have all 3 levels.
+
+RULE: Eyebrow pill MUST use `rounded-full + background tint`. Plain uppercase text with just color = visually weak.
+
+**H2 color rule**: Section headings use `var(--color-text)` (dark navy), NOT `var(--color-primary)`. Primary color is for accents and CTAs only — if every heading is indigo, nothing stands out.
 
 ANIMATION RULES (CRITICAL):
 
@@ -1183,6 +1206,19 @@ SECTION COMPLETION PRIORITY ORDER (Part 3):
 5. Footer — REQUIRED
 6. WhatsApp button + Mobile CTA bar — REQUIRED
 7. JavaScript block — REQUIRED (all JS in ONE script tag at end)
+
+### CTA LABEL UNIQUENESS RULE (CRITICAL)
+Every CTA button across the ENTIRE PAGE must have a DIFFERENT label. The same phrase repeated 4 times = invisible.
+
+| Position | Label strategy |
+|---|---|
+| Header nav button | Short, action: "Empezar ahora" |
+| Hero primary CTA | Specific benefit: "Reservar asesoría gratuita" |
+| Visual-break / mid-page | Urgency: "Quiero mi sitio en 7 días" |
+| Final CTA section | Closing push: "Hablemos hoy →" |
+| Contact form submit | Clear: "Enviar mensaje" |
+
+RULE: If the copywriter provides `cta_primary` as a single phrase, use it verbatim for the hero only. All other CTAs must be written as variations of the same intent — different words, same goal.
 
 ## 📧 CONTACT FORM — EMAILJS + WHATSAPP DUAL SUBMISSION
 
@@ -1760,6 +1796,13 @@ HERO RULES (ALL VARIANTS):
 
 **DATA MAPPING:** Each `process_steps[].step` (e.g. "01"), `.title`, `.description` directly rendered. If only 3 steps exist → use all 3. Never truncate.
 
+**STEP COLOR RULE (CRITICAL — NO EXCEPTIONS):**
+ALL step number circles MUST use the SAME color — `var(--color-primary)`. NEVER change the last step to amber, gold, or any accent color. Color variation across steps = broken design, not intentional design.
+```html
+<!-- ALL steps use this — never change color per step -->
+style="background:var(--color-primary); color:#fff; box-shadow:0 0 0 8px rgba(79,70,229,0.1);"
+```
+
 **STYLE NOTES:**
 - `corporate-trust` / `authority` personality: keep step numbers navy, remove connector line glow
 - `warm-local`: use rounded-3xl cards instead of circles, warmer bg tint per step
@@ -1960,6 +2003,19 @@ HERO RULES (ALL VARIANTS):
 - `{{features}}` → `brief.pricing[].features[]` (array of strings)
 - `{{cta}}` → `brief.pricing[].cta`
 - `{{highlighted}}` → `brief.pricing[].highlighted` (boolean — true = featured plan)
+
+**PRICING CTA BUTTON RULE (CRITICAL):**
+The CTA button label MUST be an action verb — NEVER the same text as the badge above it.
+```html
+<!-- WRONG — badge and button say the same thing -->
+<span ...>El más elegido</span>   ← badge
+<a ...>El más elegido</a>         ← button — FORBIDDEN
+
+<!-- CORRECT — badge informs, button acts -->
+<span ...>El más elegido</span>   ← badge
+<a ...>Empezar con este plan →</a>  ← button = action verb
+```
+Use `brief.pricing[].cta` for the button text. If it's descriptive rather than action-oriented, rewrite it to start with a verb: "Empezar", "Elegir este plan", "Quiero este", "Comenzar ahora".
 
 **STYLE NOTES:**
 - In `luxury-dark` mode: all cards use `bg-[#1E293B]`, featured card uses `border-[var(--color-primary)]` with glow shadow
@@ -2277,6 +2333,33 @@ Accordion with smooth open animation
 * backdrop-blur-md
 * bg-white/80
 * Logo link: ALWAYS use href="#" — NEVER href="/" (causes browser to navigate to filesystem root on file:// protocol)
+
+### LOGO TYPOGRAPHY RULE (CRITICAL)
+The logo text MUST use the brand's primary font — NEVER hardcode a different font inline.
+```html
+<!-- CORRECT -->
+<a href="#" class="flex items-center gap-1.5">
+  <span class="text-xl font-black tracking-tight" style="color:var(--color-primary); font-family:'Inter',sans-serif;">{{business_name_part1}}</span>
+  <span class="text-xl font-black tracking-tight" style="color:var(--color-text); font-family:'Inter',sans-serif;">{{business_name_part2}}</span>
+</a>
+
+<!-- WRONG — NEVER DO THIS -->
+<span style="font-family:'Merriweather',serif;">...</span>  ← FORBIDDEN
+<span style="font-family:'Playfair Display',serif;">...</span>  ← FORBIDDEN
+```
+RULE: Logo ALWAYS uses `font-family:'Inter',sans-serif; font-weight:900; letter-spacing:-0.03em`. No exceptions. If `style_mode` is `corporate-trust`, the logo is still Inter 900 — NOT Merriweather.
+
+### FOOTER LOGO FALLBACK RULE
+If `logo` variable is empty or missing, render the business name as typographic logo — NEVER an empty `<img>`:
+```html
+<!-- If logo path exists -->
+<img src="{{logo_footer}}" class="h-10 w-auto brightness-0 invert" alt="{{business_name}}" loading="lazy"
+  onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+<span class="text-xl font-black tracking-tight text-white" style="display:none; font-family:'Inter',sans-serif;">{{business_name}}</span>
+
+<!-- If NO logo path provided — render text directly -->
+<span class="text-xl font-black tracking-tight text-white" style="font-family:'Inter',sans-serif;">{{business_name}}</span>
+```
 
 ---
 
