@@ -120,7 +120,8 @@
   },
 
   "branding": {
-    "logo": "/assets/images/LogoFernPrivateCare.png",
+    "logo": "assets/images/LogoFernPrivateCare.png",
+    "logo_footer": "assets/images/Logo.png",
     "primary_color": "#2F7F79",
     "secondary_color": "#A7D7C5",
     "style": "calm, trustworthy, healthcare",

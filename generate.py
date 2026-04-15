@@ -230,6 +230,47 @@ def load_client_facts(client_id: str) -> str:
     return ""
 
 
+def load_client_images(client_id: str) -> dict:
+    """Auto-discover client-provided images from projects/{client_id}/assets/images/.
+
+    Returns: {header_logo, footer_logo, services: [list of relative paths]}
+    Priority over curated images.json library when client images exist.
+
+    Naming convention (inside assets/images/):
+      - File named exactly 'Logo.*'      → footer icon (compact version)
+      - Any other root-level image file  → header logo (full logo with text)
+      - assets/images/services/*.{png,jpg,jpeg,webp} → service photos (sorted)
+    """
+    assets_dir = PROJECTS_DIR / client_id / "assets" / "images"
+    result = {"header_logo": "", "footer_logo": "", "services": []}
+    if not assets_dir.exists():
+        return result
+
+    for f in assets_dir.iterdir():
+        if f.is_file() and f.suffix.lower() in ('.png', '.jpg', '.jpeg', '.svg', '.webp'):
+            if f.stem.lower() == 'logo':
+                result["footer_logo"] = f"assets/images/{f.name}"
+            else:
+                result["header_logo"] = f"assets/images/{f.name}"
+
+    services_dir = assets_dir / "services"
+    if services_dir.exists():
+        result["services"] = sorted([
+            f"assets/images/services/{f.name}"
+            for f in services_dir.iterdir()
+            if f.is_file() and f.suffix.lower() in ('.png', '.jpg', '.jpeg', '.webp')
+        ])
+
+    if result["header_logo"] or result["footer_logo"] or result["services"]:
+        print(f"  ✓ Client images: header_logo={'yes' if result['header_logo'] else 'no'} | "
+              f"footer_logo={'yes' if result['footer_logo'] else 'no'} | "
+              f"services={len(result['services'])} images (take priority over curated library)")
+    else:
+        print(f"  ℹ  No client images in assets/images/ — using curated library for all images")
+
+    return result
+
+
 def load_generation_log() -> list:
     """Load generation log tracking layout/style choices per client.
     Used to prevent repetition across clients.
@@ -584,10 +625,12 @@ def build_services_layout_instruction(layout_variation: str, services: list, ser
         )
 
 
-def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: dict, config: dict, seo_data: dict, layout_data: dict, brand_strategy: dict = None, client_facts: str = "") -> str:
+def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: dict, config: dict, seo_data: dict, layout_data: dict, brand_strategy: dict = None, client_facts: str = "", client_images: dict = None) -> str:
     """Generate frontend HTML in three focused parts to avoid token limits."""
     if brand_strategy is None:
         brand_strategy = {}
+    if client_images is None:
+        client_images = {}
 
     # Resolve active style_mode (brand_strategy is already DNA-enforced at this point)
     active_style_mode = brand_strategy.get("style_mode", "premium-care")
@@ -601,7 +644,19 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         or brief.get("branding", {}).get("primary_color", "#2F7F79")
     )
     secondary_color = brief.get("branding", {}).get("secondary_color", "#A7D7C5")
-    logo = brief.get("branding", {}).get("logo", "") or ""
+
+    # Image priority: client-provided images > brief.json branding > empty
+    logo = (
+        client_images.get("header_logo")
+        or brief.get("branding", {}).get("logo", "")
+        or ""
+    )
+    # Footer logo: compact icon version (e.g. Logo.png) — fallback to header logo
+    logo_footer = (
+        client_images.get("footer_logo")
+        or brief.get("branding", {}).get("logo_footer", "")
+        or logo
+    )
     whatsapp = brief.get("whatsapp", "")
     phone = brief.get("contact_info", {}).get("phone", "")
     email = brief.get("contact_info", {}).get("email", "")
@@ -664,7 +719,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     fallback_color = img_set.get("fallback_color", "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)")
     img_onerror = f'onerror="this.onerror=null;this.style.background=\'{fallback_color}\';this.removeAttribute(\'src\')"'
     print(f"  ✓ Hero image: {hero_img[:80]}..." if len(hero_img) > 80 else f"  ✓ Hero image: {hero_img}")
-    print(f"  ✓ Service images: {len(service_imgs)} curated | {sum(1 for s in services if s.get('image_url'))} from brief.json")
+    print(f"  ✓ Service images: {len(client_service_imgs)} client | {sum(1 for s in services if s.get('image_url'))} brief.json | {len(service_imgs)} curated")
 
     def resolve_image_path(img_url: str) -> str:
         """Resolve image paths relative to the output/ directory.
@@ -683,12 +738,20 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         return f"../{img_url}"
 
     # Inject image URLs into each service object
-    # Priority: 1) image_url from brief.json (curated per service, local or remote)
-    #           2) images.json library by position
-    #           3) hero fallback
+    # Priority: 1) image_url from brief.json (explicit per-service assignment)
+    #           2) client-provided images by position (assets/images/services/)
+    #           3) curated images.json library by position
+    #           4) hero image as last fallback
+    client_service_imgs = client_images.get("services", [])
     for i, svc in enumerate(services):
-        curated_fallback = service_imgs[i % len(service_imgs)] if service_imgs else hero_img
-        raw_url = svc.get("image_url") or curated_fallback
+        if svc.get("image_url"):
+            raw_url = svc["image_url"]
+        elif i < len(client_service_imgs):
+            raw_url = client_service_imgs[i]
+        elif service_imgs:
+            raw_url = service_imgs[i % len(service_imgs)]
+        else:
+            raw_url = hero_img
         svc["_image_url"] = resolve_image_path(raw_url)
 
     # Strip image_query and internal fields before sending to Claude.
@@ -778,7 +841,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     schema_block = build_schema_org(brief, config) if use_schema_org else ""
 
     # ── FASE 2: Mode-aware header + CSS token injection ───────────────────────
-    header_instruction = build_header_instruction(active_style_mode, logo, phone, primary_color)
+    header_instruction = build_header_instruction(active_style_mode, resolve_image_path(logo), phone, primary_color)
 
     # CSS root block: design tokens from design-language.json override LLM defaults
     # Then patch primary/accent color with DNA-enforced values (regex replace — cascade-safe)
@@ -1070,7 +1133,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     )
     n += 1
     part3_tail += (
-        f"{n}. <footer>: dark gradient bg, logo img src='{logo}' class='h-12 w-auto brightness-0 invert', "
+        f"{n}. <footer>: dark gradient bg, logo img src='{resolve_image_path(logo_footer)}' class='h-12 w-auto brightness-0 invert', "
         f"tagline, nav links in columns, social icons (FB/IG/LinkedIn href='#'), copyright line\n"
     )
     n += 1
@@ -1176,6 +1239,7 @@ def run_pipeline(client_id: str):
     config, brief = load_client(client_id)
     client_dna = load_client_dna(client_id)
     client_facts = load_client_facts(client_id)
+    client_images = load_client_images(client_id)
     template_name = config["template"]
     prompts = load_prompts(template_name)
     brief_str = json.dumps(brief, indent=2)
@@ -1193,6 +1257,7 @@ def run_pipeline(client_id: str):
     if (AGENTS_DIR / "brand-strategist.md").exists(): active_systems.append("brand-strategist")
     if client_dna: active_systems.append("client-dna")
     if client_facts: active_systems.append("client-facts")
+    if client_images.get("header_logo") or client_images.get("services"): active_systems.append("client-images")
     if active_systems:
         print(f"  ✓ Active systems: {', '.join(active_systems)}")
 
@@ -1346,7 +1411,7 @@ def run_pipeline(client_id: str):
     print("\n[6/7] Frontend Generation")
     html_content = generate_frontend(
         client, prompts["frontend_dev"], brief, config, seo_data, layout_data, brand_strategy,
-        client_facts=client_facts
+        client_facts=client_facts, client_images=client_images
     )
 
     # ── FASE 1: Real HTML validation (structural checks) ─────────────────────

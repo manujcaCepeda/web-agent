@@ -112,7 +112,8 @@
   },
 
   "branding": {
-    "logo": "/assets/images/logo.png",
+    "logo": "assets/images/logo.png",
+    "logo_footer": "assets/images/logo-icon.png",
     "primary_color": "#2F7F79",
     "secondary_color": "#F8FAFC",
     "accent_color": "#F59E0B",

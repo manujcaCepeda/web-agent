@@ -582,10 +582,16 @@ or generate any image URL that doesn't come from the provided data.
 
 ### Rule 2: Use ONLY provided image URLs
 
-Images come from:
-1. `services[n]._image_url` — curated URL for each service card (provided verbatim)
+Images are pre-resolved and injected by the pipeline. Priority (highest to lowest):
+1. `services[n]._image_url` — final resolved URL for each service card (use VERBATIM — already prioritized)
+   - Priority inside pipeline: (a) brief.json `image_url` per service → (b) client assets/images/services/ → (c) curated library
 2. `hero_img` — the hero image URL (provided verbatim)
 3. `brand_strategy.image_direction` hints — determines HOW to use images, not WHICH
+
+### Logo rules:
+- **Header logo** (`logo` variable): Full logo with business name text — use as-is with `class='h-10 w-auto'`
+- **Footer logo** (`logo_footer` variable): Compact icon version — use with `class='h-12 w-auto brightness-0 invert'`
+- Both paths are pre-resolved relative to output/ — copy them VERBATIM, never modify
 
 ### Rule 3: image_direction behavior
 
