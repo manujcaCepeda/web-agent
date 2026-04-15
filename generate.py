@@ -27,6 +27,21 @@ AGENTS_DIR = BASE_DIR / "agents"
 TEMPLATES_DIR = BASE_DIR / "templates"
 CORE_DIR = BASE_DIR / "core"
 
+# ── GROUNDING RULE — injected into every frontend prompt ─────────────────────
+# Prevents the LLM from hallucinating data not present in brief.json
+GROUNDING_RULE = """
+CONTENT GROUNDING RULES (ABSOLUTE — NO EXCEPTIONS):
+- Use ONLY data provided in this prompt. NEVER invent, extrapolate, or assume content.
+- NEVER invent: client names, portfolio items, case studies, revenue figures, team members, awards, certifications, partner logos, press mentions.
+- STATS: Use ONLY the exact stat values from the TRUST array. NEVER inflate (e.g. if brief says "10+ years" do NOT write "15+ years").
+- TESTIMONIALS: Use ONLY testimonials from the TESTIMONIALS array. NEVER generate fictional testimonials.
+- PORTFOLIO: If no portfolio data is provided → DO NOT generate a portfolio section. Skip it entirely.
+- SERVICES: Use ONLY service names and descriptions from the SERVICES array. Never add services not listed.
+- BENEFITS: Use ONLY the benefits data provided. Never add benefit items not in the array.
+- FAQ: Use ONLY the FAQ questions/answers provided. Never add questions not in the FAQ array.
+- If a section has no data → skip it or use a simple placeholder, NEVER fabricate content.
+"""
+
 
 def extract_img_url(img_obj: any, width: int = 800, height: int = 500) -> str:
     """Extract a plain URL string from an image object or string.
@@ -197,6 +212,24 @@ def load_client_dna(client_id: str) -> dict:
     return {}
 
 
+def load_client_facts(client_id: str) -> str:
+    """Load optional client-facts.md — real verified client data in natural language.
+    This file is the single source of truth for all stats, testimonials, and claims.
+    Returns the raw text, or empty string if not present.
+    """
+    facts_path = PROJECTS_DIR / client_id / "client-facts.md"
+    if facts_path.exists():
+        try:
+            facts = read_file(facts_path)
+            print(f"  ✓ client-facts.md loaded ({len(facts)} chars) — grounding active")
+            return facts
+        except Exception as e:
+            print(f"  WARNING: client-facts.md read error: {e} — continuing without facts")
+    else:
+        print(f"  ℹ  client-facts.md not found — add it to prevent content hallucination")
+    return ""
+
+
 def load_generation_log() -> list:
     """Load generation log tracking layout/style choices per client.
     Used to prevent repetition across clients.
@@ -318,18 +351,189 @@ def call_claude(client: anthropic.Anthropic, system_prompt: str, user_message: s
     return result, stop_reason
 
 
+def enforce_dna_style_mode(brand_strategy: dict, client_dna: dict) -> dict:
+    """Enforce client-dna.json style_preference over brand-strategist output.
+
+    The LLM can misread color signals (e.g. indigo primary → luxury-dark) and
+    override the explicit client DNA. This function hard-corrects that.
+    """
+    if not client_dna:
+        return brand_strategy
+
+    dna_vi = client_dna.get("visual_identity", {})
+    dna_style = dna_vi.get("style_preference", "")
+    bs_style = brand_strategy.get("style_mode", "")
+
+    if dna_style and bs_style and bs_style != dna_style:
+        print(f"  ⚠  STYLE CONFLICT: client-dna='{dna_style}' vs brand-strategist='{bs_style}'")
+        print(f"  → Enforcing client-dna style_mode: '{dna_style}'")
+        brand_strategy["style_mode"] = dna_style
+
+    # Enforce exact color palette from client-dna if defined
+    dna_palette = client_dna.get("color_palette", {})
+    if dna_palette.get("primary"):
+        if brand_strategy.get("primary_color") != dna_palette["primary"]:
+            print(f"  → Enforcing client-dna primary_color: {dna_palette['primary']}")
+            brand_strategy["primary_color"] = dna_palette["primary"]
+    if dna_palette.get("accent"):
+        if brand_strategy.get("accent_color") != dna_palette["accent"]:
+            brand_strategy["accent_color"] = dna_palette["accent"]
+
+    # Enforce forbidden patterns from client-dna (additive — merge with brand-strategist list)
+    dna_forbidden = client_dna.get("design_direction", {}).get("forbidden_patterns", [])
+    bs_forbidden = brand_strategy.get("forbidden_patterns", [])
+    if dna_forbidden:
+        merged = list(dict.fromkeys(bs_forbidden + dna_forbidden))  # dedup, preserve order
+        brand_strategy["forbidden_patterns"] = merged
+
+    return brand_strategy
+
+
+def load_design_tokens(style_mode: str) -> str:
+    """Load CSS variables block for the active style_mode from design-language.json.
+
+    Returns the :root {} CSS block as a string, ready to inject verbatim into <style>.
+    Falls back to empty string if design-language.json is missing or mode not found.
+    """
+    dl_path = CORE_DIR / "design-language.json"
+    if not dl_path.exists():
+        return ""
+    try:
+        dl = json.loads(read_file(dl_path))
+        mode = dl.get("style_modes", {}).get(style_mode, {})
+        css_vars = mode.get("css_variables", "")
+        if css_vars:
+            print(f"  ✓ Design tokens loaded: {style_mode} ({len(css_vars)} chars)")
+        return css_vars
+    except Exception as e:
+        print(f"  WARNING: Could not load design tokens for '{style_mode}': {e}")
+        return ""
+
+
+def build_header_instruction(style_mode: str, logo: str, phone: str, primary_color: str) -> str:
+    """Build mode-aware sticky header HTML instruction.
+
+    Dark modes (luxury-dark, luxury-service) get a dark translucent header.
+    Light modes (all others) get a white/glass light header.
+    Logo src is only injected if it's a non-empty string.
+    """
+    dark_modes = {"luxury-dark", "luxury-service"}
+    is_dark = style_mode in dark_modes
+
+    if is_dark:
+        header_bg = "bg-[rgba(15,23,42,0.92)] backdrop-blur-xl border-b border-white/10 shadow-[0_1px_20px_rgba(0,0,0,0.3)]"
+        nav_text = "text-slate-300 hover:text-white"
+        cta_extra = "text-white"
+    else:
+        header_bg = "bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm"
+        nav_text = "text-gray-600 hover:text-gray-900 font-semibold"
+        cta_extra = ""
+
+    # Logo: use img tag if logo path is set, otherwise text-based logo
+    if logo and logo.strip():
+        logo_html = f"<img src='{logo}' alt='Logo' class='h-10 w-auto'>"
+    else:
+        logo_html = (
+            f"<span class='text-xl font-black tracking-tight' style='color:{primary_color};'>"
+            "{{business_name_first_word}}</span>"
+            "<span class='text-xl font-black tracking-tight text-gray-900'>{{business_name_rest}}</span>"
+        )
+
+    return (
+        f"3. Sticky <header id='main-header' class='{header_bg}' style='position:sticky;top:0;z-index:50;'>:\n"
+        f"   Logo: {logo_html}\n"
+        f"   Nav links ({nav_text}): Services/#services, Why Us/#benefits, Testimonials/#testimonials, FAQ/#faq, Contact/#contact\n"
+        f"   Right: phone tel:{phone} with SVG phone icon, then 'Free Consultation'/'Asesoría Gratuita' btn-primary px-6 py-2.5 text-sm {cta_extra}\n"
+        f"   Mobile hamburger button (lg:hidden) id='hamburger'\n"
+    )
+
+
+def validate_html(html: str, brand_strategy: dict, brief: dict) -> list[str]:
+    """Run structural checks against generated HTML.
+
+    Returns a list of findings (FAIL/WARN/OK). FAIL = regeneration candidate.
+    These are real grep-style checks, not aspirational documentation.
+    """
+    findings = []
+    html_lower = html.lower()
+
+    # ── CHECK 1: Editorial-list service duplication ──────────────────────────
+    if brand_strategy.get("layout_variation") == "editorial-list":
+        # First service should appear in featured card AND NOT repeated in numbered list with image
+        services = brief.get("services", [])
+        if services:
+            svc0_name = services[0].get("name", "")
+            # Count occurrences: if svc0_name appears 3+ times it's likely duplicated
+            count = html_lower.count(svc0_name.lower())
+            if count >= 3:
+                findings.append(f"WARN: Service '{svc0_name}' appears {count}x — possible duplication in editorial-list")
+
+    # ── CHECK 2: Visual break presence ───────────────────────────────────────
+    vb_type = brand_strategy.get("visual_break", {}).get("type", "")
+    if vb_type:
+        dark_indicators = ["section-dark", "bg-[--color-bg-dark]", "#0f172a", "#1a3a37", "bg-[var(--color-bg-dark"]
+        has_dark_section = any(ind in html_lower for ind in dark_indicators)
+        if not has_dark_section:
+            findings.append(f"FAIL: Visual break type '{vb_type}' — no dark section found in HTML")
+        else:
+            findings.append(f"OK: Visual break section present")
+
+    # ── CHECK 3: Hallucinated portfolio guard ────────────────────────────────
+    has_portfolio_data = bool(brief.get("portfolio", []))
+    has_portfolio_section = 'id="portfolio"' in html or "id='portfolio'" in html
+    if has_portfolio_section and not has_portfolio_data:
+        findings.append("CRITICAL: Portfolio section generated but NO portfolio data in brief.json — hallucination risk")
+
+    # ── CHECK 4: Stats grounding ──────────────────────────────────────────────
+    trust_items = brief.get("trust", [])
+    for item in trust_items:
+        stat = item.get("stat", "").strip()
+        if stat and stat not in html:
+            # Try without + sign
+            stat_clean = stat.replace("+", "").replace("%", "").strip()
+            if stat_clean and stat_clean not in html:
+                findings.append(f"WARN: Stat '{stat}' from brief.json not found in HTML — possible inflation")
+
+    # ── CHECK 5: Hero variant structural match ────────────────────────────────
+    hero_variant = brand_strategy.get("hero_variant", "")
+    if hero_variant == "split-emotional":
+        has_split = "lg:grid-cols-2" in html or "md:grid-cols-2" in html
+        if not has_split:
+            findings.append("WARN: split-emotional hero variant — no 2-column grid found in hero area")
+
+    # ── CHECK 6: Back-to-back dark sections ──────────────────────────────────
+    dark_section_class = "section-dark"
+    positions = [i for i in range(len(html)) if html[i:i+len(dark_section_class)] == dark_section_class]
+    if len(positions) >= 2:
+        # Check if two dark sections are within 500 chars of each other
+        for i in range(len(positions) - 1):
+            if positions[i+1] - positions[i] < 800:
+                findings.append("WARN: Two dark sections appear back-to-back (< 800 chars apart) — alternation violated")
+                break
+
+    return findings
+
+
 def build_services_layout_instruction(layout_variation: str, services: list, service_imgs: list, hero_img: str, img_onerror: str) -> str:
     """Build dynamic services section instruction based on brand_strategy.layout_variation."""
 
     if layout_variation == "editorial-list":
         return (
             "<section id='services' class='py-14 md:py-20 bg-[var(--color-bg-alt,#F9FAFB)]'>:\n"
-            "   EDITORIAL LAYOUT (NOT standard card grid):\n"
-            "   1 FEATURED card: full-width horizontal flex (lg:flex-row), left 60% text (heading, description, chip tags, 'Más solicitado' gradient badge), right 40% image — use first service\n"
-            "   Below: grid md:grid-cols-2 of NUMBERED items for remaining services:\n"
-            "     Each: flex gap-5, large number badge (02, 03...) in text-5xl font-black text-[--color-primary]/15, then title + description + 3 chip tags\n"
-            "     NO images on numbered items — typography-forward\n"
-            "   This layout MUST look editorially different from a standard card grid.\n"
+            "   EDITORIAL LAYOUT — NOT a standard card grid:\n"
+            "   ──────────────────────────────────────────────────────────────────\n"
+            "   FEATURED CARD (services[0] ONLY): full-width horizontal lg:flex-row\n"
+            "     Left 60%: 'Más solicitado' badge, h3 headline, description, chip tags\n"
+            "     Right 40%: image from services[0]\n"
+            "   ──────────────────────────────────────────────────────────────────\n"
+            "   NUMBERED GRID (services[1], services[2] ... services[N]):\n"
+            "   ⚠ CRITICAL: Do NOT include services[0] here — it is already shown above.\n"
+            "   ⚠ Start numbering at 02 for services[1], 03 for services[2], etc.\n"
+            "   Grid: grid md:grid-cols-2 gap-5\n"
+            "     Each item: flex gap-5 — number badge (02,03...) text-5xl font-black opacity-15 | title + description + 3 chip tags\n"
+            "     NO images in numbered items — typography-forward\n"
+            "   ──────────────────────────────────────────────────────────────────\n"
+            "   Result: 1 featured card + all remaining services as numbered items = ALL services shown exactly once.\n"
         )
     elif layout_variation == "cards-horizontal":
         return (
@@ -380,10 +584,16 @@ def build_services_layout_instruction(layout_variation: str, services: list, ser
         )
 
 
-def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: dict, config: dict, seo_data: dict, layout_data: dict, brand_strategy: dict = None) -> str:
+def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: dict, config: dict, seo_data: dict, layout_data: dict, brand_strategy: dict = None, client_facts: str = "") -> str:
     """Generate frontend HTML in three focused parts to avoid token limits."""
     if brand_strategy is None:
         brand_strategy = {}
+
+    # Resolve active style_mode (brand_strategy is already DNA-enforced at this point)
+    active_style_mode = brand_strategy.get("style_mode", "premium-care")
+
+    # Load design tokens from design-language.json — inject as hardcoded CSS (not LLM choice)
+    design_tokens_css = load_design_tokens(active_style_mode)
 
     # Brand strategy overrides brief branding defaults
     primary_color = (
@@ -391,7 +601,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         or brief.get("branding", {}).get("primary_color", "#2F7F79")
     )
     secondary_color = brief.get("branding", {}).get("secondary_color", "#A7D7C5")
-    logo = brief.get("branding", {}).get("logo", "")
+    logo = brief.get("branding", {}).get("logo", "") or ""
     whatsapp = brief.get("whatsapp", "")
     phone = brief.get("contact_info", {}).get("phone", "")
     email = brief.get("contact_info", {}).get("email", "")
@@ -417,6 +627,13 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     comparison_json = json.dumps(comparison, indent=2) if comparison else "[]"
     pricing_json = json.dumps(pricing, indent=2) if pricing else "[]"
 
+    # Build verified facts block — injected into all 3 parts as single source of truth
+    facts_section = (
+        f"\nVERIFIED CLIENT FACTS (highest priority — use verbatim, never contradict):\n"
+        f"{'='*60}\n{client_facts}\n{'='*60}\n"
+        if client_facts else ""
+    )
+
     shared_context = (
         f"Business: {business_name}\n"
         f"Primary color: {primary_color} | Secondary: {secondary_color}\n"
@@ -426,6 +643,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"Meta description: {seo.get('meta_description', '')}\n"
         f"Language: {brief.get('language', 'es')} — ALL text must be in {'Spanish' if brief.get('language','es')=='es' else 'English'}\n"
         f"Has process_steps: {'YES' if process_steps else 'NO'} | Has comparison: {'YES' if comparison else 'NO'} | Has pricing: {'YES' if pricing else 'NO'}\n"
+        f"{facts_section}"
     )
 
     # Load curated images from core/images.json (normalized — hero and services are plain URL strings)
@@ -559,11 +777,41 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     analytics_snippet = build_analytics_snippet(config)
     schema_block = build_schema_org(brief, config) if use_schema_org else ""
 
+    # ── FASE 2: Mode-aware header + CSS token injection ───────────────────────
+    header_instruction = build_header_instruction(active_style_mode, logo, phone, primary_color)
+
+    # CSS root block: design tokens from design-language.json override LLM defaults
+    # Then patch primary/accent color with DNA-enforced values (regex replace — cascade-safe)
+    if design_tokens_css:
+        import re as _re
+        css_root_block = design_tokens_css
+        # Replace the first --color-primary value with the DNA-enforced one
+        if primary_color:
+            css_root_block = _re.sub(
+                r'--color-primary:\s*[^;]+;',
+                f'--color-primary: {primary_color};',
+                css_root_block, count=1
+            )
+        # Replace accent color if brand_strategy provides one
+        accent_color = brand_strategy.get("accent_color", "")
+        if accent_color:
+            css_root_block = _re.sub(
+                r'--color-accent:\s*[^;]+;',
+                f'--color-accent: {accent_color};',
+                css_root_block, count=1
+            )
+        css_root_note = f"mode={active_style_mode} — tokens from design-language.json (primary={primary_color})"
+    else:
+        css_root_block = f":root {{ --color-primary: {primary_color}; --color-secondary: {secondary_color}; }}"
+        css_root_note = "fallback — design-language.json missing"
+
     # ── PART 1: DOCTYPE + HEAD + CSS + HEADER + HERO ─────────────────────────
     print("\n  → Part 1: Head + Header + Hero...")
     part1_msg = (
         f"Generate ONLY Part 1 of a premium index.html. Be concise — no inline comments.\n\n"
+        f"{GROUNDING_RULE}\n"
         f"CONTEXT: {shared_context}\n"
+        f"ACTIVE STYLE MODE: {active_style_mode}\n"
         f"LAYOUT DECISIONS (from ui-designer — follow exactly):\n{layout_json_summary}\n\n"
         f"HERO COPY: {hero_json}\n\n"
         f"OUTPUT:\n"
@@ -575,36 +823,38 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"   - Insert these tags EXACTLY as-is (do not modify or recreate them):\n"
         f"     {og_tags}\n"
         f"   - Tailwind CDN: <script src='https://cdn.tailwindcss.com'></script>\n"
-        f"   - Google Fonts Inter\n"
-        f"   - <style> block with:\n"
-        f"     * :root {{ --color-primary: {primary_color}; --color-secondary: {secondary_color}; }}\n"
-        f"     * body {{ font-family: 'Inter', sans-serif; }}\n"
-        f"     * .reveal, .reveal-element {{ opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }}\n"
-        f"     * .reveal.visible, .reveal-element.visible {{ opacity: 1; transform: none; }}\n"
-        f"     * .reveal-on-scroll {{ transition: opacity 0.7s ease, transform 0.7s ease; }}\n"
-        f"     * .btn-primary {{ position:relative; overflow:hidden; }}\n"
+        f"   - Google Fonts Inter (400,500,600,700,800,900)\n"
+        f"   - <style> block:\n"
+        f"     STEP 1 — Copy this :root block VERBATIM as the FIRST CSS rule ({css_root_note}):\n"
+        f"     {css_root_block}\n"
+        f"     STEP 2 — Add these utility classes AFTER the :root block:\n"
+        f"     * body {{ font-family: 'Inter', sans-serif; background: var(--color-bg, #fff); color: var(--color-text, #111); }}\n"
+        f"     * .reveal, .reveal-element {{ opacity:0; transform:translateY(20px); transition:opacity 0.7s ease, transform 0.7s ease; }}\n"
+        f"     * .reveal.visible, .reveal-element.visible {{ opacity:1; transform:none; }}\n"
+        f"     * .btn-primary {{ background:var(--color-primary); color:#fff; font-weight:700; border-radius:var(--radius-button,0.5rem); box-shadow:var(--shadow-button,none); position:relative; overflow:hidden; display:inline-flex; align-items:center; justify-content:center; text-decoration:none; transition:transform 0.2s ease,box-shadow 0.2s ease; }}\n"
         f"     * .btn-primary::after {{ content:''; position:absolute; top:0; left:-100%; width:60%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent); transition:left 0.5s ease; pointer-events:none; }}\n"
         f"     * .btn-primary:hover::after {{ left:150%; }}\n"
-        f"     * .icon-circle {{ transition: background 0.25s ease; }}\n"
-        f"     * .group:hover .icon-circle {{ background: {primary_color} !important; }}\n"
-        f"     * .group:hover .icon-circle svg {{ color: white; stroke: white; }}\n"
-        f"     * .faq-answer {{ max-height: 0; overflow: hidden; transition: max-height 0.45s cubic-bezier(0.22,1,0.36,1); }}\n"
-        f"     * .faq-answer.open {{ max-height: 400px; }}\n"
-        f"     * @keyframes whatsapp-pulse {{ 0%,100% {{ box-shadow: 0 0 0 0 rgba(37,211,102,0.55); }} 70% {{ box-shadow: 0 0 0 14px rgba(37,211,102,0); }} }}\n"
-        f"     * .whatsapp-pulse {{ animation: whatsapp-pulse 2.2s infinite; }}\n"
-        f"     * @media (max-width:767px) {{ body {{ padding-bottom: 68px; }} }}\n"
-        f"     * @media (min-width:768px) {{ body {{ padding-bottom: 0 !important; }} }}\n"
-        f"     * Custom scrollbar (6px, primary color thumb), sticky header backdrop-blur\n"
+        f"     * .btn-primary:hover {{ transform:translateY(-2px); }}\n"
+        f"     * .btn-outline {{ background:transparent; color:var(--color-primary); border:2px solid var(--color-primary); border-radius:var(--radius-button,0.5rem); font-weight:600; display:inline-flex; align-items:center; text-decoration:none; transition:all 0.2s; }}\n"
+        f"     * .btn-outline:hover {{ background:var(--color-primary); color:#fff; }}\n"
+        f"     * .icon-circle {{ transition:background 0.25s ease; }}\n"
+        f"     * .group:hover .icon-circle {{ background:var(--color-primary) !important; }}\n"
+        f"     * .group:hover .icon-circle svg {{ color:white; stroke:white; }}\n"
+        f"     * .faq-answer {{ max-height:0; overflow:hidden; transition:max-height 0.45s cubic-bezier(0.22,1,0.36,1); }}\n"
+        f"     * .faq-answer.open {{ max-height:400px; }}\n"
+        f"     * @keyframes whatsapp-pulse {{ 0%,100% {{ box-shadow:0 0 0 0 rgba(37,211,102,0.55); }} 70% {{ box-shadow:0 0 0 14px rgba(37,211,102,0); }} }}\n"
+        f"     * .whatsapp-pulse {{ animation:whatsapp-pulse 2.2s infinite; }}\n"
+        f"     * @media (max-width:767px) {{ body {{ padding-bottom:68px; }} }}\n"
+        f"     * @media (min-width:768px) {{ body {{ padding-bottom:0 !important; }} }}\n"
+        f"     * ::-webkit-scrollbar {{ width:5px; }} ::-webkit-scrollbar-thumb {{ background:var(--color-primary); border-radius:3px; }}\n"
+        f"   - SVG favicon: data URL using brand initial '{business_name[0].upper() if business_name else 'W'}' and primary color\n"
         f"   - Schema.org block — insert EXACTLY as-is:\n"
         f"     {schema_block}\n"
-        f"   - Analytics — insert EXACTLY as-is (if empty string, skip):\n"
+        f"   - Analytics — insert EXACTLY as-is:\n"
         f"     {analytics_snippet if analytics_snippet else '<!-- analytics disabled -->'}\n"
         f"2. <body> opens\n"
-        f"3. Sticky <header> id='main-header': backdrop-blur-md bg-white/90 border-b shadow-sm, "
-        f"logo img src='{logo}' class='h-10 w-auto', "
-        f"nav links (Services/#services, Why Us/#benefits, Testimonials/#testimonials, FAQ/#faq, Contact/#contact), "
-        f"phone tel:{phone} with icon, 'Free Consultation' btn-primary px-6 py-2.5 text-sm, mobile hamburger\n"
-        f"4. Mobile nav dropdown (#mobile-menu, hidden by default)\n"
+        f"{header_instruction}"
+        f"4. Mobile nav dropdown (#mobile-menu hidden by default, same bg as header)\n"
         f"{hero_instruction}"
         f"6. End with comment <!-- END PART 1 --> — DO NOT close body or html."
     )
@@ -649,9 +899,19 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         for p in forbidden_patterns:
             forbidden_instruction += f"  - {p}\n"
 
+    # Portfolio guard — prevent hallucination if no portfolio data in brief
+    has_portfolio = bool(brief.get("portfolio", []))
+    portfolio_guard = (
+        "\nPORTFOLIO: You have portfolio data — include it.\n"
+        if has_portfolio else
+        "\nPORTFOLIO GUARD: There is NO portfolio data in this brief. DO NOT generate any portfolio section, case study section, or work gallery. Skip it entirely.\n"
+    )
+
     part2_msg = (
         f"Generate ONLY Part 2 of an index.html. Start immediately after <!-- END PART 1 -->.\n"
         f"NO DOCTYPE, NO html tag, NO head tag. Start directly with a <section> tag.\n\n"
+        f"{GROUNDING_RULE}\n"
+        f"{portfolio_guard}\n"
         f"CONTEXT: {shared_context}\n"
         f"LAYOUT DECISIONS (brand_strategy takes priority):\n{layout_json_summary}\n\n"
         f"IMAGE RULES (ABSOLUTE — NEVER VIOLATE):\n"
@@ -665,7 +925,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"{service_cards_instruction}\n"
         f"SERVICES DATA (text content only — use img tags above for images):\n{services_json}\n"
         f"BENEFITS: {benefits_json}\n"
-        f"TRUST: {trust_json}\n"
+        f"TRUST STATS (use these EXACT values — do NOT change numbers): {trust_json}\n"
         f"PROCESS STEPS (How It Works — 3 steps): {process_steps_json}\n\n"
         f"{forbidden_instruction}"
         f"ANIMATION RULES:\n"
@@ -747,6 +1007,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     part3_msg = (
         f"Generate ONLY Part 3 (the FINAL part) of an index.html. Start immediately after <!-- END PART 2 -->.\n"
         f"NO DOCTYPE, NO html, NO head. Start with a <section> tag. MUST end with </body></html>.\n\n"
+        f"{GROUNDING_RULE}\n"
+        f"{portfolio_guard}\n"
         f"CONTEXT: {shared_context}\n"
         f"LAYOUT DECISIONS (brand_strategy):\n{layout_json_summary}\n\n"
         f"TESTIMONIALS: {testimonials_json}\n"
@@ -896,6 +1158,7 @@ def run_pipeline(client_id: str):
     print("\n[1/7] Loading client data...")
     config, brief = load_client(client_id)
     client_dna = load_client_dna(client_id)
+    client_facts = load_client_facts(client_id)
     template_name = config["template"]
     prompts = load_prompts(template_name)
     brief_str = json.dumps(brief, indent=2)
@@ -912,6 +1175,7 @@ def run_pipeline(client_id: str):
     if (CORE_DIR / "art-director.md").exists(): active_systems.append("art-director")
     if (AGENTS_DIR / "brand-strategist.md").exists(): active_systems.append("brand-strategist")
     if client_dna: active_systems.append("client-dna")
+    if client_facts: active_systems.append("client-facts")
     if active_systems:
         print(f"  ✓ Active systems: {', '.join(active_systems)}")
 
@@ -951,6 +1215,10 @@ def run_pipeline(client_id: str):
         brand_json_str = extract_json(brand_raw)
         try:
             brand_strategy = json.loads(brand_json_str)
+
+            # ── FASE 1: DNA enforcement — MUST run before anything else ─────
+            brand_strategy = enforce_dna_style_mode(brand_strategy, client_dna)
+
             # Layout uniqueness check
             warnings = check_layout_uniqueness(brand_strategy, analysis.get("business_type", ""))
             for w in warnings:
@@ -967,6 +1235,11 @@ def run_pipeline(client_id: str):
 
     # STEP 2 — Copywriting
     print("\n[3/7] Copy Generation")
+    facts_block = (
+        f"\nVERIFIED CLIENT FACTS (use these verbatim — highest priority source):\n"
+        f"{'='*60}\n{client_facts}\n{'='*60}\n"
+        if client_facts else ""
+    )
     copy_raw, _ = call_claude(
         client,
         system_prompt=prompts["copywriter"],
@@ -975,7 +1248,10 @@ def run_pipeline(client_id: str):
             f"BUSINESS ANALYSIS:\n{json.dumps(analysis, indent=2)}\n\n"
             f"INDUSTRY TEMPLATE:\n{prompts['template']}\n\n"
             f"CLIENT BRIEF:\n{brief_str}\n\n"
+            f"{facts_block}"
             f"OUTPUT CONTRACT:\n{prompts['output_contract']}\n\n"
+            f"GROUNDING RULE: Use ONLY data from CLIENT BRIEF and VERIFIED CLIENT FACTS above. "
+            f"Never invent statistics, testimonials, certifications, client names, or results not present in these sources.\n\n"
             f"Return ONLY valid JSON following the output contract structure."
         ),
         step_name="Copywriter",
@@ -1052,8 +1328,25 @@ def run_pipeline(client_id: str):
     # STEP 5 — Frontend Generation (3-part strategy)
     print("\n[6/7] Frontend Generation")
     html_content = generate_frontend(
-        client, prompts["frontend_dev"], brief, config, seo_data, layout_data, brand_strategy
+        client, prompts["frontend_dev"], brief, config, seo_data, layout_data, brand_strategy,
+        client_facts=client_facts
     )
+
+    # ── FASE 1: Real HTML validation (structural checks) ─────────────────────
+    print("\n  → Running structural validation...")
+    html_findings = validate_html(html_content, brand_strategy, brief)
+    critical_count = 0
+    for finding in html_findings:
+        prefix = "  🔴" if finding.startswith("CRITICAL") else "  🟠" if finding.startswith("FAIL") else "  🟡" if finding.startswith("WARN") else "  🟢"
+        print(f"{prefix} {finding}")
+        if finding.startswith("CRITICAL") or finding.startswith("FAIL"):
+            critical_count += 1
+    if not html_findings:
+        print("  🟢 All structural checks passed")
+    elif critical_count > 0:
+        print(f"  ⚠  {critical_count} critical/fail findings — review output before deploying")
+    else:
+        print(f"  ✓ {len(html_findings)} warnings (no critical failures)")
 
     # Save output
     output_dir = PROJECTS_DIR / client_id / "output"

@@ -187,8 +187,7 @@
       "cta_style": "background: #B8860B; color: white; border-radius: 0.125rem; padding: 1rem 2.5rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; font-size: 0.875rem; box-shadow: 0 0 30px rgba(184,134,11,0.3);",
 
       "card_style": "background: #111111; border-radius: 0.125rem; border: 1px solid rgba(184,134,11,0.2); padding: 2rem;"
-    }
-  },
+    },
 
     "luxury-dark": {
       "description": "Tech premium, digital agency, SaaS, web studios, startups. Dark backgrounds, electric accents, glassmorphism.",
