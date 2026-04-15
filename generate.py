@@ -758,7 +758,9 @@ def build_section_flow(page_personality: str, section_order: list, has_process: 
     # FIX #2: logo-band added — was silently dropped from section_order if included
     part2_ids = {"services", "cta-banner", "benefits", "trust-band", "stats-bar", "how-it-works", "comparison", "badge-grid", "logo-band"}
     # Part 3: testimonials-region sections
-    part3_ids = {"testimonials", "wow-section", "faq", "pricing", "cta", "visual-break", "contact"}
+    # FIX B1: visual-break removed — the post-processing block (lines below) handles placement
+    # exclusively. Having it here caused it to appear in BOTH part2 AND part3 simultaneously.
+    part3_ids = {"testimonials", "wow-section", "faq", "pricing", "cta", "contact"}
 
     part2 = [s for s in section_order if s in part2_ids]
     part3 = [s for s in section_order if s in part3_ids]
@@ -1166,7 +1168,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"{hero_instruction}"
         f"6. End with comment <!-- END PART 1 --> — DO NOT close body or html."
     )
-    part1_raw, _ = call_claude(client, system_prompt, part1_msg, "Frontend Part 1 (Head+Hero)", max_tokens=8000)
+    # FIX B2: claude-sonnet-4-6 supports up to 16k output tokens — 8000 was causing truncation
+    part1_raw, _ = call_claude(client, system_prompt, part1_msg, "Frontend Part 1 (Head+Hero)", max_tokens=16000)
     part1_html = extract_html(part1_raw)
 
     # ── PART 2: SERVICES + CTA BANNER + BENEFITS + TRUST ─────────────────────
@@ -1314,7 +1317,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"OUTPUT (generate ONLY these sections in this order):\n"
         + "\n".join(p2_items)
     )
-    part2_raw, _ = call_claude(client, system_prompt, part2_msg, "Frontend Part 2 (Services+Benefits)", max_tokens=8000)
+    part2_raw, _ = call_claude(client, system_prompt, part2_msg, "Frontend Part 2 (Services+Benefits)", max_tokens=16000)
     part2_html = extract_html(part2_raw)
 
     # ── PART 3: TESTIMONIALS + FAQ + CTA + CONTACT + FOOTER + JS ─────────────
@@ -1435,6 +1438,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         )
         n += 1
 
+    # FIX B3: Part 3 ends after contact section — footer/JS moved to Part 4
+    # This prevents max_tokens truncation cutting off critical closing elements.
     part3_tail = (
         f"{n}. <section id='contact' class='py-20 bg-gray-50'>:\n"
         f"   Split layout: left=contact form, right=contact info card (phone:{phone}, email:{email}, address:{address}, hours:24/7)\n"
@@ -1444,27 +1449,13 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"     - Phone field:   <input type='tel' name='phone' ...>\n"
         f"     - Message field: <textarea name='message' ...></textarea>\n"
         f"     - Submit button id='form-submit-btn'\n"
-        f"     - Success message (hidden by default): <p id='form-success' class='hidden text-sm font-semibold text-center py-2' style='color:{{primary_color}};'>{_success_text}</p>\n"
+        f"     - Success message (hidden by default): <p id='form-success' class='hidden text-sm font-semibold text-center py-2' style='color:{primary_color};'>{_success_text}</p>\n"
     )
     n += 1
-    part3_tail += (
-        f"{n}. <footer>: dark gradient bg, logo img src='{resolve_image_path(logo_footer)}' class='h-12 w-auto brightness-0 invert', "
-        f"tagline, nav links in columns, social icons (FB/IG/LinkedIn href='#'), copyright line\n"
-    )
-    n += 1
-    part3_tail += (
-        f"{n}. WhatsApp button: id='wa-btn', fixed bottom-6 right-6, z-50, rounded-full, green bg, "
-        f"pulse animation class='wa-pulse', href='https://wa.me/{whatsapp}', target='_blank'\n"
-    )
-    n += 1
-    part3_tail += (
-        f"{n}. Mobile sticky CTA bar: class='mobile-cta-bar fixed bottom-0 left-0 right-0 z-40 bg-white border-t shadow-lg p-3 gap-2':\n"
-        f"   Two buttons — Call Now (tel:{phone}) and WhatsApp (wa.me/{whatsapp})\n"
-    )
-    n += 1
-    # (_is_es, _sending, _sent, _hello, _phone_l, _wa_fallback already defined above)
+    part3_tail += f"End with HTML comment <!-- END PART 3 --> — DO NOT generate footer, script, or closing body/html tags."
 
     # Build the form submit JS block based on whether EmailJS is configured
+    # (computed here so it's available for Part 4 below)
     if has_emailjs:
         _form_submit_js = (
             f"   e) Contact form — EmailJS + WhatsApp (COPY VERBATIM — do not modify):\n"
@@ -1528,28 +1519,67 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
             f"      }}\n"
         )
 
-    part3_tail += (
-        f"{n}. ONE <script> block containing ALL JavaScript:\n"
-        f"   a) IntersectionObserver: observe '.reveal-element, .reveal', add 'visible' class at threshold 0.1, "
-        f"also immediately activate elements already in viewport on window load\n"
-        f"   b) FAQ accordion: querySelectorAll('.faq-item button'), toggle 'open' on parent .faq-item\n"
-        f"   c) Mobile menu toggle: hamburger button toggles #mobile-menu visibility\n"
-        f"   d) Sticky header: add shadow class on scroll > 50px\n"
-        + _form_submit_js
-        + f"   f) Analytics tracking (insert verbatim):{tracking_js if tracking_js else ' // analytics disabled'}\n"
-    )
-    n += 1
-    part3_tail += f"{n}. Close with </body></html>"
     part3_msg = part3_msg + "\n".join(part3_output_items) + "\n" + part3_tail
-    part3_raw, stop3 = call_claude(client, system_prompt, part3_msg, "Frontend Part 3 (Footer+JS)", max_tokens=8000)
+    part3_raw, stop3 = call_claude(client, system_prompt, part3_msg, "Frontend Part 3 (Sections)", max_tokens=16000)
     part3_html = extract_html(part3_raw)
 
-    if stop3 == "max_tokens" and "</html>" not in part3_html:
-        print("  WARNING: Part 3 hit token limit — appending closing tags")
-        part3_html += "\n</body>\n</html>"
+    if stop3 == "max_tokens":
+        print("  WARNING: Part 3 hit token limit — some sections may be missing")
 
-    full_html = part1_html + "\n" + part2_html + "\n" + part3_html
-    print(f"  ✓ Frontend complete: {len(part1_html):,} + {len(part2_html):,} + {len(part3_html):,} = {len(full_html):,} chars total")
+    # ── PART 4: FOOTER + WHATSAPP + MOBILE CTA + JS ──────────────────────────
+    print("\n  → Part 4: Footer + WhatsApp + JS...")
+
+    part4_msg = (
+        f"Generate ONLY Part 4 (the ABSOLUTE FINAL closing part) of an index.html.\n"
+        f"Start immediately after <!-- END PART 3 -->.\n"
+        f"NO DOCTYPE, NO html tag, NO head tag, NO opening body tag.\n"
+        f"Start directly with <footer>. MUST end with </body></html>.\n\n"
+        f"CONTEXT: {shared_context}\n\n"
+        f"Generate EXACTLY these 5 elements in order — NEVER truncate:\n\n"
+        f"1. <footer class='bg-gray-900 text-white'> (full footer):\n"
+        f"   Logo: <img src='{resolve_image_path(logo_footer)}' class='h-12 w-auto brightness-0 invert' alt='{business_name}' loading='lazy'>\n"
+        f"   Include: tagline, nav links in 2-3 columns, social icons (FB=Facebook/IG=Instagram/LinkedIn, all href='#'),\n"
+        f"   copyright © {business_name}. Layout: max-w-7xl mx-auto px-6 py-12.\n\n"
+        f"2. WhatsApp floating button:\n"
+        f"   <a id='wa-btn' href='https://wa.me/{whatsapp}' target='_blank' rel='noopener'\n"
+        f"      class='wa-pulse fixed bottom-6 right-6 z-50 flex items-center justify-center\n"
+        f"             w-14 h-14 rounded-full bg-green-500 text-white shadow-lg hover:bg-green-600 transition-colors'>\n"
+        f"     Include WhatsApp SVG icon (24x24, fill currentColor, standard WhatsApp path)\n"
+        f"   </a>\n\n"
+        f"3. Mobile sticky CTA bar:\n"
+        f"   <div class='mobile-cta-bar fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 shadow-lg p-3 flex gap-2 md:hidden'>\n"
+        f"     Button 1: Call Now — href='tel:{phone}', brand primary bg\n"
+        f"     Button 2: WhatsApp — href='https://wa.me/{whatsapp}', green bg\n"
+        f"   </div>\n\n"
+        f"4. ONE <script> block (type='text/javascript') containing ALL JavaScript:\n"
+        f"   a) IntersectionObserver: observe all '.reveal-element, .reveal' elements,\n"
+        f"      add class 'visible' when threshold 0.1 reached;\n"
+        f"      ALSO on DOMContentLoaded activate elements already in viewport immediately\n"
+        f"   b) FAQ accordion: document.querySelectorAll('.faq-item button').forEach toggle 'open' class\n"
+        f"      on parent .faq-item; animate .faq-answer max-height between 0 and scrollHeight\n"
+        f"   c) Mobile menu: hamburger button click toggles #mobile-menu hidden/flex\n"
+        f"   d) Sticky header: window.addEventListener scroll, add 'shadow-md' to <header> when scrollY > 50\n"
+        + _form_submit_js
+        + f"   f) Analytics:{tracking_js if tracking_js else ' // analytics disabled'}\n\n"
+        f"5. Close document: </body></html>\n\n"
+        f"RULES:\n"
+        f"- The script block MUST be syntactically complete and valid JavaScript\n"
+        f"- All 5 elements are mandatory — if token budget is tight, abbreviate footer nav links\n"
+        f"- Never omit the script block or </body></html>\n"
+    )
+
+    part4_raw, stop4 = call_claude(client, system_prompt, part4_msg, "Frontend Part 4 (Footer+JS)", max_tokens=16000)
+    part4_html = extract_html(part4_raw)
+
+    if stop4 == "max_tokens" and "</html>" not in part4_html:
+        print("  WARNING: Part 4 hit token limit — appending closing tags")
+        part4_html += "\n</body>\n</html>"
+
+    full_html = part1_html + "\n" + part2_html + "\n" + part3_html + "\n" + part4_html
+    print(
+        f"  ✓ Frontend complete: {len(part1_html):,} + {len(part2_html):,} + "
+        f"{len(part3_html):,} + {len(part4_html):,} = {len(full_html):,} chars total"
+    )
     return full_html
 
 
