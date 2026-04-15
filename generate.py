@@ -372,6 +372,7 @@ def update_generation_log(client_id: str, brand_strategy: dict, business_type: s
         "layout_variation": brand_strategy.get("layout_variation", ""),
         "primary_color": brand_strategy.get("primary_color", ""),
         "hero_variant": brand_strategy.get("hero_variant", ""),
+        "page_personality": brand_strategy.get("page_personality", ""),
         "timestamp": datetime.datetime.now().isoformat()
     })
     # Keep last 20 entries
@@ -731,6 +732,60 @@ def build_services_layout_instruction(layout_variation: str, services: list, ser
         )
 
 
+def build_section_flow(page_personality: str, section_order: list, has_process: bool, has_comparison: bool, has_pricing: bool) -> dict:
+    """Derive which sections to generate in Part 2 and Part 3 based on page_personality.
+
+    Returns a dict with keys:
+      part2_sections: list of section IDs to include in Part 2
+      part3_sections: list of section IDs to include in Part 3
+      skip_faq: bool — True when page_personality is conversion-fast
+    """
+    # Default full flow if section_order is empty (backwards compat)
+    if not section_order:
+        if page_personality == "conversion-fast":
+            section_order = ["hero", "trust-band", "services", "visual-break", "testimonials", "cta", "contact"]
+        elif page_personality == "authority":
+            section_order = ["hero", "stats-bar", "services", "visual-break", "benefits", "badge-grid", "testimonials", "cta", "contact"]
+        elif page_personality == "product":
+            section_order = ["hero", "services", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
+        else:  # storytelling (default)
+            section_order = ["hero", "services", "how-it-works", "cta-banner", "stats-bar", "benefits", "badge-grid", "wow-section", "testimonials", "faq", "cta", "contact"]
+
+    # Part 1 always: hero (fixed)
+    # Part 2: services-region sections
+    part2_ids = {"services", "cta-banner", "benefits", "trust-band", "stats-bar", "how-it-works", "comparison", "badge-grid"}
+    # Part 3: testimonials-region sections
+    part3_ids = {"testimonials", "wow-section", "faq", "pricing", "cta", "visual-break", "contact"}
+
+    part2 = [s for s in section_order if s in part2_ids]
+    part3 = [s for s in section_order if s in part3_ids]
+
+    # Always ensure contact is last in part3
+    if "contact" not in part3:
+        part3.append("contact")
+
+    # visual-break: place it in part2 or part3 based on position in section_order
+    # (if it's before testimonials, put in part2; if after, put in part3)
+    testimonials_idx = section_order.index("testimonials") if "testimonials" in section_order else 999
+    services_idx = section_order.index("services") if "services" in section_order else 0
+    vb_idx = section_order.index("visual-break") if "visual-break" in section_order else 999
+    if "visual-break" in section_order:
+        if vb_idx < testimonials_idx:
+            if "visual-break" not in part2:
+                part2.append("visual-break")
+        else:
+            if "visual-break" not in part3:
+                part3.insert(0, "visual-break")
+
+    skip_faq = "faq" not in section_order
+    return {
+        "part2_sections": part2,
+        "part3_sections": part3,
+        "skip_faq": skip_faq,
+        "section_order": section_order,
+    }
+
+
 def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: dict, config: dict, seo_data: dict, layout_data: dict, brand_strategy: dict = None, client_facts: str = "", client_images: dict = None) -> str:
     """Generate frontend HTML in three focused parts to avoid token limits."""
     if brand_strategy is None:
@@ -820,9 +875,19 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     )
 
     # Load curated images from core/images.json (normalized — hero and services are plain URL strings)
+    # Selection priority: style_mode key → template key → "healthcare" fallback
+    # This ensures luxury-dark gets tech images, warm-local gets artisanal, etc.
     images_lib = load_images_library()
     template_key = config.get("template", "healthcare")
-    img_set = images_lib.get(template_key, images_lib.get("healthcare", {}))
+    img_set = (
+        images_lib.get(active_style_mode)          # 1st: exact style_mode match (e.g. "luxury-dark")
+        or images_lib.get(template_key)             # 2nd: template key (e.g. "healthcare")
+        or images_lib.get("healthcare", {})         # 3rd: safe fallback
+    )
+    if images_lib.get(active_style_mode):
+        print(f"  ✓ Image library: style_mode='{active_style_mode}' key matched — mood-specific images loaded")
+    else:
+        print(f"  ✓ Image library: template='{template_key}' key used (no style_mode override in images.json)")
     # brief.json may override hero image via branding.hero_image_url
     _raw_hero = (
         brief.get("branding", {}).get("hero_image_url")
@@ -904,6 +969,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     visual_break = brand_strategy.get("visual_break", {})
     forbidden_patterns = brand_strategy.get("forbidden_patterns", [])
     design_concept = brand_strategy.get("design_concept", "")
+    page_personality = brand_strategy.get("page_personality", "storytelling")
+    section_order = brand_strategy.get("section_order", [])
 
     layout_json_summary = json.dumps({
         "hero_variant": hero_variant,
@@ -915,12 +982,29 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         "visual_break": visual_break,
         "design_concept": design_concept,
         "forbidden_patterns": forbidden_patterns,
+        "page_personality": page_personality,
+        "section_order": section_order,
         "sections": [s.get("type", "") for s in layout_data.get("sections", [])]
     }, indent=2)
     print(f"  ✓ Layout: style={layout_style} | intensity={visual_intensity} | hero={hero_variant}")
     print(f"  ✓ Brand: layout={layout_variation} | spacing={spacing_scale} | image={image_direction}")
+    print(f"  ✓ Page personality: {page_personality} | sections: {len(section_order) if section_order else 'default'}")
     if visual_break:
         print(f"  ✓ Visual break: {visual_break.get('type','?')} @ {visual_break.get('position','?')}")
+
+    # ── PAGE PERSONALITY: derive section flow ────────────────────────────────
+    flow = build_section_flow(
+        page_personality=page_personality,
+        section_order=section_order,
+        has_process=bool(process_steps),
+        has_comparison=bool(comparison),
+        has_pricing=bool(pricing),
+    )
+    skip_faq = flow["skip_faq"]
+    part2_sections = flow["part2_sections"]
+    part3_sections = flow["part3_sections"]
+    print(f"  ✓ Section flow — part2: {part2_sections}")
+    print(f"  ✓ Section flow — part3: {part3_sections} | skip_faq={skip_faq}")
 
     # Build hero instruction based on hero_variant from ui-designer
     if hero_variant == "cinematic":
@@ -1004,7 +1088,8 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"   - Insert these tags EXACTLY as-is (do not modify or recreate them):\n"
         f"     {og_tags}\n"
         f"   - Tailwind CDN: <script src='https://cdn.tailwindcss.com'></script>\n"
-        f"   - Google Fonts Inter (400,500,600,700,800,900)\n"
+        f"   - Google Fonts: use the font pair for style_mode='{active_style_mode}' from your TYPOGRAPHY SYSTEM BY MODE section.\n"
+        f"     Inject the EXACT Google Fonts <link> tags for this mode BEFORE Tailwind CDN.\n"
         f"   - <style> block:\n"
         f"     STEP 1 — Copy this :root block VERBATIM as the FIRST CSS rule ({css_root_note}):\n"
         f"     {css_root_block}\n"
@@ -1093,6 +1178,58 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         "\nPORTFOLIO GUARD: There is NO portfolio data in this brief. DO NOT generate any portfolio section, case study section, or work gallery. Skip it entirely.\n"
     )
 
+    # ── Build Part 2 section list dynamically from page_personality ─────────
+    p2_items = []
+    p2_n = 1
+    # Services is always first in Part 2
+    p2_items.append(
+        f"{p2_n}. SERVICES section — use EXACT layout pattern:\n"
+        f"   {services_layout_instruction}\n"
+        f"{vb_part2_instruction}"
+    )
+    p2_n += 1
+    if "cta-banner" in part2_sections:
+        p2_items.append(
+            f"{p2_n}. Inline CTA banner: gradient bg (primary to secondary), headline, subheadline, button → href='#contact'\n"
+        )
+        p2_n += 1
+    if "benefits" in part2_sections:
+        p2_items.append(
+            f"{p2_n}. <section id='benefits' class='py-14 md:py-20 bg-white'>:\n"
+            f"   Section title + subtitle, then benefit items using layout from brand_strategy.section_layout_overrides.benefits\n"
+            f"   Default: icon-list (icon in colored circle, bold title, description) in grid md:grid-cols-3\n"
+            f"   Each card MUST have class='group' for hover effects to work\n"
+        )
+        p2_n += 1
+    if "stats-bar" in part2_sections or "trust-band" in part2_sections:
+        p2_items.append(
+            f"{p2_n}. <section id='trust' class='py-14 bg-gray-50'>:\n"
+            f"   4 trust stats: large numbers (text-5xl+) in primary color, label text, stagger animation\n"
+            f"   Use data from trust[] array — EXACT values, no inflation\n"
+        )
+        p2_n += 1
+    if "how-it-works" in part2_sections and process_steps:
+        p2_items.append(
+            f"{p2_n}. <section id='how-it-works' class='py-14 md:py-20 bg-white'>:\n"
+            f"   How It Works — 3 numbered steps horizontal layout\n"
+            f"   Each step: large number badge, title, description. Use PROCESS STEPS data.\n"
+        )
+        p2_n += 1
+    if "badge-grid" in part2_sections:
+        p2_items.append(
+            f"{p2_n}. Badge grid: 4 authority badges with icons (Background Checked, Licensed & Insured, Free Consultation, 24/7 Support)\n"
+        )
+        p2_n += 1
+    if "comparison" in part2_sections and comparison:
+        p2_items.append(
+            f"{p2_n}. <section id='comparison' class='py-14 md:py-20'>:\n"
+            f"   Side-by-side comparison table — use comparison data: {comparison_json}\n"
+            f"   2-column: left=brand (brand color header, checkmarks), right=competitors (gray, X marks)\n"
+            f"   KEY DIFFERENTIATOR — make visually impactful\n"
+        )
+        p2_n += 1
+    p2_items.append(f"\nEnd with comment <!-- END PART 2 --> — DO NOT close body or html.")
+
     part2_msg = (
         f"Generate ONLY Part 2 of an index.html. Start immediately after <!-- END PART 1 -->.\n"
         f"NO DOCTYPE, NO html tag, NO head tag. Start directly with a <section> tag.\n\n"
@@ -1100,8 +1237,10 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"  1. STOP adding new content immediately\n"
         f"  2. Close ALL currently open tags: </p></div></div></section>\n"
         f"  3. Then write <!-- END PART 2 --> and stop\n"
-        f"  NEVER cut a section mid-content — an unclosed <section> destroys the layout of everything below it.\n"
+        f"  NEVER cut a section mid-content — an unclosed <section> destroys the layout.\n"
         f"  A missing section is better than a broken one.\n\n"
+        f"PAGE PERSONALITY: {page_personality} — include ONLY the sections listed below.\n"
+        f"  Skip any section not in this list — do NOT add sections just because they exist in the template.\n\n"
         f"{GROUNDING_RULE}\n"
         f"{portfolio_guard}\n"
         f"CONTEXT: {shared_context}\n"
@@ -1109,52 +1248,21 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"IMAGE RULES (ABSOLUTE — NEVER VIOLATE):\n"
         f"- COPY the exact <img> tags provided below — NEVER change src URLs\n"
         f"- NEVER use source.unsplash.com (deprecated and broken)\n"
-        f"- NEVER generate your own image URLs from image_query or any query\n"
         f"- Image direction: '{image_direction}' — if 'illustration-icon' or 'minimal-no-image', use SVG icons instead of photos\n"
         f"- ALL images MUST have {img_onerror} as fallback\n"
-        f"- ALL images MUST have loading='lazy' (except hero in Part 1)\n"
-        f"- If you cannot find the img tag for a card → use the fallback gradient div\n\n"
+        f"- ALL images MUST have loading='lazy' (except hero in Part 1)\n\n"
         f"{service_cards_instruction}\n"
         f"SERVICES DATA (text content only — use img tags above for images):\n{services_json}\n"
         f"BENEFITS: {benefits_json}\n"
-        f"TRUST STATS (use these EXACT values — do NOT change numbers): {trust_json}\n"
-        f"PROCESS STEPS (How It Works — 3 steps): {process_steps_json}\n\n"
+        f"TRUST STATS (use EXACT values — do NOT change numbers): {trust_json}\n"
+        f"PROCESS STEPS (How It Works): {process_steps_json}\n\n"
         f"{forbidden_instruction}"
         f"ANIMATION RULES:\n"
         f"- Do NOT use Tailwind 'opacity-0' or 'translate-y-10' inline classes\n"
         f"- Use class='reveal-element' for scroll-reveal animations\n"
         f"- Every <section> MUST have both opening AND closing tags\n\n"
-        f"OUTPUT (generate ALL items fully before ending):\n"
-        f"1. SERVICES section — use this EXACT layout pattern:\n"
-        f"   {services_layout_instruction}\n"
-        f"{vb_part2_instruction}"
-        f"2. Inline CTA banner: gradient bg (primary to secondary), headline, subheadline, button → href='#contact'\n"
-        f"3. <section id='benefits' class='py-14 md:py-20 bg-white'>:\n"
-        f"   Section title + subtitle, then benefit items using layout from brand_strategy.section_layout_overrides.benefits\n"
-        f"   Default: icon-list (icon in colored circle, bold title, description) in grid md:grid-cols-3\n"
-        f"   Each card MUST have class='group' for hover effects to work\n"
-        f"   MUST be fully generated — do not leave this section empty\n"
-        f"4. <section id='trust' class='py-14 bg-gray-50'>:\n"
-        f"   4 trust stats: large numbers in primary color, label text, subtle icon\n"
-        f"   Use data from trust[] array\n"
-        + (
-            f"5. <section id='how-it-works' class='py-14 md:py-20 bg-white'>:\n"
-            f"   How It Works — 3 numbered steps horizontal layout:\n"
-            f"   Each step: large number badge, title, description\n"
-            f"   Use PROCESS STEPS data above\n"
-            f"6. "
-            if process_steps else "5. "
-        )
-        + (
-            f"<section id='comparison' class='py-14 md:py-20'>:\n"
-            f"   Side-by-side comparison table — SitioPro vs. Agencias Tradicionales:\n"
-            f"   2-column layout: left=SitioPro (brand color header, checkmarks), right=Traditional (gray header, X marks)\n"
-            f"   Use comparison data: {comparison_json}\n"
-            f"   This section is a KEY DIFFERENTIATOR — make it visually impactful\n"
-            if comparison else
-            f"Final CTA banner before ending Part 2\n"
-        )
-        + f"\nEnd with comment <!-- END PART 2 --> — DO NOT close body or html."
+        f"OUTPUT (generate ONLY these sections in this order):\n"
+        + "\n".join(p2_items)
     )
     part2_raw, _ = call_claude(client, system_prompt, part2_msg, "Frontend Part 2 (Services+Benefits)", max_tokens=8000)
     part2_html = extract_html(part2_raw)
@@ -1224,31 +1332,59 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"- Every <section> MUST open and close in this part\n\n"
     )
 
-    # Build numbered output list for Part 3 dynamically
+    # Language-aware strings — defined here so they're available for both
+    # part3_output_items and part3_tail (previously defined too late → NameError)
+    _is_es   = brief.get("language", "es") == "es"
+    _sending = "Enviando…" if _is_es else "Sending…"
+    _sent    = "✓ ¡Enviado!" if _is_es else "✓ Sent!"
+    _hello   = "¡Hola" if _is_es else "Hello"
+    _phone_l = "Teléfono" if _is_es else "Phone"
+    _wa_fallback = (
+        f"`{_hello} {business_name}! Me interesa sus servicios.`"
+        if _is_es else
+        f"`{_hello} {business_name}! I'd like to learn more about your services.`"
+    )
+    _success_text = "✓ ¡Mensaje enviado! Te contactamos en breve." if _is_es else "✓ Message sent! We'll contact you shortly."
+
+    # Build numbered output list for Part 3 dynamically from section_order
     n = 1
-    part3_sections = f"OUTPUT (generate ALL items — NEVER truncate):\n"
-    part3_sections += f"{n}. <section id='testimonials' class='{testimonials_bg}'>:\n"
-    part3_sections += f"   Style: {testimonials_style}\n"
-    part3_sections += vb_part3_instruction
-    n += 1
-    if pricing:
-        part3_sections += (
-            f"{n}. <section id='pricing' class='py-14 md:py-20 bg-gray-50'>:\n"
-            f"   3-column pricing grid — use PRICING PLANS data above\n"
-            f"   Highlighted plan gets border-2 border-[--color-primary] and slight scale emphasis\n"
-            f"   Each plan: name, price (large, bold), description, checkmark feature list, CTA button\n"
+    part3_output_items = [f"OUTPUT (generate ONLY these sections in this order — NEVER truncate):"]
+    if "testimonials" in part3_sections:
+        part3_output_items.append(
+            f"{n}. <section id='testimonials' class='{testimonials_bg}'>:\n"
+            f"   Style: {testimonials_style}"
+        )
+        part3_output_items.append(vb_part3_instruction)
+        n += 1
+    if "wow-section" in part3_sections:
+        part3_output_items.append(
+            f"{n}. <section id='wow-section'> — Full-bleed emotional quote section:\n"
+            f"   Large decorative quotation mark SVG, dark overlay image, single emotional quote, brand CTA"
         )
         n += 1
-    part3_sections += (
-        f"{n}. <section id='faq' class='py-14 bg-white'>:\n"
-        f"   FAQ accordion — each .faq-item has a button (toggle .open class) and .faq-answer div\n"
-        f"   Use data from FAQ array provided\n"
-    )
-    n += 1
-    part3_sections += f"{n}. Final CTA section: dark gradient bg, bold headline, subheadline, single primary CTA button\n"
-    n += 1
+    if "pricing" in part3_sections and pricing:
+        part3_output_items.append(
+            f"{n}. <section id='pricing' class='py-14 md:py-20 bg-gray-50'>:\n"
+            f"   3-column pricing grid — use PRICING PLANS data\n"
+            f"   Highlighted plan gets border-2 border-[--color-primary] + scale emphasis\n"
+            f"   Each plan: name, price (large), description, checkmark feature list, CTA button"
+        )
+        n += 1
+    if not skip_faq and "faq" in part3_sections:
+        part3_output_items.append(
+            f"{n}. <section id='faq' class='py-14 bg-white'>:\n"
+            f"   FAQ accordion — each .faq-item has button (toggle .open class) and .faq-answer div\n"
+            f"   Use data from FAQ array"
+        )
+        n += 1
+    elif skip_faq:
+        part3_output_items.append(f"   ⚠ PAGE PERSONALITY '{page_personality}': skip FAQ — not in section_order")
+    if "cta" in part3_sections:
+        part3_output_items.append(
+            f"{n}. Final CTA section: dark gradient bg, bold headline, subheadline, single primary CTA button"
+        )
+        n += 1
 
-    _success_text = "✓ ¡Mensaje enviado! Te contactamos en breve." if _is_es else "✓ Message sent! We'll contact you shortly."
     part3_tail = (
         f"{n}. <section id='contact' class='py-20 bg-gray-50'>:\n"
         f"   Split layout: left=contact form, right=contact info card (phone:{phone}, email:{email}, address:{address}, hours:24/7)\n"
@@ -1276,17 +1412,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
         f"   Two buttons — Call Now (tel:{phone}) and WhatsApp (wa.me/{whatsapp})\n"
     )
     n += 1
-    # Build language-aware strings for JS
-    _is_es = brief.get("language", "es") == "es"
-    _sending = "Enviando…" if _is_es else "Sending…"
-    _sent    = "✓ ¡Enviado!" if _is_es else "✓ Sent!"
-    _hello   = "¡Hola" if _is_es else "Hello"
-    _phone_l = "Teléfono" if _is_es else "Phone"
-    _wa_fallback = (
-        f"`{_hello} {business_name}! Me interesa sus servicios.`"
-        if _is_es else
-        f"`{_hello} {business_name}! I'd like to learn more about your services.`"
-    )
+    # (_is_es, _sending, _sent, _hello, _phone_l, _wa_fallback already defined above)
 
     # Build the form submit JS block based on whether EmailJS is configured
     if has_emailjs:
@@ -1364,7 +1490,7 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     )
     n += 1
     part3_tail += f"{n}. Close with </body></html>"
-    part3_msg = part3_msg + part3_sections + part3_tail
+    part3_msg = part3_msg + "\n".join(part3_output_items) + "\n" + part3_tail
     part3_raw, stop3 = call_claude(client, system_prompt, part3_msg, "Frontend Part 3 (Footer+JS)", max_tokens=8000)
     part3_html = extract_html(part3_raw)
 

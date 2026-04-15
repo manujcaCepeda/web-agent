@@ -91,16 +91,20 @@ Choose ONE `layout_variation` that differs from the default card-grid:
 
 Every site MUST have exactly 1 "visual break" section — a section that is structurally and visually unlike all others:
 
-| Type | Description |
-|------|-------------|
-| `dark-metrics-band` | Full-bleed dark section with 3–4 animated counter stats |
-| `editorial-manifesto` | Oversized left-aligned quote / brand statement, white on dark |
-| `split-proof` | 50/50 split: left dark with headline, right light with proof/results |
-| `full-bleed-image` | Edge-to-edge photo with minimal overlay text |
-| `browser-mockup-showcase` | Product/portfolio shown inside browser frame chrome |
-| `timeline-horizontal` | Process steps in a horizontal scrollable timeline |
+| Type | Description | Best for |
+|------|-------------|----------|
+| `dark-metrics-band` | Full-bleed dark section, 4 animated counter stats + headline | Services, healthcare, B2B |
+| `editorial-manifesto` | Oversized left-aligned brand statement, white on black, no grid | Agencies, consulting, brands |
+| `split-proof` | 50/50: left dark panel with headline, right light with proof/results | B2B, results-driven services |
+| `full-bleed-image` | Edge-to-edge photo, gradient overlay, minimal text bottom-left | Local, warm, emotional brands |
+| `browser-mockup-showcase` | Product/portfolio inside browser chrome with floating stat cards | SaaS, tech, digital, portfolio |
+| `timeline-horizontal` | Process steps horizontal strip, numbered circles on connector line | How-it-works, process-driven |
 
 **RULE: Choose the visual break type that contrasts most with the rest of the page.**
+**RULE: If services section uses dark images → choose `dark-metrics-band` or `editorial-manifesto`.**
+**RULE: If style_mode is `luxury-dark` → prefer `browser-mockup-showcase` or `editorial-manifesto`.**
+**RULE: If style_mode is `warm-local` → prefer `full-bleed-image`.**
+**RULE: If the page is process/service-heavy and How-It-Works section is absent → use `timeline-horizontal`.**
 
 ---
 
@@ -163,6 +167,52 @@ Color examples per mode:
 
 ---
 
+## PAGE PERSONALITY SYSTEM (CRITICAL — DESIGN DIRECTOR DECISION)
+
+Every site has ONE page personality. This controls:
+- How many sections appear (section_count)
+- Which sections appear (section_order)
+- The emotional arc of the page
+
+Choose based on business type + conversion goal:
+
+| Personality | Sections | Arc | Best for |
+|-------------|---------|-----|----------|
+| `conversion-fast` | 6–8 | Direct, urgent, no friction | Local services, direct response, price-sensitive |
+| `authority` | 8–10 | Trust build → proof → ask | B2B, consulting, professional services, healthcare |
+| `storytelling` | 10–12 | Emotional → rational → convert | Premium local, emotional brands, wellness |
+| `product` | 8–10 | Show → demonstrate → prove → convert | SaaS, agencies, tech, ecommerce |
+
+### Section vocabularies per personality
+
+**`conversion-fast`** — every section earns its place or gets cut:
+```
+section_order: ["hero", "trust-band", "services", "visual-break", "testimonials", "cta", "contact"]
+```
+
+**`authority`** — credibility first, then ask:
+```
+section_order: ["hero", "stats-bar", "services", "visual-break", "benefits", "badge-grid", "testimonials", "cta", "contact"]
+```
+
+**`storytelling`** — build relationship before converting:
+```
+section_order: ["hero", "services", "how-it-works", "cta-banner", "stats-bar", "benefits", "badge-grid", "wow-section", "testimonials", "faq", "cta", "contact"]
+```
+
+**`product`** — demo-driven, proof-heavy:
+```
+section_order: ["hero", "logo-band", "services", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
+```
+
+**RULES:**
+- `conversion-fast` → NEVER include FAQ (too much reading kills conversions)
+- `authority` → MUST include stats-bar with large numbers early
+- `storytelling` → MUST include wow-section + emotional quote
+- `product` → MUST include how-it-works and MAY include comparison table
+
+---
+
 ## OUTPUT FORMAT (STRICT JSON)
 
 Return ONLY valid JSON — no markdown, no explanations:
@@ -188,6 +238,8 @@ Return ONLY valid JSON — no markdown, no explanations:
     "benefits": "",
     "testimonials": ""
   },
+  "page_personality": "conversion-fast | authority | storytelling | product",
+  "section_order": [],
   "forbidden_patterns": [],
   "layout_notes": "",
   "reference_applied": ""
@@ -202,7 +254,7 @@ Return ONLY valid JSON — no markdown, no explanations:
 |-------|-----------------|
 | `style_mode` | CSS mode block to activate in frontend-dev |
 | `design_concept` | 1 sentence describing the emotional/visual concept. Used as creative brief. |
-| `hero_variant` | `cinematic` / `split-emotional` / `minimal-luxury` |
+| `hero_variant` | `cinematic` / `split-emotional` / `minimal-luxury` / `browser-mockup` / `stats-hero` / `editorial-statement` |
 | `layout_variation` | Services section layout pattern (see table above) |
 | `visual_intensity` | `low` / `medium` / `high` |
 | `spacing_scale` | `compact` / `balanced` / `generous` / `editorial` |
@@ -212,6 +264,8 @@ Return ONLY valid JSON — no markdown, no explanations:
 | `visual_break` | The standout section that breaks the layout rhythm |
 | `section_layout_overrides` | Per-section layout variation names |
 | `forbidden_patterns` | Patterns specifically banned for this client |
+| `page_personality` | Emotional arc + section count strategy — see PAGE PERSONALITY SYSTEM |
+| `section_order` | Ordered list of section IDs for this page — drives ui-designer section structure |
 | `layout_notes` | Any additional instruction for UI designer / frontend dev |
 | `reference_applied` | 1-2 sentences: what you took from the reference and how it appears in your decisions |
 

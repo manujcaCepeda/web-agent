@@ -360,20 +360,80 @@ Rules:
 
 ---
 
-# 🔄 UX FLOW (MANDATORY)
+# 🔄 UX FLOW (DYNAMIC — DRIVEN BY PAGE PERSONALITY)
 
-1. Hero
-2. Services
-3. How It Works (3-step process)
-4. CTA Banner
-5. Stats Bar (big trust numbers)
-6. Benefits
-7. Badge Grid (4 authority badges)
-8. Wow Section (full-bleed emotional quote)
-9. Testimonials
-10. FAQ
-11. CTA
-12. Contact
+**CRITICAL:** You MUST read `brand_strategy.page_personality` and `brand_strategy.section_order` from the pipeline inputs.
+
+The section order is NOT fixed. It changes per client based on their conversion goal and emotional arc.
+
+## PAGE PERSONALITY → SECTION FLOW MAPPING
+
+### `conversion-fast` — Direct, urgent, no friction (6–8 sections)
+```
+section_order: ["hero", "trust-band", "services", "visual-break", "testimonials", "cta", "contact"]
+```
+- Purpose: Remove every obstacle between landing and conversion
+- NEVER include FAQ (too much reading kills conversions)
+- trust-band = a thin strip of 3–4 trust pills directly below hero
+- visual-break comes right after services — no detour
+
+### `authority` — Credibility first, then ask (8–10 sections)
+```
+section_order: ["hero", "stats-bar", "services", "visual-break", "benefits", "badge-grid", "testimonials", "cta", "contact"]
+```
+- Purpose: Build trust with hard evidence before making the ask
+- MUST include stats-bar with large numbers early (right after hero)
+- badge-grid = 4 authority logos/certifications/awards
+- No FAQ unless explicitly in section_order
+
+### `storytelling` — Build relationship before converting (10–12 sections)
+```
+section_order: ["hero", "services", "how-it-works", "cta-banner", "stats-bar", "benefits", "badge-grid", "wow-section", "testimonials", "faq", "cta", "contact"]
+```
+- Purpose: Emotional journey — earn trust, then convert
+- MUST include wow-section (full-bleed emotional quote/image)
+- MUST include how-it-works before stats
+- FAQ is expected and appropriate
+- cta-banner = mid-page inline CTA strip (not the final CTA)
+
+### `product` — Demo-driven, proof-heavy (8–10 sections)
+```
+section_order: ["hero", "logo-band", "services", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
+```
+- Purpose: Show → demonstrate → prove → convert
+- logo-band = horizontal strip of client/integration logos
+- comparison = feature comparison table
+- pricing section expected
+- MUST include how-it-works
+
+## HOW TO APPLY
+
+1. Read `brand_strategy.section_order` — this is the canonical list for this client
+2. If `brand_strategy.section_order` is empty → derive from `page_personality` using the flows above
+3. Build EVERY section in the exact order specified — do not reorder, do not skip
+4. For sections not in the vocabulary (e.g. a custom section) → place after the nearest logical section
+
+## SECTION VOCABULARY (BUILDABLE SECTIONS)
+
+| Section ID | What it renders |
+|------------|----------------|
+| `hero` | Full hero variant from hero-system |
+| `trust-band` | Thin strip, 3–4 inline trust pills |
+| `logo-band` | Horizontal logo strip, client logos |
+| `stats-bar` | 4 large animated counters, authority numbers |
+| `services` | Services grid — layout from layout_variation |
+| `how-it-works` | 3-step process, numbered, horizontal or vertical |
+| `cta-banner` | Mid-page CTA strip, contrasting background |
+| `benefits` | Benefits list — icon + headline + short copy |
+| `badge-grid` | 4 authority badges/certifications |
+| `visual-break` | The standout structural break — from visual_break.type |
+| `wow-section` | Full-bleed emotional quote or image + manifesto text |
+| `comparison` | Feature comparison table, 2–3 column |
+| `testimonials` | Customer proof — 2–3 testimonial cards |
+| `pricing` | 2–3 pricing tiers |
+| `faq` | 4–6 accordion Q&A items |
+| `cta` | Final conversion CTA with headline + button |
+| `contact` | Contact form or contact info block |
 
 ---
 
@@ -381,9 +441,9 @@ Rules:
 
 You MUST include:
 
-* CTA after Services
-* CTA after Testimonials
-* Final CTA before Contact
+* CTA or cta-banner after Services (unless `conversion-fast` which uses visual-break instead)
+* CTA after Testimonials (unless section_order puts cta elsewhere)
+* Final CTA before Contact (always)
 
 ---
 

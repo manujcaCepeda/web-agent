@@ -332,6 +332,131 @@ CTA: Pill-shaped with bold offset shadow — NOT standard rounded-lg button
 
 ---
 
+---
+
+## TYPOGRAPHY SYSTEM BY MODE (CRITICAL — INJECT IN `<head>` BEFORE TAILWIND)
+
+Typography is 40% of visual differentiation. Every mode MUST load its own font pair.
+Inject the Google Fonts `<link>` tag as the FIRST item inside `<head>`, before Tailwind CDN.
+
+DO NOT use generic `font-family: 'Inter'` for all modes — that is the #1 cause of all sites looking identical.
+
+### Font pair matrix
+
+| `style_mode` | Heading font | Body font | Character |
+|---|---|---|---|
+| `premium-care` | Nunito | Inter | Warm, round, accessible — friendly authority |
+| `modern-clinic` | Inter (800 tight) | Inter | Clinical precision — size and weight are the style |
+| `luxury-service` | DM Serif Display | Inter Light | Authoritative, refined, old-money serif |
+| `luxury-dark` | Space Grotesk | Inter | Technical, modern, electric — geometric punch |
+| `ultra-minimal` | Inter (extreme contrast) | Inter Light | 900 vs 200 weight contrast IS the identity |
+| `warm-local` | Playfair Display | Lato | Editorial, artisanal, warm — feels handcrafted |
+| `corporate-trust` | Merriweather | Inter | Established, formal, newspaper-trustworthy |
+| `creative-bold` | Syne | Inter | Expressive, asymmetric — creativity as identity |
+
+### Google Fonts imports (copy exactly for active mode)
+
+**premium-care:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+```
+```css
+body { font-family: 'Inter', sans-serif; }
+h1, h2, h3, h4 { font-family: 'Nunito', sans-serif; font-weight: 800; }
+```
+
+**luxury-dark:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+```
+```css
+body { font-family: 'Inter', sans-serif; font-weight: 300; }
+h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
+```
+
+**luxury-service:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+```
+```css
+body { font-family: 'Inter', sans-serif; font-weight: 300; color: #A8A8A8; }
+h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; color: #FFFFFF; letter-spacing: -0.01em; }
+```
+
+**ultra-minimal:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;700;900&display=swap" rel="stylesheet">
+```
+```css
+body { font-family: 'Inter', sans-serif; font-weight: 400; }
+/* Ultra-minimal: EXTREME weight contrast is the identity */
+h1 { font-family: 'Inter', sans-serif; font-weight: 900; letter-spacing: -0.04em; }
+h2 { font-family: 'Inter', sans-serif; font-weight: 200; letter-spacing: 0.06em; text-transform: uppercase; }
+/* Alternate: some H2s use 900 weight — use contrast intentionally */
+```
+
+**warm-local:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+```
+```css
+body { font-family: 'Lato', sans-serif; }
+h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 700; }
+h1 { font-weight: 900; }
+```
+
+**corporate-trust:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+```
+```css
+body { font-family: 'Inter', sans-serif; }
+h1, h2, h3 { font-family: 'Merriweather', serif; font-weight: 700; color: var(--color-primary); }
+```
+
+**creative-bold:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+```
+```css
+body { font-family: 'Inter', sans-serif; }
+h1, h2, h3 { font-family: 'Syne', sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+```
+
+**modern-clinic:**
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+```
+```css
+body { font-family: 'Inter', sans-serif; }
+h1, h2 { font-family: 'Inter', sans-serif; font-weight: 800; letter-spacing: -0.02em; }
+```
+
+### TYPOGRAPHY INJECTION RULE
+1. Identify `style_mode` from brand_strategy
+2. Copy the exact `<link>` tags above for that mode
+3. Inject them as the FIRST content inside `<head>` (before Tailwind CDN)
+4. Add the mode-specific `body` and `h1/h2/h3` CSS rules inside the `<style>` block, AFTER the `:root {}` variables block
+5. NEVER load multiple font families — only load the pair for the active mode
+
+---
+
 ### ART DIRECTION INTEGRATION (CRITICAL)
 
 You will receive `art_direction` from the business-analyzer.
@@ -483,6 +608,85 @@ Before writing ANY HTML, read `brand_strategy` and apply:
 </div>
 ```
 
+**`masonry-mixed`** — Asymmetric grid: 1 large featured card + 2-3 smaller cards in first row, then swapped in second row. Visual weight varies intentionally:
+```html
+<!-- Masonry-mixed services — creative, portfolio, agency -->
+<div class="space-y-6">
+  <!-- Row 1: 1 large (2/3) + 1 small (1/3) -->
+  <div class="grid md:grid-cols-3 gap-6">
+    <!-- Large card — featured service -->
+    <div class="md:col-span-2 group relative rounded-2xl overflow-hidden shadow-lg card-hover"
+      style="min-height:360px;">
+      <div class="img-zoom absolute inset-0">
+        <img src="{{services[0]._image_url}}" alt="{{services[0].name}}"
+          class="w-full h-full object-cover object-center"
+          loading="lazy"
+          onerror="this.onerror=null;this.style.background='linear-gradient(135deg,var(--color-secondary),var(--color-primary))';this.removeAttribute('src')">
+      </div>
+      <!-- Overlay gradient -->
+      <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%);"></div>
+      <!-- Content anchored to bottom -->
+      <div class="absolute bottom-0 left-0 right-0 p-8">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3"
+          style="background:var(--color-primary); color:#fff;">{{eyebrow_badge}}</span>
+        <h3 class="text-2xl md:text-3xl font-bold text-white mb-2">{{services[0].name}}</h3>
+        <p class="text-white/70 text-sm leading-relaxed">{{services[0].description}}</p>
+      </div>
+    </div>
+    <!-- Small card -->
+    <div class="group relative rounded-2xl overflow-hidden shadow-md card-hover"
+      style="min-height:360px;">
+      <div class="img-zoom absolute inset-0">
+        <img src="{{services[1]._image_url}}" alt="{{services[1].name}}"
+          class="w-full h-full object-cover object-center"
+          loading="lazy"
+          onerror="this.onerror=null;this.style.background='linear-gradient(135deg,var(--color-secondary),var(--color-primary))';this.removeAttribute('src')">
+      </div>
+      <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%);"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+        <h3 class="text-xl font-bold text-white mb-1">{{services[1].name}}</h3>
+        <p class="text-white/65 text-sm">{{services[1].description}}</p>
+      </div>
+    </div>
+  </div>
+  <!-- Row 2: 1 small (1/3) + 1 large (2/3) — swapped weights -->
+  <div class="grid md:grid-cols-3 gap-6">
+    <!-- Small card -->
+    <div class="group relative rounded-2xl overflow-hidden shadow-md card-hover"
+      style="min-height:300px;">
+      <div class="img-zoom absolute inset-0">
+        <img src="{{services[2]._image_url}}" alt="{{services[2].name}}"
+          class="w-full h-full object-cover object-center"
+          loading="lazy"
+          onerror="this.onerror=null;this.style.background='linear-gradient(135deg,var(--color-secondary),var(--color-primary))';this.removeAttribute('src')">
+      </div>
+      <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%);"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-6">
+        <h3 class="text-xl font-bold text-white mb-1">{{services[2].name}}</h3>
+        <p class="text-white/65 text-sm">{{services[2].description}}</p>
+      </div>
+    </div>
+    <!-- Large card — second feature -->
+    <div class="md:col-span-2 group relative rounded-2xl overflow-hidden shadow-lg card-hover"
+      style="min-height:300px;">
+      <div class="img-zoom absolute inset-0">
+        <img src="{{services[3]._image_url}}" alt="{{services[3].name}}"
+          class="w-full h-full object-cover object-center"
+          loading="lazy"
+          onerror="this.onerror=null;this.style.background='linear-gradient(135deg,var(--color-secondary),var(--color-primary))';this.removeAttribute('src')">
+      </div>
+      <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%);"></div>
+      <div class="absolute bottom-0 left-0 right-0 p-8">
+        <h3 class="text-2xl font-bold text-white mb-2">{{services[3].name}}</h3>
+        <p class="text-white/70 text-sm leading-relaxed">{{services[3].description}}</p>
+      </div>
+    </div>
+  </div>
+  <!-- Row 3: remaining services in equal columns (if 5+) -->
+  <!-- If fewer than 4 services total: skip row 2 and render only row 1 -->
+</div>
+```
+
 **`cards-3`** (ONLY if brand_strategy explicitly specifies this):
 Standard 3-column card grid with image top + content below.
 
@@ -490,60 +694,239 @@ Standard 3-column card grid with image top + content below.
 
 ### 2. Visual Break section — render based on `visual_break.type`
 
-**`dark-metrics-band`**:
+**`dark-metrics-band`** — Full-bleed dark section, 4 animated counters, headline + sub:
 ```html
-<section class="py-20 bg-[--color-bg-dark]">
-  <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-    <div>
-      <div class="text-5xl font-black text-[--color-primary] mb-2 counter" data-target="{{n}}">0</div>
-      <div class="text-sm text-white/60 uppercase tracking-widest">{{label}}</div>
+<section class="py-20 md:py-28 relative overflow-hidden" style="background:#0A0A0A;">
+  <!-- Ambient top glow line -->
+  <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent, var(--color-primary), transparent); opacity:0.6;"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Optional section headline -->
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-white mb-3">{{visual_break_headline}}</h2>
+      <p class="text-white/50 max-w-xl mx-auto">{{visual_break_sub}}</p>
     </div>
-    <!-- ... repeat for each metric -->
-  </div>
-</section>
-```
-
-**`editorial-manifesto`**:
-```html
-<section class="py-24 bg-[--color-bg-dark] overflow-hidden">
-  <div class="max-w-5xl mx-auto px-6">
-    <p class="text-5xl md:text-7xl font-black text-white leading-tight">
-      "{{brand_strategy.design_concept}}"
-    </p>
-    <div class="mt-12 w-24 h-1 bg-[--color-primary]"></div>
-  </div>
-</section>
-```
-
-**`browser-mockup-showcase`**:
-```html
-<section class="py-20 bg-[--color-bg-dark]">
-  <div class="browser-frame max-w-4xl mx-auto rounded-xl overflow-hidden shadow-2xl
-              border border-white/10">
-    <div class="browser-bar flex items-center gap-2 px-4 py-3 bg-[#1E293B]">
-      <span class="w-3 h-3 rounded-full bg-red-500"></span>
-      <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-      <span class="w-3 h-3 rounded-full bg-green-500"></span>
-      <div class="flex-1 bg-[#0F172A] rounded-md mx-2 py-1 px-3 text-xs text-white/50">
-        {{business_url}}
+    <!-- 4 metrics grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+      <div class="reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:0ms;">
+        <p class="text-6xl md:text-8xl font-black leading-none mb-3" style="color:var(--color-primary);">{{stat_1_value}}</p>
+        <p class="text-sm text-white/50 uppercase tracking-[0.15em] font-semibold">{{stat_1_label}}</p>
+      </div>
+      <div class="reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:100ms;">
+        <p class="text-6xl md:text-8xl font-black leading-none mb-3" style="color:var(--color-primary);">{{stat_2_value}}</p>
+        <p class="text-sm text-white/50 uppercase tracking-[0.15em] font-semibold">{{stat_2_label}}</p>
+      </div>
+      <div class="reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:200ms;">
+        <p class="text-6xl md:text-8xl font-black leading-none mb-3" style="color:var(--color-primary);">{{stat_3_value}}</p>
+        <p class="text-sm text-white/50 uppercase tracking-[0.15em] font-semibold">{{stat_3_label}}</p>
+      </div>
+      <div class="reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:300ms;">
+        <p class="text-6xl md:text-8xl font-black leading-none mb-3" style="color:var(--color-primary);">{{stat_4_value}}</p>
+        <p class="text-sm text-white/50 uppercase tracking-[0.15em] font-semibold">{{stat_4_label}}</p>
       </div>
     </div>
-    <img src="{{screenshot}}" class="w-full" loading="lazy">
+    <!-- Optional CTA inside dark band -->
+    <div class="text-center mt-16">
+      <a href="#contact" class="btn-primary inline-block px-10 py-4 text-base font-semibold">{{cta_primary}}</a>
+    </div>
+  </div>
+  <!-- Ambient bottom glow line -->
+  <div class="absolute bottom-0 left-0 right-0 h-px" style="background:linear-gradient(90deg, transparent, var(--color-primary), transparent); opacity:0.6;"></div>
+</section>
+```
+
+**`editorial-manifesto`** — Oversized quote/statement, left-aligned, dark background. No grid:
+```html
+<section class="py-24 md:py-32 overflow-hidden relative" style="background:#0A0A0A;">
+  <div class="max-w-6xl mx-auto px-6">
+    <!-- Decorative quotation mark -->
+    <div class="text-[180px] leading-none font-black select-none pointer-events-none mb-[-60px] ml-[-10px]"
+      style="color:var(--color-primary); opacity:0.15; font-family:Georgia,serif;">"</div>
+    <!-- The manifesto statement — left-aligned, massive -->
+    <p class="text-4xl md:text-6xl xl:text-7xl font-black text-white leading-[1.1] tracking-tight max-w-5xl mb-12">
+      {{brand_strategy_design_concept_or_brand_statement}}
+    </p>
+    <!-- Accent rule + attribution -->
+    <div class="flex items-center gap-6">
+      <div class="h-0.5 w-16" style="background:var(--color-primary);"></div>
+      <p class="text-sm font-semibold uppercase tracking-widest" style="color:var(--color-primary);">{{business_name}}</p>
+    </div>
   </div>
 </section>
 ```
 
-**`split-proof`**:
+**`browser-mockup-showcase`** — Portfolio/product inside browser chrome, centered, with floating stats:
 ```html
-<section class="grid md:grid-cols-2 min-h-[400px]">
-  <div class="bg-[--color-bg-dark] flex items-center p-12">
-    <div>
-      <h2 class="text-4xl font-black text-white mb-4">{{concept_headline}}</h2>
-      <p class="text-white/60">{{concept_description}}</p>
+<section class="py-20 md:py-28 relative overflow-hidden" style="background:var(--color-bg);">
+  <div class="max-w-5xl mx-auto px-6">
+    <!-- Section header -->
+    <div class="text-center mb-12">
+      <span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
+        style="background:rgba(var(--badge-rgb,6,182,212),0.12); color:var(--color-primary);">{{eyebrow}}</span>
+      <h2 class="text-3xl md:text-4xl font-bold mb-4" style="color:var(--color-text,#F8FAFC);">{{headline}}</h2>
+    </div>
+    <!-- Browser frame -->
+    <div class="relative">
+      <div class="rounded-xl overflow-hidden shadow-2xl" style="border:1px solid rgba(var(--badge-rgb,6,182,212),0.25);">
+        <!-- Chrome bar -->
+        <div class="flex items-center gap-2 px-4 py-3" style="background:#1E293B;">
+          <span class="w-3 h-3 rounded-full bg-red-500 opacity-80"></span>
+          <span class="w-3 h-3 rounded-full bg-yellow-400 opacity-80"></span>
+          <span class="w-3 h-3 rounded-full bg-green-500 opacity-80"></span>
+          <div class="flex-1 rounded-md mx-3 py-1 px-3 text-xs" style="background:#0F172A; color:rgba(255,255,255,0.4);">
+            {{business_url_or_domain}}
+          </div>
+        </div>
+        <!-- Image inside browser -->
+        <img src="{{hero_image_url}}" alt="{{business_name}} — {{eyebrow}}"
+          class="w-full object-cover object-top" style="max-height:480px;"
+          loading="lazy"
+          onerror="this.onerror=null;this.style.background='var(--color-secondary)';this.removeAttribute('src')">
+      </div>
+      <!-- Floating stat card — top left -->
+      <div class="absolute -top-5 -left-5 bg-white rounded-xl shadow-xl px-5 py-4 z-10"
+        style="min-width:150px; border:1px solid #F1F5F9;">
+        <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--color-text-muted,#94A3B8);">{{float_1_label}}</p>
+        <p class="text-2xl font-extrabold" style="color:var(--color-primary);">{{float_1_value}}</p>
+      </div>
+      <!-- Floating stat card — bottom right -->
+      <div class="absolute -bottom-5 -right-5 bg-white rounded-xl shadow-xl px-5 py-4 z-10"
+        style="min-width:150px; border:1px solid #F1F5F9;">
+        <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color:var(--color-text-muted,#94A3B8);">{{float_2_label}}</p>
+        <p class="text-2xl font-extrabold" style="color:var(--color-primary);">{{float_2_value}}</p>
+      </div>
     </div>
   </div>
-  <div class="bg-[--color-secondary-light] flex items-center p-12">
-    <!-- stats, testimonials excerpt, or results -->
+</section>
+```
+
+**`split-proof`** — 50/50: left dark panel with headline, right light panel with proof/results:
+```html
+<section class="overflow-hidden">
+  <div class="grid md:grid-cols-2 min-h-[500px]">
+    <!-- Left: dark panel — bold claim -->
+    <div class="flex items-center px-12 py-16 md:py-20" style="background:#0A0A0A;">
+      <div>
+        <!-- Eyebrow -->
+        <p class="text-xs font-bold uppercase tracking-[0.2em] mb-6" style="color:var(--color-primary);">{{eyebrow}}</p>
+        <!-- Big bold claim -->
+        <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-6">{{concept_headline}}</h2>
+        <p class="text-white/60 leading-relaxed mb-8">{{concept_description}}</p>
+        <div class="h-0.5 w-16" style="background:var(--color-primary);"></div>
+      </div>
+    </div>
+    <!-- Right: light panel — evidence/proof -->
+    <div class="flex items-center px-12 py-16 md:py-20" style="background:var(--color-secondary-light,#F8FAFC);">
+      <div class="w-full">
+        <!-- Proof items: stats or testimonial excerpt -->
+        <div class="space-y-8">
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center"
+              style="background:var(--color-secondary);">
+              {{proof_icon_1}}
+            </div>
+            <div>
+              <p class="text-3xl font-black mb-1" style="color:var(--color-primary);">{{proof_value_1}}</p>
+              <p class="text-sm font-semibold" style="color:var(--color-text-muted,#64748B);">{{proof_label_1}}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center"
+              style="background:var(--color-secondary);">
+              {{proof_icon_2}}
+            </div>
+            <div>
+              <p class="text-3xl font-black mb-1" style="color:var(--color-primary);">{{proof_value_2}}</p>
+              <p class="text-sm font-semibold" style="color:var(--color-text-muted,#64748B);">{{proof_label_2}}</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-5">
+            <div class="w-12 h-12 rounded-xl flex-shrink-0 flex items-center justify-center"
+              style="background:var(--color-secondary);">
+              {{proof_icon_3}}
+            </div>
+            <div>
+              <p class="text-3xl font-black mb-1" style="color:var(--color-primary);">{{proof_value_3}}</p>
+              <p class="text-sm font-semibold" style="color:var(--color-text-muted,#64748B);">{{proof_label_3}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+```
+
+**`full-bleed-image`** — Edge-to-edge photo, minimal text overlay, emotional impact through image:
+```html
+<section class="relative min-h-[520px] md:min-h-[640px] flex items-end overflow-hidden">
+  <!-- Full-bleed background image -->
+  <img src="{{hero_image_url}}" alt="{{visual_break_concept}}"
+    class="absolute inset-0 w-full h-full object-cover object-center"
+    loading="lazy"
+    onerror="this.onerror=null;this.style.background='linear-gradient(135deg,var(--color-secondary),var(--color-primary))';this.removeAttribute('src')">
+  <!-- Gradient overlay — bottom-weighted for text legibility -->
+  <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.05) 100%);"></div>
+  <!-- Minimal text overlay — bottom left anchored -->
+  <div class="relative z-10 w-full max-w-7xl mx-auto px-6 pb-14 md:pb-20">
+    <div class="max-w-2xl">
+      <!-- Thin accent line above -->
+      <div class="h-0.5 w-12 mb-6" style="background:var(--color-primary);"></div>
+      <h2 class="text-4xl md:text-5xl font-black text-white leading-tight mb-4">{{concept_headline}}</h2>
+      <p class="text-white/70 text-lg mb-8 max-w-lg">{{concept_description}}</p>
+      <a href="#contact" class="btn-primary inline-block px-8 py-3 text-base font-semibold">{{cta_primary}}</a>
+    </div>
+  </div>
+</section>
+```
+
+**`timeline-horizontal`** — Process steps in a horizontal scrollable strip, numbered, distinct rhythm:
+```html
+<section class="py-20 md:py-28 overflow-hidden" style="background:var(--color-bg);">
+  <div class="max-w-7xl mx-auto px-6">
+    <!-- Section header -->
+    <div class="mb-14">
+      <span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
+        style="background:var(--color-secondary); color:var(--color-primary);">{{eyebrow}}</span>
+      <h2 class="text-3xl md:text-4xl font-bold mb-3" style="color:var(--color-text,#111111);">{{headline}}</h2>
+      <p class="text-base max-w-2xl" style="color:var(--color-text-muted,#6B7280);">{{subheadline}}</p>
+    </div>
+    <!-- Timeline strip — horizontal scroll on mobile, flex-row on desktop -->
+    <div class="relative">
+      <!-- Horizontal connector line (desktop only) -->
+      <div class="hidden md:block absolute top-10 left-0 right-0 h-0.5" style="background:var(--color-secondary);"></div>
+      <!-- Steps -->
+      <div class="flex flex-col md:flex-row gap-10 md:gap-0 overflow-x-auto pb-4">
+        <!-- Step 1 -->
+        <div class="flex-1 min-w-[200px] md:px-8 reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:0ms;">
+          <!-- Number circle — sits on the connector line -->
+          <div class="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black mb-6 relative z-10 shadow-lg"
+            style="background:var(--color-primary); color:#FFFFFF;">01</div>
+          <h3 class="text-lg font-bold mb-2" style="color:var(--color-text,#111111);">{{step_1_title}}</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--color-text-muted,#6B7280);">{{step_1_description}}</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="flex-1 min-w-[200px] md:px-8 reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:150ms;">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black mb-6 relative z-10 shadow-lg"
+            style="background:var(--color-primary); color:#FFFFFF;">02</div>
+          <h3 class="text-lg font-bold mb-2" style="color:var(--color-text,#111111);">{{step_2_title}}</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--color-text-muted,#6B7280);">{{step_2_description}}</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="flex-1 min-w-[200px] md:px-8 reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:300ms;">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black mb-6 relative z-10 shadow-lg"
+            style="background:var(--color-primary); color:#FFFFFF;">03</div>
+          <h3 class="text-lg font-bold mb-2" style="color:var(--color-text,#111111);">{{step_3_title}}</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--color-text-muted,#6B7280);">{{step_3_description}}</p>
+        </div>
+        <!-- Step 4 (if exists) -->
+        <div class="flex-1 min-w-[200px] md:px-8 reveal-on-scroll opacity-0 translate-y-6" style="transition-delay:450ms;">
+          <div class="w-20 h-20 rounded-full flex items-center justify-center text-2xl font-black mb-6 relative z-10 shadow-lg"
+            style="background:var(--color-secondary); color:var(--color-primary);">04</div>
+          <h3 class="text-lg font-bold mb-2" style="color:var(--color-text,#111111);">{{step_4_title}}</h3>
+          <p class="text-sm leading-relaxed" style="color:var(--color-text-muted,#6B7280);">{{step_4_description}}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 ```
@@ -970,24 +1353,27 @@ Full-bleed image, dark overlay, centered white text. For restaurants, events, ho
 
 #### VARIANT: SPLIT EMOTIONAL (default — healthcare, services, wellness)
 60% text / 40% image. Human face required. Floating stat badge on image.
+Uses CSS variables — adapts to any style_mode automatically. DO NOT hardcode colors.
 ```html
-<section class="py-14 md:py-20 overflow-hidden" style="background:linear-gradient(135deg, #f8fffe 0%, #edfaf5 100%);">
+<section class="py-14 md:py-20 overflow-hidden" style="background:linear-gradient(135deg, var(--color-bg) 0%, var(--color-secondary-light) 100%);">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 xl:gap-16 items-center">
 
       <!-- Text column -->
       <div>
-        <!-- Trust pill badge -->
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8 border"
-          style="background:rgba(167,215,197,0.3); color:var(--color-primary-dark); border-color:rgba(47,127,121,0.2);">
+        <!-- Trust pill badge — uses mode secondary as background tint -->
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold mb-8"
+          style="background:var(--color-secondary); color:var(--color-primary-dark); border:1px solid var(--color-secondary);">
           {{trust_badge_text}}
         </div>
-        <!-- H1 — must be emotionally punchy, NOT generic -->
-        <h1 class="text-4xl md:text-5xl xl:text-6xl font-extrabold text-gray-900 leading-tight tracking-tight mb-6">
+        <!-- H1 — emotionally punchy, uses heading font from TYPOGRAPHY SYSTEM -->
+        <h1 class="text-4xl md:text-5xl xl:text-6xl font-extrabold leading-tight tracking-tight mb-6"
+          style="color:var(--color-text, #111111);">
           {{headline_line_1}}
           <span class="block mt-1" style="color:var(--color-primary);">{{headline_accent}}</span>
         </h1>
-        <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-2xl">{{subheadline}}</p>
+        <p class="text-lg md:text-xl leading-relaxed mb-8 max-w-2xl"
+          style="color:var(--color-text-muted, #6B7280);">{{subheadline}}</p>
         <!-- CTAs -->
         <div class="flex flex-col sm:flex-row gap-4 mb-8">
           <a href="#contact" class="btn-primary px-8 py-4 text-base text-center">{{cta_primary}}</a>
@@ -996,29 +1382,31 @@ Full-bleed image, dark overlay, centered white text. For restaurants, events, ho
         <!-- Star rating social proof — MANDATORY in split-emotional -->
         <div class="flex items-center gap-3">
           <div class="flex text-amber-400">★★★★★</div>
-          <span class="text-sm font-semibold text-gray-700">{{rating}} · Rated by {{reviews_count}}+ clients</span>
+          <span class="text-sm font-semibold" style="color:var(--color-text-muted,#6B7280);">{{rating}} · {{reviews_count}}+ clients</span>
         </div>
       </div>
 
       <!-- Image column -->
       <div class="relative">
-        <div class="rounded-3xl overflow-hidden shadow-2xl" style="border:3px solid rgba(167,215,197,0.4);">
+        <div class="overflow-hidden shadow-2xl" style="border-radius:var(--radius-image); border:3px solid var(--color-secondary);">
           <img src="{{hero_image_url}}" alt="{{hero_alt}}" loading="eager"
-            class="w-full h-[480px] lg:h-[560px] object-cover object-center">
-          <div class="absolute inset-0 rounded-3xl" style="background:linear-gradient(180deg, transparent 55%, rgba(47,127,121,0.15) 100%);"></div>
+            class="w-full h-[480px] lg:h-[560px] object-cover object-top"
+            onerror="this.onerror=null;this.style.background='linear-gradient(135deg,var(--color-secondary),var(--color-primary))';this.removeAttribute('src')">
+          <div class="absolute inset-0" style="background:linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--color-primary) 15%, transparent) 100%); border-radius:var(--radius-image);"></div>
         </div>
         <!-- Floating stat badge — anchored bottom-left of image -->
         <div class="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl px-5 py-4 flex items-center gap-3 border border-gray-100 z-10">
-          <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background:rgba(167,215,197,0.35);">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+            style="background:var(--color-secondary);">
             {{badge_icon_svg}}
           </div>
           <div>
             <p class="text-2xl font-extrabold leading-none" style="color:var(--color-primary);">{{badge_number}}</p>
-            <p class="text-xs text-gray-500 font-medium mt-0.5 leading-tight">{{badge_label}}</p>
+            <p class="text-xs font-medium mt-0.5 leading-tight" style="color:var(--color-text-muted,#6B7280);">{{badge_label}}</p>
           </div>
         </div>
         <!-- Top-right decorative accent -->
-        <div class="absolute -top-4 -right-4 w-24 h-24 rounded-full opacity-50 z-0"
+        <div class="absolute -top-4 -right-4 w-24 h-24 rounded-full opacity-40 z-0"
           style="background:radial-gradient(circle, var(--color-secondary) 0%, transparent 70%);"></div>
       </div>
 
@@ -1058,6 +1446,231 @@ Solid background, no image, oversized typography. For law, finance, premium cons
 
 ---
 
+#### VARIANT: BROWSER MOCKUP (luxury-dark, SaaS, digital agencies, tech startups)
+Product inside browser frame. Left column text (40%) + right column browser mockup (60%).
+Floating metric cards anchored to mockup corners. Dark background mandatory.
+```html
+<section class="py-16 md:py-24 overflow-hidden" style="background:var(--color-bg);">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-16 items-center">
+
+      <!-- Left: Text column -->
+      <div>
+        <!-- Category badge -->
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-bold tracking-widest uppercase mb-8"
+          style="background:rgba(var(--badge-rgb,6,182,212),0.12); color:var(--color-primary); border:1px solid rgba(var(--badge-rgb,6,182,212),0.25);">
+          {{trust_badge_text}}
+        </div>
+        <!-- Headline: large, tight, gradient on key word -->
+        <h1 class="text-4xl md:text-5xl xl:text-6xl font-bold leading-[1.05] tracking-tight mb-6"
+          style="color:var(--color-text,#F8FAFC);">
+          {{headline_line_1}}<br>
+          <span style="background:linear-gradient(90deg, var(--color-primary), var(--color-primary-light)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">
+            {{headline_accent}}
+          </span>
+        </h1>
+        <p class="text-base md:text-lg leading-relaxed mb-10"
+          style="color:var(--color-text-muted,#94A3B8);">{{subheadline}}</p>
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row gap-4 mb-10">
+          <a href="#contact" class="btn-primary px-8 py-4 text-base font-semibold text-center">{{cta_primary}}</a>
+          <a href="#services" class="px-8 py-4 text-base font-semibold text-center rounded-lg transition-colors"
+            style="color:var(--color-primary); border:1px solid rgba(var(--badge-rgb,6,182,212),0.3);">{{cta_secondary}}</a>
+        </div>
+        <!-- 3 quick trust metrics: inline row -->
+        <div class="flex gap-6">
+          <div>
+            <p class="text-2xl font-bold" style="color:var(--color-primary);">{{metric_1_value}}</p>
+            <p class="text-xs" style="color:var(--color-text-muted,#94A3B8);">{{metric_1_label}}</p>
+          </div>
+          <div class="w-px" style="background:rgba(var(--badge-rgb,6,182,212),0.2);"></div>
+          <div>
+            <p class="text-2xl font-bold" style="color:var(--color-primary);">{{metric_2_value}}</p>
+            <p class="text-xs" style="color:var(--color-text-muted,#94A3B8);">{{metric_2_label}}</p>
+          </div>
+          <div class="w-px" style="background:rgba(var(--badge-rgb,6,182,212),0.2);"></div>
+          <div>
+            <p class="text-2xl font-bold" style="color:var(--color-primary);">{{metric_3_value}}</p>
+            <p class="text-xs" style="color:var(--color-text-muted,#94A3B8);">{{metric_3_label}}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Browser mockup -->
+      <div class="relative">
+        <!-- Browser frame -->
+        <div class="rounded-xl overflow-hidden shadow-2xl" style="border:1px solid rgba(var(--badge-rgb,6,182,212),0.2);">
+          <!-- Browser bar -->
+          <div class="flex items-center gap-2 px-4 py-3" style="background:#1E293B;">
+            <span class="w-3 h-3 rounded-full bg-red-500 opacity-80"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-400 opacity-80"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500 opacity-80"></span>
+            <div class="flex-1 rounded-md mx-3 py-1 px-3 text-xs" style="background:#0F172A; color:rgba(255,255,255,0.4);">
+              {{business_url_or_domain}}
+            </div>
+          </div>
+          <!-- Screenshot / hero image -->
+          <img src="{{hero_image_url}}" alt="{{business_name}} platform"
+            class="w-full object-cover object-top" style="max-height:420px;"
+            loading="eager"
+            onerror="this.onerror=null;this.style.background='var(--color-secondary)';this.removeAttribute('src')">
+        </div>
+        <!-- Floating stat card — top left -->
+        <div class="absolute -top-4 -left-4 bg-white rounded-xl shadow-xl px-4 py-3 border border-gray-100 z-10"
+          style="min-width:140px;">
+          <p class="text-xs font-bold uppercase tracking-wide" style="color:var(--color-text-muted,#94A3B8);">{{float_card_1_label}}</p>
+          <p class="text-xl font-extrabold mt-0.5" style="color:var(--color-primary);">{{float_card_1_value}}</p>
+        </div>
+        <!-- Floating stat card — bottom right -->
+        <div class="absolute -bottom-4 -right-4 bg-white rounded-xl shadow-xl px-4 py-3 border border-gray-100 z-10"
+          style="min-width:140px;">
+          <p class="text-xs font-bold uppercase tracking-wide" style="color:var(--color-text-muted,#94A3B8);">{{float_card_2_label}}</p>
+          <p class="text-xl font-extrabold mt-0.5" style="color:var(--color-primary);">{{float_card_2_value}}</p>
+        </div>
+        <!-- Ambient glow behind mockup -->
+        <div class="absolute inset-0 -z-10 blur-3xl opacity-20 rounded-full"
+          style="background:var(--color-primary); transform:scale(0.8);"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+```
+
+---
+
+#### VARIANT: STATS HERO (corporate-trust, premium B2B, authority-driven services)
+No full-width image. Headline + 4 large metric boxes as the primary visual element.
+Numbers ARE the hero. Trust through data. Clean, commanding, data-dense.
+```html
+<section class="py-20 md:py-28" style="background:var(--color-bg);">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <!-- Top: eyebrow + headline + sub -->
+    <div class="max-w-3xl mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm text-xs font-bold tracking-[0.2em] uppercase mb-8"
+        style="color:var(--color-accent,#B8960C); border-bottom:2px solid var(--color-accent,#B8960C);">
+        {{trust_badge_text}}
+      </div>
+      <h1 class="text-5xl md:text-7xl font-bold leading-[1.0] tracking-tight mb-8"
+        style="color:var(--color-text,#0F2D52);">
+        {{headline_line_1}}<br>
+        <em style="color:var(--color-primary); font-style:italic;">{{headline_accent}}</em>
+      </h1>
+      <p class="text-lg leading-relaxed mb-10 max-w-xl" style="color:var(--color-text-muted,#64748B);">{{subheadline}}</p>
+      <div class="flex gap-4">
+        <a href="#contact" class="btn-primary px-10 py-4 text-base font-semibold">{{cta_primary}}</a>
+        <a href="#services" class="px-10 py-4 text-base font-semibold rounded transition-colors"
+          style="color:var(--color-primary); text-decoration:underline; text-underline-offset:4px;">{{cta_secondary}}</a>
+      </div>
+    </div>
+
+    <!-- Bottom: 4 large metrics grid — THE HERO VISUAL -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-0 border-t border-b"
+      style="border-color:var(--color-secondary,#F0F4F9);">
+      <!-- Metric 1 -->
+      <div class="py-10 px-8 border-r" style="border-color:var(--color-secondary,#F0F4F9);">
+        <p class="text-6xl md:text-7xl font-black leading-none mb-3" style="color:var(--color-primary);">{{stat_1_value}}</p>
+        <p class="text-sm font-semibold uppercase tracking-widest" style="color:var(--color-text-muted,#64748B);">{{stat_1_label}}</p>
+      </div>
+      <!-- Metric 2 -->
+      <div class="py-10 px-8 border-r" style="border-color:var(--color-secondary,#F0F4F9);">
+        <p class="text-6xl md:text-7xl font-black leading-none mb-3" style="color:var(--color-primary);">{{stat_2_value}}</p>
+        <p class="text-sm font-semibold uppercase tracking-widest" style="color:var(--color-text-muted,#64748B);">{{stat_2_label}}</p>
+      </div>
+      <!-- Metric 3 -->
+      <div class="py-10 px-8 border-r" style="border-color:var(--color-secondary,#F0F4F9);">
+        <p class="text-6xl md:text-7xl font-black leading-none mb-3" style="color:var(--color-primary);">{{stat_3_value}}</p>
+        <p class="text-sm font-semibold uppercase tracking-widest" style="color:var(--color-text-muted,#64748B);">{{stat_3_label}}</p>
+      </div>
+      <!-- Metric 4 -->
+      <div class="py-10 px-8">
+        <p class="text-6xl md:text-7xl font-black leading-none mb-3" style="color:var(--color-primary);">{{stat_4_value}}</p>
+        <p class="text-sm font-semibold uppercase tracking-widest" style="color:var(--color-text-muted,#64748B);">{{stat_4_label}}</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+```
+
+---
+
+#### VARIANT: EDITORIAL STATEMENT (ultra-minimal, creative-bold, luxury-service)
+Pure typography. Zero images. Asymmetric 2-column text layout.
+Left: oversized headline (one or two words per line, massive scale).
+Right: subheadline + CTA + decorative accent element.
+The white space and font contrast IS the design.
+```html
+<section class="min-h-[85vh] flex items-center py-20" style="background:var(--color-bg);">
+  <div class="max-w-7xl mx-auto px-6 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-16 xl:gap-24 items-end">
+
+      <!-- Left: Oversized headline — typographic statement -->
+      <div>
+        <!-- Decorative line above — thin brand accent -->
+        <div class="w-16 h-0.5 mb-10" style="background:var(--color-primary);"></div>
+        <h1 class="leading-[0.9] tracking-tight mb-0" style="color:var(--color-text,#111111);">
+          <!-- Each key word on its own line, massive scale -->
+          <span class="block text-6xl md:text-8xl xl:text-9xl font-black">{{headline_word_1}}</span>
+          <span class="block text-6xl md:text-8xl xl:text-9xl font-black" style="color:var(--color-primary);">{{headline_word_2}}</span>
+          <span class="block text-6xl md:text-8xl xl:text-9xl font-black">{{headline_word_3}}</span>
+        </h1>
+      </div>
+
+      <!-- Right: Context + CTA — balanced, not competing -->
+      <div class="lg:pb-4">
+        <!-- Eyebrow / category -->
+        <p class="text-xs font-bold tracking-[0.3em] uppercase mb-8" style="color:var(--color-primary);">
+          {{trust_badge_text}}
+        </p>
+        <!-- Subheadline: readable, not oversized -->
+        <p class="text-lg md:text-xl leading-relaxed mb-10"
+          style="color:var(--color-text-muted,#6B7280);">{{subheadline}}</p>
+        <!-- Primary CTA -->
+        <a href="#contact" class="btn-primary inline-block px-10 py-4 text-base font-semibold mb-8">
+          {{cta_primary}}
+        </a>
+        <!-- Secondary: text link only, minimal -->
+        <div>
+          <a href="#services" class="text-sm font-semibold"
+            style="color:var(--color-primary); text-decoration:underline; text-underline-offset:4px;">
+            {{cta_secondary}} →
+          </a>
+        </div>
+        <!-- Decorative large number or year — optional flavor element -->
+        <div class="mt-16 text-8xl font-black leading-none select-none pointer-events-none opacity-[0.06]"
+          style="color:var(--color-text,#111111);">
+          {{decorative_year_or_number}}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+```
+
+---
+
+### HERO VARIANT → STYLE MODE MATRIX
+
+Use this table to confirm `hero_variant` matches `style_mode`. Mismatch = wrong visual identity.
+
+| `style_mode` | Primary hero_variant | Alternative |
+|---|---|---|
+| `premium-care` | `split-emotional` | — |
+| `modern-clinic` | `split-emotional` | `stats-hero` |
+| `luxury-service` | `minimal-luxury` | `editorial-statement` |
+| `luxury-dark` | `browser-mockup` | `stats-hero` |
+| `ultra-minimal` | `editorial-statement` | `minimal-luxury` |
+| `warm-local` | `cinematic` | `split-emotional` |
+| `corporate-trust` | `stats-hero` | `minimal-luxury` |
+| `creative-bold` | `editorial-statement` | `cinematic` |
+
+If `brand_strategy.hero_variant` is set → USE IT. This matrix is a fallback only.
+
+---
+
 HERO RULES (ALL VARIANTS):
 * NEVER use a flat color overlay — always use a gradient
 * NEVER center text on split-emotional — text is always left-aligned
@@ -1065,6 +1678,9 @@ HERO RULES (ALL VARIANTS):
 * Floating badge is MANDATORY on split-emotional hero image
 * Hero image: loading="eager" — NEVER lazy on hero
 * H1 copy must be emotionally punchy — if it reads like a tagline, REWRITE it
+* Browser-mockup hero: ALWAYS dark background (--color-bg must be dark)
+* Stats-hero: metrics must use real data from brief.json trust[] array — NEVER invented numbers
+* Editorial-statement: H1 MUST have at least 3 lines — one key word per line, never all on one line
 
 ---
 

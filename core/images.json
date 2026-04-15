@@ -1,58 +1,30 @@
 {
-  "_note": "Curated Unsplash image library. All IDs manually verified by industry. NEVER use source.unsplash.com (deprecated). Only use images.unsplash.com with explicit photo IDs.",
+  "_note": "Curated Unsplash image library. Indexed by industry AND by style_mode. generate.py tries style_mode key first, then template key, then healthcare fallback. NEVER use source.unsplash.com. Only images.unsplash.com with explicit verified photo IDs.",
 
   "healthcare": {
+    "_mood": "warm, hopeful, human connection — caregiver + senior interaction, home environment",
     "hero": {
       "url": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=1200&h=800&fit=crop&crop=faces&auto=format&q=85",
       "mood": "warm, hopeful, human connection",
-      "crop": "faces — caregiver and senior must be visible",
-      "lighting": "warm, soft, natural light preferred",
-      "avoid": "clinical, cold, hospital equipment, white coats",
-      "hero_variant": "split — image right, text left, emotional face crop"
+      "avoid": "clinical, cold, hospital equipment, white coats"
     },
     "services": [
-      {
-        "url": "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
-        "label": "24/7 Home Care",
-        "mood": "present, attentive"
-      },
-      {
-        "url": "https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
-        "label": "Personal Care",
-        "mood": "gentle, dignified"
-      },
-      {
-        "url": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
-        "label": "Companionship",
-        "mood": "warm, joyful"
-      },
-      {
-        "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
-        "label": "Medication Management",
-        "mood": "careful, precise"
-      },
-      {
-        "url": "https://images.unsplash.com/photo-1590765738209-6b8be59b6b7e?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
-        "label": "Short-Term Care",
-        "mood": "reassuring, calm"
-      },
-      {
-        "url": "https://images.unsplash.com/photo-1624727828489-a1e03b79bba8?w=800&h=500&fit=crop&crop=faces&auto=format&q=80",
-        "label": "Rehabilitation",
-        "mood": "supportive, active"
-      }
+      { "url": "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "24/7 Home Care", "mood": "present, attentive" },
+      { "url": "https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "Personal Care", "mood": "gentle, dignified" },
+      { "url": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop&crop=center&auto=format&q=80", "label": "Companionship", "mood": "warm, joyful" },
+      { "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "Medication Management", "mood": "careful, precise" },
+      { "url": "https://images.unsplash.com/photo-1590765738209-6b8be59b6b7e?w=800&h=500&fit=crop&crop=center&auto=format&q=80", "label": "Short-Term Care", "mood": "reassuring, calm" },
+      { "url": "https://images.unsplash.com/photo-1624727828489-a1e03b79bba8?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "Rehabilitation", "mood": "supportive, active" }
     ],
     "fallback_color": "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)"
   },
 
   "restaurant": {
+    "_mood": "warm, inviting, atmospheric — food and dining ambiance, warm golden light",
     "hero": {
       "url": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&h=800&fit=crop&auto=format&q=85",
       "mood": "warm, inviting, atmospheric",
-      "crop": "wide — show dining room depth and ambiance",
-      "lighting": "warm golden hour, candlelight feel",
-      "avoid": "empty tables, harsh flash, sterile look",
-      "hero_variant": "cinematic — full-bleed image, dark overlay, centered text"
+      "avoid": "empty tables, harsh flash, sterile look"
     },
     "services": [
       { "url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=500&fit=crop&auto=format&q=80", "label": "Fine Dining", "mood": "elegant, crafted" },
@@ -66,13 +38,11 @@
   },
 
   "ecommerce": {
+    "_mood": "aspirational, lifestyle, desire — product in use with human element",
     "hero": {
       "url": "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=1200&h=800&fit=crop&auto=format&q=85",
       "mood": "aspirational, lifestyle, desire",
-      "crop": "product in use — human element required",
-      "lighting": "bright, clean, high contrast",
-      "avoid": "plain white background, no human, low energy",
-      "hero_variant": "split — product lifestyle left, bold copy right OR minimal-luxury"
+      "avoid": "plain white background, no human, low energy"
     },
     "services": [
       { "url": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=500&fit=crop&auto=format&q=80", "label": "Product 1", "mood": "premium, desirable" },
@@ -86,13 +56,11 @@
   },
 
   "services": {
+    "_mood": "confident, professional, trustworthy — team or person in action, faces forward",
     "hero": {
       "url": "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1200&h=800&fit=crop&auto=format&q=85",
       "mood": "confident, professional, trustworthy",
-      "crop": "team or person in action — faces forward",
-      "lighting": "natural office light, clean environment",
-      "avoid": "posed stock, fake smiles, generic office",
-      "hero_variant": "split OR minimal-luxury depending on brand tone"
+      "avoid": "posed stock, fake smiles, generic office"
     },
     "services": [
       { "url": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&h=500&fit=crop&auto=format&q=80", "label": "Strategy", "mood": "focused, analytical" },
@@ -103,5 +71,119 @@
       { "url": "https://images.unsplash.com/photo-1553877522-43269d4ea984?w=800&h=500&fit=crop&auto=format&q=80", "label": "Growth", "mood": "ambitious, results" }
     ],
     "fallback_color": "linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)"
+  },
+
+  "luxury-dark": {
+    "_mood": "tech premium, electric, cinematic — dark environments, glowing screens, urban architecture, code",
+    "_note": "Used when style_mode=luxury-dark. Dark hero backgrounds, blue/cyan/violet glow, no warm colors.",
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200&h=800&fit=crop&auto=format&q=85",
+      "mood": "tech, electric, dark, confident",
+      "avoid": "bright daylight, warm tones, stock office photos"
+    },
+    "services": [
+      { "url": "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=500&fit=crop&auto=format&q=80", "label": "Development", "mood": "code, precision, electric" },
+      { "url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&auto=format&q=80", "label": "Analytics", "mood": "data, graphs, insights" },
+      { "url": "https://images.unsplash.com/photo-1488229297570-58520851e868?w=800&h=500&fit=crop&auto=format&q=80", "label": "Design System", "mood": "minimal, modern, screens" },
+      { "url": "https://images.unsplash.com/photo-1563986768494-4759929af026?w=800&h=500&fit=crop&auto=format&q=80", "label": "Infrastructure", "mood": "server, scale, dark" },
+      { "url": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=500&fit=crop&auto=format&q=80", "label": "Security", "mood": "protection, code, electric" },
+      { "url": "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=800&h=500&fit=crop&auto=format&q=80", "label": "Marketing", "mood": "growth, performance, graphs" }
+    ],
+    "fallback_color": "linear-gradient(135deg, #0F172A 0%, #1E293B 100%)"
+  },
+
+  "corporate-trust": {
+    "_mood": "authoritative, established, formal — professional office, handshakes, legal documents, credibility",
+    "_note": "Used when style_mode=corporate-trust. Clean, professional, minimal color. No casual or playful.",
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200&h=800&fit=crop&crop=faces&auto=format&q=85",
+      "mood": "professional, confident, established",
+      "avoid": "casual dress, messy backgrounds, bright colors"
+    },
+    "services": [
+      { "url": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=500&fit=crop&auto=format&q=80", "label": "Consulting", "mood": "professional, analytical" },
+      { "url": "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "Strategy", "mood": "handshake, trust, deal" },
+      { "url": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&h=500&fit=crop&auto=format&q=80", "label": "Legal", "mood": "documents, law, order" },
+      { "url": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=800&h=500&fit=crop&auto=format&q=80", "label": "Finance", "mood": "numbers, graphs, growth" },
+      { "url": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "HR", "mood": "team, diverse, formal" },
+      { "url": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&h=500&fit=crop&auto=format&q=80", "label": "Operations", "mood": "planning, organized, clear" }
+    ],
+    "fallback_color": "linear-gradient(135deg, #0F2D52 0%, #1A4070 100%)"
+  },
+
+  "creative-bold": {
+    "_mood": "expressive, energetic, unexpected — vibrant colors, bold compositions, creative work, youth energy",
+    "_note": "Used when style_mode=creative-bold. High contrast, unexpected angles, rich saturated tones.",
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1200&h=800&fit=crop&auto=format&q=85",
+      "mood": "creative, expressive, energetic",
+      "avoid": "generic office, muted tones, boring compositions"
+    },
+    "services": [
+      { "url": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=500&fit=crop&auto=format&q=80", "label": "Branding", "mood": "bold, identity, color" },
+      { "url": "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&h=500&fit=crop&auto=format&q=80", "label": "Design", "mood": "creative, geometric, bold" },
+      { "url": "https://images.unsplash.com/photo-1503551723145-6c040742065b?w=800&h=500&fit=crop&auto=format&q=80", "label": "Photography", "mood": "dramatic, artistic, editorial" },
+      { "url": "https://images.unsplash.com/photo-1526406915894-7bcd65f60845?w=800&h=500&fit=crop&auto=format&q=80", "label": "Events", "mood": "celebration, crowd, energy" },
+      { "url": "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?w=800&h=500&fit=crop&auto=format&q=80", "label": "Social Media", "mood": "viral, colorful, impact" },
+      { "url": "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?w=800&h=500&fit=crop&auto=format&q=80", "label": "Content", "mood": "storytelling, creative, fresh" }
+    ],
+    "fallback_color": "linear-gradient(135deg, #EC4899 0%, #7C3AED 100%)"
+  },
+
+  "ultra-minimal": {
+    "_mood": "pure, architectural, intentional — clean geometries, negative space, monochrome with one accent",
+    "_note": "Used when style_mode=ultra-minimal. NO busy images. Architecture, abstract textures, or no images at all.",
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&h=800&fit=crop&auto=format&q=85",
+      "mood": "architectural, clean, intentional",
+      "avoid": "busy scenes, colorful photos, people (unless ultra-clean portrait)"
+    },
+    "services": [
+      { "url": "https://images.unsplash.com/photo-1494059980473-813e73ee784b?w=800&h=500&fit=crop&auto=format&q=80", "label": "Consulting", "mood": "minimal, sharp, clean" },
+      { "url": "https://images.unsplash.com/photo-1454789548928-9efd52dc4031?w=800&h=500&fit=crop&auto=format&q=80", "label": "Strategy", "mood": "space, architecture, scale" },
+      { "url": "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&h=500&fit=crop&auto=format&q=80", "label": "Design", "mood": "grid, lines, precise" },
+      { "url": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&h=500&fit=crop&auto=format&q=80", "label": "Architecture", "mood": "structure, form, shadow" },
+      { "url": "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&h=500&fit=crop&auto=format&q=80", "label": "Interior", "mood": "minimal, curated, intentional" },
+      { "url": "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=800&h=500&fit=crop&auto=format&q=80", "label": "Photography", "mood": "monochrome, editorial, stark" }
+    ],
+    "fallback_color": "linear-gradient(135deg, #111111 0%, #2C2C2E 100%)"
+  },
+
+  "warm-local": {
+    "_mood": "artisanal, community, handcrafted — local color, warm textures, neighborhood character",
+    "_note": "Used when style_mode=warm-local. Warm earthy tones, photography-forward, real humans in context.",
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&h=800&fit=crop&auto=format&q=85",
+      "mood": "warm, inviting, local, real",
+      "avoid": "sterile, corporate, cold lighting"
+    },
+    "services": [
+      { "url": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=500&fit=crop&auto=format&q=80", "label": "Service 1", "mood": "artisanal, crafted" },
+      { "url": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=500&fit=crop&auto=format&q=80", "label": "Service 2", "mood": "fresh, local" },
+      { "url": "https://images.unsplash.com/photo-1543352634-a1c51d9f1fa7?w=800&h=500&fit=crop&auto=format&q=80", "label": "Service 3", "mood": "warm, inviting" },
+      { "url": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&h=500&fit=crop&auto=format&q=80", "label": "Service 4", "mood": "community, celebration" },
+      { "url": "https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=800&h=500&fit=crop&auto=format&q=80", "label": "Service 5", "mood": "morning, fresh" },
+      { "url": "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=800&h=500&fit=crop&auto=format&q=80", "label": "Service 6", "mood": "handmade, proud" }
+    ],
+    "fallback_color": "linear-gradient(135deg, #C1440E 0%, #D97706 100%)"
+  },
+
+  "premium-care": {
+    "_mood": "warm teal, human connection, safe — same as healthcare but with more warmth and home feeling",
+    "_note": "Alias for healthcare with slight warmth bias. Maps to style_mode=premium-care.",
+    "hero": {
+      "url": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=1200&h=800&fit=crop&crop=faces&auto=format&q=85",
+      "mood": "warm, hopeful, human connection",
+      "avoid": "clinical, cold, hospital equipment"
+    },
+    "services": [
+      { "url": "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "Home Care", "mood": "present, attentive" },
+      { "url": "https://images.unsplash.com/photo-1581056771107-24ca5f033842?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "Personal Care", "mood": "gentle, dignified" },
+      { "url": "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&h=500&fit=crop&crop=center&auto=format&q=80", "label": "Companionship", "mood": "warm, joyful" },
+      { "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "Medication", "mood": "careful, precise" },
+      { "url": "https://images.unsplash.com/photo-1590765738209-6b8be59b6b7e?w=800&h=500&fit=crop&crop=center&auto=format&q=80", "label": "Short-Term Care", "mood": "reassuring, calm" },
+      { "url": "https://images.unsplash.com/photo-1624727828489-a1e03b79bba8?w=800&h=500&fit=crop&crop=faces&auto=format&q=80", "label": "Rehabilitation", "mood": "supportive, active" }
+    ],
+    "fallback_color": "linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)"
   }
 }

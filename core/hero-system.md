@@ -80,19 +80,28 @@ Choose ONE:
 
 You MUST output `hero_variant` (NOT `layout_variant`) using EXACTLY one of these names:
 
-* `split-emotional` → 60/40 split, human face image, trust pill, star rating (default: healthcare, services, wellness)
-* `cinematic` → full-bleed background image, dark gradient overlay, centered text (restaurant, hospitality, real estate)
-* `minimal-luxury` → solid background, no image, oversized serif headline (law, finance, high-end consulting)
+* `split-emotional` → 60/40 split, human face image, trust pill, star rating (healthcare, services, wellness)
+* `cinematic` → full-bleed background image, dark gradient overlay, centered text (restaurant, hospitality, real estate, events)
+* `minimal-luxury` → solid dark background, no image, oversized serif headline (law, finance, consulting)
+* `browser-mockup` → dark bg, product inside browser frame, floating metric cards (SaaS, tech, digital agencies, startups)
+* `stats-hero` → clean bg, oversized headline + 4 large metric boxes as visual element, no hero image (B2B, corporate, authority-driven)
+* `editorial-statement` → asymmetric 2-column layout, oversized word-per-line headline, no image (ultra-minimal, creative, personal brands)
 
 These names are the contract with ui-designer and frontend-dev. DO NOT rename them.
 
-### Mapping from hero_type to hero_variant:
-| hero_type | Default variant |
-|---|---|
-| emotional_story | split-emotional |
-| trust_authority | split-emotional or minimal-luxury |
-| direct_offer | cinematic or split-emotional |
-| problem_solution | split-emotional |
+### Mapping from hero_type + style_mode to hero_variant:
+| hero_type | style_mode | Recommended variant |
+|---|---|---|
+| emotional_story | premium-care | split-emotional |
+| emotional_story | warm-local | cinematic |
+| trust_authority | corporate-trust | stats-hero |
+| trust_authority | luxury-service | minimal-luxury |
+| trust_authority | modern-clinic | split-emotional |
+| direct_offer | luxury-dark | browser-mockup |
+| direct_offer | creative-bold | editorial-statement |
+| problem_solution | luxury-dark | browser-mockup |
+| problem_solution | ultra-minimal | editorial-statement |
+| problem_solution | premium-care | split-emotional |
 
 ---
 
