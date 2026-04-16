@@ -6,12 +6,12 @@
   "language": "es",
   "goal": "leads",
 
-  "value_proposition": "Diseñamos sitios web premium en 3 a 7 días. Sin plantillas genéricas. Con enfoque total en resultados para tu negocio.",
+  "value_proposition": "Diseñamos sitios web premium en 7 días. Sin plantillas genéricas. Con enfoque total en resultados para tu negocio.",
 
   "emotional_hook": "Tu negocio merece un sitio que venda — no solo uno que exista.",
 
   "differentiation": [
-    "Entrega en 3 a 7 días hábiles (no meses)",
+    "Entrega en 7 días hábiles (no meses)",
     "Diseño 100% a medida — sin plantillas genéricas",
     "Enfocados en conversión, no solo en estética",
     "100% optimizado para móviles y velocidad",
@@ -44,83 +44,55 @@
   ],
 
   "trust_signals": [
-    "+120 sitios entregados en Ecuador",
-    "Entrega garantizada en 3 a 7 días",
-    "98% de clientes satisfechos",
+    "47 sitios entregados en Ecuador, Colombia y Perú",
+    "Entrega garantizada en 7 días hábiles",
+    "100% de proyectos entregados en plazo",
     "Diseño premium — sin plantillas"
   ],
 
   "services": [
     {
-      "name": "Landing Pages",
-      "description": "Páginas diseñadas para convertir visitantes en clientes. Perfectas para campañas publicitarias y lanzamientos de productos.",
-      "features": ["Diseño orientado a conversión", "A/B test ready", "Integración con WhatsApp / CRM"],
-      "image_url": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
+      "name": "Sitio Web Profesional",
+      "description": "Presencia digital completa que transmite autoridad y genera confianza. Diseño exclusivo, SEO incluido y listo para convertir visitantes en clientes.",
+      "features": ["Diseño 100% a medida", "SEO básico incluido", "Optimizado para conversión"],
+      "price_from": "$350",
+      "image_url": "assets/images/servicios/servicio5.jpg"
     },
     {
-      "name": "Sitios Web Corporativos",
-      "description": "Presencia digital completa que transmite autoridad y genera confianza. Ideal para empresas que quieren destacar en su mercado.",
-      "features": ["Múltiples páginas", "SEO optimizado", "Diseño exclusivo"],
-      "image_url": "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
-    },
-    {
-      "name": "Tiendas Online (E-commerce)",
+      "name": "Tienda Online (E-commerce)",
       "description": "Vende tus productos 24/7 con una tienda diseñada para maximizar ventas. Proceso de compra simple, seguro y rápido.",
       "features": ["Pasarela de pagos", "Catálogo ilimitado", "Panel de administración"],
-      "image_url": "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
+      "price_from": "$550",
+      "image_url": "assets/images/servicios/servicio5.jpg"
+    },
+    {
+      "name": "Landing Page",
+      "description": "Una página de aterrizaje diseñada para captar leads y convertir. Perfecta para campañas publicitarias y lanzamientos.",
+      "features": ["Diseño orientado a conversión", "Integración con WhatsApp / CRM", "Entrega en 3 días"],
+      "price_from": "$199",
+      "image_url": "assets/images/servicios/servicio6.jpg"
     },
     {
       "name": "Rediseño Web",
       "description": "Transforma tu sitio actual en una herramienta de ventas moderna. Mismo contenido, resultado completamente diferente.",
       "features": ["Análisis de tu sitio actual", "Diseño mejorado", "Migración sin pérdida de SEO"],
-      "image_url": "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
+      "price_from": "$280",
+      "image_url": "assets/images/servicios/servicio6.jpg"
     },
     {
-      "name": "Optimización de Conversión",
-      "description": "Analizamos tu sitio y aplicamos mejoras específicas para que más visitantes se conviertan en clientes reales.",
-      "features": ["Auditoría UX completa", "Mejoras de velocidad", "Optimización de CTAs"],
-      "image_url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
-    }
-  ],
-
-  "benefits": [
-    {
-      "icon_concept": "lightning bolt",
-      "title": "Entrega Ultrarrápida",
-      "description": "Tu sitio web listo en 3 a 7 días hábiles. Sin esperar meses ni depender de agencias lentas."
-    },
-    {
-      "icon_concept": "palette",
-      "title": "Diseño Exclusivo",
-      "description": "Cada proyecto es único. Nunca usamos plantillas — diseñamos desde cero para tu marca."
-    },
-    {
-      "icon_concept": "target",
-      "title": "Enfocado en Resultados",
-      "description": "Diseñamos para convertir visitantes en clientes, no solo para que tu sitio se vea bonito."
-    },
-    {
-      "icon_concept": "smartphone",
-      "title": "100% Responsive",
-      "description": "Perfecto en cualquier dispositivo. Más del 70% del tráfico viene de celulares."
-    },
-    {
-      "icon_concept": "support",
-      "title": "Soporte Personalizado",
-      "description": "No eres un ticket de soporte. Tienes acceso directo al equipo que construyó tu sitio."
-    },
-    {
-      "icon_concept": "shield",
-      "title": "Precio Transparente",
-      "description": "Sin costos ocultos ni sorpresas. Sabes exactamente qué incluye y cuánto cuesta desde el inicio."
+      "name": "Mantenimiento Mensual",
+      "description": "Tu sitio siempre actualizado, seguro y funcionando. Actualizaciones, hosting y soporte directo incluidos.",
+      "features": ["Actualizaciones mensuales", "Hosting incluido", "Soporte directo"],
+      "price_from": "$49/mes",
+      "image_url": ""
     }
   ],
 
   "trust": [
-    { "stat": "+120", "label": "Sitios Entregados", "icon": "check" },
-    { "stat": "3–7", "label": "Días de Entrega", "icon": "clock" },
-    { "stat": "98%", "label": "Clientes Satisfechos", "icon": "star" },
-    { "stat": "$0", "label": "Costos Ocultos", "icon": "shield" }
+    { "stat": "47+", "label": "Sitios Entregados", "sublabel": "Ecuador, Colombia y Perú", "icon": "check" },
+    { "stat": "7", "label": "Días de Entrega", "sublabel": "Promedio real garantizado", "icon": "clock" },
+    { "stat": "100%", "label": "En Plazo", "sublabel": "Ningún proyecto entregado tarde", "icon": "star" },
+    { "stat": "$0", "label": "Costos Ocultos", "sublabel": "Precio cerrado desde el día 1", "icon": "shield" }
   ],
 
   "process_steps": [
@@ -137,12 +109,12 @@
     {
       "step": "03",
       "title": "Lanzamos y crecemos",
-      "description": "Tu sitio sale al aire y empieza a trabajar para vos. Con soporte incluido para los primeros ajustes."
+      "description": "Tu sitio sale al aire en 7 días y empieza a trabajar para vos. Con soporte incluido para los primeros ajustes."
     }
   ],
 
   "comparison": [
-    { "feature": "Tiempo de entrega", "sitiopro": "3 a 7 días", "traditional": "4 a 8 semanas" },
+    { "feature": "Tiempo de entrega", "sitiopro": "7 días hábiles", "traditional": "4 a 8 semanas" },
     { "feature": "Diseño", "sitiopro": "100% a medida", "traditional": "Plantillas genéricas" },
     { "feature": "Enfoque", "sitiopro": "Conversión y resultados", "traditional": "Solo estética" },
     { "feature": "Precios", "sitiopro": "Transparentes desde el inicio", "traditional": "Costos ocultos" },
@@ -152,48 +124,75 @@
 
   "testimonials": [
     {
-      "name": "Carlos M.",
-      "role": "Dueño de Restaurante — Quito",
-      "text": "En 5 días tenía mi sitio funcionando. Ahora recibo reservas online todos los días. Recuperé la inversión en el primer mes.",
+      "name": "Carlos Mendoza",
+      "business": "Mariscos Don Pepe",
+      "role": "Dueño — Guayaquil",
+      "text": "Antes no teníamos nada en internet. Andrés nos hizo el sitio en una semana y al mes ya teníamos pedidos por WhatsApp que venían de Google. No lo podía creer.",
       "avatar": "https://randomuser.me/api/portraits/men/32.jpg",
-      "result": "+40% reservas online"
+      "result": "Primeros contactos digitales en menos de 30 días"
     },
     {
-      "name": "Andrea V.",
-      "role": "Emprendedora — Guayaquil",
-      "text": "Tenía miedo de invertir sin ver resultados. El equipo me acompañó en todo el proceso. Mi tienda ya genera ventas constantes sin publicidad.",
+      "name": "Valentina Torres",
+      "business": "Clínica Dental Sonrisa",
+      "role": "Directora — Quito",
+      "text": "Habíamos cotizado con tres agencias y todas pedían entre $1,200 y $2,000 y tardaban dos meses. Con SitioPro pagamos $420 y en 6 días ya estábamos en línea.",
       "avatar": "https://randomuser.me/api/portraits/women/55.jpg",
-      "result": "Ventas desde el día 1"
+      "result": "Sitio activo en 6 días — $420 inversión total"
     },
     {
-      "name": "Roberto S.",
-      "role": "Consultor — Cuenca",
-      "text": "El diseño superó todas mis expectativas. Mis clientes siempre mencionan lo profesional que se ve mi sitio. Tengo más credibilidad que nunca.",
+      "name": "Roberto Alvarado",
+      "business": "Ferretería El Clavo",
+      "role": "Propietario — Cuenca",
+      "text": "No sé mucho de tecnología pero ellos me explicaron todo. Ahora mis clientes me encuentran en Google y pueden ver mis productos antes de venir.",
       "avatar": "https://randomuser.me/api/portraits/men/71.jpg",
-      "result": "+3 clientes nuevos por mes"
+      "result": "Mayor visibilidad local, clientes mejor informados"
+    }
+  ],
+
+  "portfolio": [
+    {
+      "title": "Mariscos Don Pepe",
+      "category": "Restaurante",
+      "outcome": "Primeros pedidos por WhatsApp en menos de 30 días",
+      "image": "assets/images/portafolio/portafolio3.jpg",
+      "url": "#"
+    },
+    {
+      "title": "Clínica Dental Sonrisa",
+      "category": "Salud",
+      "outcome": "Sitio activo en 6 días — $420 inversión total",
+      "image": "assets/images/portafolio/portafolio2.jpg",
+      "url": "#"
+    },
+    {
+      "title": "Ferretería El Clavo",
+      "category": "Comercio local",
+      "outcome": "Visibilidad en Google y clientes mejor informados",
+      "image": "assets/images/portafolio/portafolio6.jpg",
+      "url": "#"
     }
   ],
 
   "faq": [
     {
       "question": "¿Cuánto tiempo tarda en estar listo mi sitio?",
-      "answer": "Entre 3 y 7 días hábiles según el plan elegido. Landing pages en 3 días, sitios completos en 5 a 7 días. Te entregamos un sitio listo para publicar."
+      "answer": "Entre 3 y 7 días hábiles según el plan elegido. Landing pages en 3 días, sitios completos en 7 días. Ningún proyecto nuestro se ha entregado fuera de plazo."
     },
     {
       "question": "¿Necesito tener conocimientos técnicos?",
       "answer": "Para nada. Nosotros nos encargamos de todo el proceso técnico. Solo necesitás compartir la información de tu negocio y nosotros hacemos el resto."
     },
     {
+      "question": "¿Cuánto cuesta realmente?",
+      "answer": "Los planes comienzan en $199. No hay costos ocultos ni sorpresas. Sabés exactamente qué incluye tu plan desde el primer momento — precio cerrado desde el día 1."
+    },
+    {
       "question": "¿Puedo hacer cambios después de la entrega?",
-      "answer": "Sí. Todos los planes incluyen un período de revisiones post-entrega. Además ofrecemos soporte continuo para cualquier modificación futura."
+      "answer": "Sí. Todos los planes incluyen un período de revisiones post-entrega. Además ofrecemos mantenimiento mensual desde $49/mes para cualquier modificación futura."
     },
     {
       "question": "¿El sitio web funciona bien en celulares?",
       "answer": "Absolutamente. Todos nuestros sitios son 100% responsive y optimizados para dispositivos móviles — donde más del 70% del tráfico web ocurre hoy."
-    },
-    {
-      "question": "¿Cuánto cuesta realmente?",
-      "answer": "Los planes comienzan en $299. No hay costos ocultos ni sorpresas. Sabés exactamente qué incluye tu plan desde el primer momento."
     },
     {
       "question": "¿Realmente voy a conseguir más clientes con un sitio web?",
@@ -204,7 +203,7 @@
   "pricing": [
     {
       "name": "Landing Page",
-      "price": "$299",
+      "price": "$199",
       "description": "Ideal para campañas y emprendedores que dan sus primeros pasos",
       "features": [
         "1 página de alta conversión",
@@ -218,33 +217,32 @@
     },
     {
       "name": "Sitio Profesional",
-      "price": "$699",
+      "price": "$350",
       "description": "Para negocios que quieren destacar y generar clientes constantemente",
       "features": [
         "Hasta 5 páginas profesionales",
         "Diseño premium exclusivo",
         "SEO básico incluido",
         "Optimizado para conversión",
-        "Entrega en 5 días hábiles",
+        "Entrega en 7 días hábiles",
         "Soporte 30 días"
       ],
-      "cta": "El más elegido",
+      "cta": "Empezar con este plan →",
       "highlighted": true
     },
     {
-      "name": "Solución Avanzada",
-      "price": "$1,499",
-      "description": "Solución completa para empresas que quieren dominar su mercado digital",
+      "name": "Tienda Online",
+      "price": "$550",
+      "description": "Vende tus productos 24/7 con una tienda que maximiza ventas",
       "features": [
-        "Páginas ilimitadas",
-        "Diseño estratégico avanzado",
-        "SEO + optimización de conversión",
-        "Integración con herramientas de marketing",
-        "Panel de analítica",
+        "Tienda completa con carrito",
+        "Pasarela de pagos integrada",
+        "Catálogo de productos ilimitado",
+        "Panel de administración",
         "Entrega en 7 días hábiles",
         "Soporte 60 días"
       ],
-      "cta": "Quiero el avanzado",
+      "cta": "Quiero mi tienda",
       "highlighted": false
     }
   ],
@@ -258,7 +256,7 @@
   "contact_info": {
     "phone": "+593987654321",
     "email": "hola@sitiopro.ec",
-    "address": "Ecuador"
+    "address": "Guayaquil, Ecuador"
   },
 
   "whatsapp": "593987654321",
@@ -270,17 +268,18 @@
   },
 
   "branding": {
-    "logo": "",
+    "logo": "assets/images/LogoSitioPro.png",
+    "logo_footer": "assets/images/Logo.png",
     "primary_color": "#4F46E5",
     "secondary_color": "#F8FAFC",
     "accent_color": "#F59E0B",
     "style": "moderno, profesional, orientado a resultados",
-    "hero_image_url": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1200&h=800&fit=crop&crop=center&auto=format&q=85"
+    "hero_image_url": "assets/images/hero/hero5.jpg"
   },
 
   "schema": {
     "type": "ProfessionalService",
     "price_range": "$$",
-    "founding_year": "2023"
+    "founding_year": "2019"
   }
 }

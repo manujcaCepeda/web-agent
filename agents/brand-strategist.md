@@ -129,6 +129,13 @@ Every site MUST have exactly 1 "visual break" section — a section that is stru
 | `minimal-no-image` | Typography and space do the work. No images in hero |
 | `dark-glow` | Dark backgrounds with glowing/neon effect elements |
 
+**AGENCY / DIGITAL-STUDIO RULE (S10):**
+If `business_type` is `digital-agency` or `creative-studio`:
+- `image_direction` MUST be `product-showcase` or `illustration-icon`
+- NEVER `photography-forward` — stock photos of laptops and handshakes destroy credibility for creative agencies
+- Hero image should be a UI screenshot, browser mockup, or abstract composition — NEVER a generic stock photo
+- This rule overrides any other image_direction logic
+
 ---
 
 ## FORBIDDEN PATTERN REGISTRY
@@ -202,8 +209,9 @@ section_order: ["hero", "services", "how-it-works", "cta-banner", "stats-bar", "
 
 **`product`** — demo-driven, proof-heavy:
 ```
-section_order: ["hero", "logo-band", "services", "portfolio", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
+section_order: ["hero", "logo-band", "services", "portfolio", "visual-break", "trust-band", "how-it-works", "comparison", "testimonials", "pricing", "faq", "contact"]
 ```
+Note: `benefits` is intentionally excluded — `portfolio` + `comparison` already prove differentiation with stronger evidence. Adding `benefits` creates redundancy that dilutes impact.
 
 **RULES:**
 - `conversion-fast` → NEVER include FAQ (too much reading kills conversions)

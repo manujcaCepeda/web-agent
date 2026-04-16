@@ -1,15 +1,67 @@
 {
-  "agency": {
-    "hero": "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1200&h=800&fit=crop&crop=center&auto=format&q=85",
-    "services": [
-      "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
-      "https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
-      "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=500&fit=crop&crop=center&auto=format&q=80",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop&crop=center&auto=format&q=80"
-    ],
-    "mockup": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&h=600&fit=crop&crop=center&auto=format&q=85",
-    "team": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=900&h=600&fit=crop&crop=center&auto=format&q=85",
-    "note": "All images verified as web design / agency / tech work scenes. Use images.unsplash.com with specific photo IDs. Do NOT use source.unsplash.com (deprecated). Prefer mockup/product images over people smiling at camera."
+  "_note": "Imágenes locales del cliente SitioPro. Rutas relativas al directorio output/. Imágenes revisadas y seleccionadas manualmente por calidad y relevancia.",
+
+  "hero": {
+    "primary": "../assets/images/hero/hero5.jpg",
+    "primary_alt": "Laptop con dashboard de aplicación web moderna — SitioPro",
+    "secondary": "../assets/images/hero/hero6.jpg",
+    "secondary_alt": "iMac mostrando sitio web profesional en escritorio limpio",
+    "note": "hero5.jpg preferido: laptop con UI dashboard colorido + planta. Moderno, relatable, no stock genérico."
+  },
+
+  "logo": {
+    "main": "../assets/images/LogoSitioPro.png",
+    "icon_only": "../assets/images/Logo.png",
+    "note": "LogoSitioPro.png = logo completo con texto. Logo.png = ícono solo para footer invertido."
+  },
+
+  "portfolio": [
+    {
+      "file": "../assets/images/portafolio/portafolio3.jpg",
+      "client": "Mariscos Don Pepe",
+      "category": "Restaurante — Guayaquil",
+      "outcome": "Primeros pedidos por WhatsApp en menos de 30 días",
+      "description": "Sitio de restaurante/comida con UI moderna — representa el trabajo de SitioPro para negocios gastronómicos"
+    },
+    {
+      "file": "../assets/images/portafolio/portafolio2.jpg",
+      "client": "Clínica Dental Sonrisa",
+      "category": "Salud — Quito",
+      "outcome": "Sitio activo en 6 días — $420 inversión total",
+      "description": "Sitio dental premium de diseño oscuro y moderno — premium branding para clínicas"
+    },
+    {
+      "file": "../assets/images/portafolio/portafolio6.jpg",
+      "client": "Ferretería El Clavo",
+      "category": "Comercio local — Cuenca",
+      "outcome": "Mayor visibilidad local y clientes mejor informados",
+      "description": "Sitio de negocio/servicios con grid de categorías — representa presencia digital para comercios locales"
+    }
+  ],
+
+  "services": {
+    "sitio-profesional": {
+      "file": "../assets/images/servicios/servicio5.jpg",
+      "alt": "Dashboard ecommerce profesional — panel de administración de productos"
+    },
+    "landing-page": {
+      "file": "../assets/images/servicios/servicio6.jpg",
+      "alt": "Diseño de landing page minimalista con gradiente — ejemplo de conversión"
+    },
+    "ecommerce": {
+      "file": "../assets/images/servicios/servicio5.jpg",
+      "alt": "Panel de tienda online con gestión de productos — e-commerce profesional"
+    },
+    "rediseno": {
+      "file": "../assets/images/servicios/servicio6.jpg",
+      "alt": "Diseño web moderno antes y después del rediseño"
+    },
+    "note": "servicio1/2/3/4 descartados: 3D cartoon, competidores, o imágenes de baja calidad para la marca SitioPro"
+  },
+
+  "discarded": {
+    "hero": ["hero1.jpg (placeholder text visible)", "hero2.jpg (demasiado genérico)", "hero3.jpg (baja calidad)", "hero4.jpg (escritorio vacío sin contenido)"],
+    "servicios": ["servicio1.jpg (3D cartoon rosa, no premium)", "servicio2.jpg (before/after confuso)", "servicio3.jpg (muestra branding de competidor)", "servicio4.jpg (image de plantilla promocional)"],
+    "portafolio": ["portafolio1.jpg (construcción — industria incorrecta)", "portafolio4.jpg (construcción dark — industria incorrecta)", "portafolio5.jpg (dental duplicado con portafolio2)"]
   }
 }

@@ -748,8 +748,8 @@ def build_section_flow(page_personality: str, section_order: list, has_process: 
         elif page_personality == "authority":
             section_order = ["hero", "stats-bar", "services", "visual-break", "benefits", "badge-grid", "testimonials", "cta", "contact"]
         elif page_personality == "product":
-            # FIX #6: logo-band added to match brand-strategist.md product personality definition
-            section_order = ["hero", "logo-band", "services", "how-it-works", "visual-break", "comparison", "testimonials", "pricing", "faq", "contact"]
+            # FIX #6: logo-band + portfolio added; benefits removed (portfolio+comparison = stronger proof)
+            section_order = ["hero", "logo-band", "services", "portfolio", "visual-break", "trust-band", "how-it-works", "comparison", "testimonials", "pricing", "faq", "contact"]
         else:  # storytelling (default)
             section_order = ["hero", "services", "how-it-works", "cta-banner", "stats-bar", "benefits", "badge-grid", "wow-section", "testimonials", "faq", "cta", "contact"]
 
@@ -987,6 +987,13 @@ def generate_frontend(client: anthropic.Anthropic, system_prompt: str, brief: di
     layout_variation = brand_strategy.get("layout_variation", "cards-3")
     spacing_scale = brand_strategy.get("spacing_scale", "balanced")
     image_direction = brand_strategy.get("image_direction", "photography-forward")
+
+    # S10: Agency/studio image override — stock photos destroy credibility for creative agencies
+    business_type_raw = brief.get("business_type", "") or brief.get("type", "")
+    if business_type_raw in ("digital-agency", "creative-studio") and image_direction == "photography-forward":
+        image_direction = "product-showcase"
+        print(f"  ⚠ S10 override: {business_type_raw} → image_direction forced to 'product-showcase' (was 'photography-forward')")
+
     visual_break = brand_strategy.get("visual_break", {})
     forbidden_patterns = brand_strategy.get("forbidden_patterns", [])
     design_concept = brand_strategy.get("design_concept", "")

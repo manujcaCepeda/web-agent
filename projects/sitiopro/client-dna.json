@@ -1,40 +1,42 @@
 {
-  "_comment": "Client DNA — SitioPro brand identity. Reference: https://renewed-mindset-656459.framer.app/ (structure/feel) but with stronger visual identity.",
-  "_version": "1.1",
+  "_comment": "Client DNA — SitioPro brand identity. Reference: https://renewed-mindset-656459.framer.app/ (estructura limpia, stats prominentes, comparison table central). Colores y fuentes propios de SitioPro.",
+  "_version": "2.0",
 
   "brand_strategy": {
     "positioning": "La agencia web premium en Ecuador que entrega sitios que convierten — en días, no meses",
     "brand_archetype": "Creator + Expert",
     "brand_personality": ["directo", "confiable", "moderno", "orientado a resultados"],
     "tone_of_voice": "Habla con emprendedores y dueños de negocios que ya saben lo que quieren — directo, sin rodeos, con pruebas concretas",
-    "unique_angle": "Diseño premium sin el precio de una gran agencia. Entrega rápida sin comprometer calidad."
+    "unique_angle": "Diseño premium sin el precio de una gran agencia. Entrega en 7 días garantizada."
   },
 
   "visual_identity": {
     "style_preference": "corporate-trust",
     "energy_level": "medium-high",
-    "feel": "Moderno y profesional — como una agencia boutique premium. Limpio, generoso en espacios, con toques de color vivos.",
-    "must_feel": ["profesional", "confiable", "moderno", "diferente a lo genérico"],
-    "must_not_feel": ["oscuro y técnico", "abrumador", "genérico tipo Wix", "demasiado corporativo y frío"],
-    "reference_vibe": "Similar a Upreach/renewed-mindset: limpio, generoso en espacios, stats prominentes, tipografía fuerte — pero con identidad más latina/cálida"
+    "feel": "Agencia boutique premium. Espacios generosos, tipografía fuerte, paleta disciplinada. Limpio y moderno — nunca genérico.",
+    "must_feel": ["profesional", "confiable", "moderno", "diferente a lo genérico", "premium sin ser frío"],
+    "must_not_feel": ["oscuro y técnico", "abrumador", "genérico tipo Wix", "demasiado corporativo", "barato"],
+    "reference_vibe": "Renewed-mindset/Upreach: limpio, espacios generosos, stats prominentes, tipografía fuerte — reinterpretado con identidad latina/cálida"
   },
 
   "design_direction": {
     "hero_preference": "split-emotional",
-    "hero_concept": "Split layout: izquierda = headline potente + stats + CTA doble | derecha = browser mockup o imagen de resultado — muestra el producto, no solo palabras",
+    "hero_concept": "Split layout: izquierda = headline potente + stats inline + CTA | derecha = hero5.jpg (laptop con UI dashboard) — muestra el producto real, no palabras vacías",
     "layout_signature": "editorial-list",
-    "color_approach": "Fondo blanco principal con secciones que alternan blanco / gris suave / sección oscura de acento. Indigo profundo como primary, amarillo/amber como accent para CTAs.",
-    "visual_break_concept": "Dark band centrada con 4 métricas clave (120+ sitios, 3-7 días, 98%, $0 costos ocultos) — los números más poderosos en grande",
-    "visual_break_position": "after-services",
-    "typography_personality": "Sans-serif moderno (Inter). Headlines muy bold (font-black). Mucho contraste de peso. Jerarquía clara.",
-    "section_spacing": "generous — mucho espacio entre secciones como la referencia, no compacto",
+    "color_approach": "Fondo blanco principal. Secciones: blanco / gris suave (#F8FAFC) / sección oscura de acento único (Contact/CTA final). Indigo #4F46E5 como primary, amber #F59E0B para CTAs principales.",
+    "visual_break_concept": "Dark band con 4 métricas clave en grande (47+ sitios, 7 días, 100% en plazo, $0 costos ocultos) + CTA secundario. Números reales — los más poderosos que tenemos.",
+    "visual_break_position": "after-portfolio",
+    "typography_personality": "Inter exclusivamente. Headlines: font-black (900), letter-spacing: -0.03em. Body: font-normal (400). Mucho contraste de peso. Jerarquía implacable.",
+    "section_spacing": "generous — py-20 md:py-28 en secciones principales. py-14 md:py-20 en secciones secundarias.",
+    "heading_color_rule": "H2 y H3 siempre #0F172A (dark navy). NUNCA el color primary para headings — reservado para accents, CTAs, iconos.",
     "forbidden_patterns": [
-      "Fondo dark para TODAS las secciones (solo la visual break va dark)",
-      "Hero con foto de persona sonriendo mirando a cámara con fondo degradado",
+      "Sección Benefits de 6 icons en grid 3-col — eliminada permanentemente",
+      "FAQ como sección standalone — mover a Contact/CTA como accordions",
+      "Trust Band como sección separada — stats van dentro del Visual Break",
+      "Hero con foto de persona sonriendo mirando a cámara",
       "Grid de 5 tarjetas idénticas con foto arriba y bullets abajo para servicios",
       "Color primario azul Tailwind #2563EB",
-      "Todas las secciones con el mismo background (alternancia es obligatoria)",
-      "Testimonios como 3 tarjetas blancas iguales sobre fondo degradado de color",
+      "Todas las secciones con el mismo background",
       "CTA genérico tipo 'Contáctanos' sin beneficio"
     ]
   },
@@ -47,26 +49,67 @@
     "bg_alt": "#F8FAFC",
     "bg_dark": "#0F172A",
     "text_main": "#0F172A",
-    "text_muted": "#64748B"
+    "text_muted": "#64748B",
+    "note": "Headings siempre #0F172A. Primary reservado para iconos, bordes de acento, CTAs secundarios. Accent amber para CTAs primarios de conversión."
   },
 
+  "typography": {
+    "font_family": "Inter",
+    "font_weights": ["400 (body)", "600 (subtitles, labels)", "700 (h3)", "900 (h1, h2, logo)"],
+    "hero_headline": "font-black, text-5xl md:text-6xl xl:text-7xl, letter-spacing: -0.03em",
+    "section_headline": "font-black, text-3xl md:text-4xl xl:text-5xl, letter-spacing: -0.02em",
+    "body": "font-normal, text-base md:text-lg, line-height: 1.7"
+  },
+
+  "section_order": ["hero", "services", "portfolio", "visual-break", "how-it-works", "comparison", "testimonials", "pricing", "contact"],
+  "sections_eliminated": ["trust-band (stats integrados en visual-break)", "faq (3 preguntas clave en contact section)", "benefits (eliminado — portfolio + comparison prueban diferenciacion)"],
+
   "business_goals": {
-    "primary": "leads — conseguir que el visitante agende una asesoría gratuita o pida información",
+    "primary": "leads — que el visitante agende una asesoría gratuita o envíe el formulario",
     "key_objection": "¿Esto no va a ser lo mismo que otras agencias?",
     "conversion_barrier": "El visitante duda si el precio justifica la inversión",
-    "conversion_trigger": "Ver resultados concretos (números reales) + proceso simple + sin riesgo"
+    "conversion_trigger": "Ver resultados concretos (números reales) + proceso simple + sin riesgo",
+    "strongest_section": "comparison-table — es el diferenciador más poderoso contra agencias tradicionales"
+  },
+
+  "images": {
+    "hero": "assets/images/hero/hero5.jpg",
+    "hero_alt": "assets/images/hero/hero6.jpg",
+    "portfolio": [
+      { "file": "assets/images/portafolio/portafolio3.jpg", "client": "Mariscos Don Pepe", "category": "Restaurante" },
+      { "file": "assets/images/portafolio/portafolio2.jpg", "client": "Clínica Dental Sonrisa", "category": "Salud" },
+      { "file": "assets/images/portafolio/portafolio6.jpg", "client": "Ferretería El Clavo", "category": "Comercio" }
+    ],
+    "services": {
+      "landing-page": "assets/images/servicios/servicio6.jpg",
+      "ecommerce": "assets/images/servicios/servicio5.jpg"
+    },
+    "logo": "assets/images/LogoSitioPro.png",
+    "logo_footer": "assets/images/Logo.png"
   },
 
   "key_sections": {
-    "must_include": ["hero", "trust-stats", "services-editorial", "how-it-works", "comparison-table", "testimonials-with-results", "pricing", "faq", "cta-final", "contact"],
-    "must_exclude": ["team-section", "blog-preview"],
-    "priority_section": "comparison-table — es el mayor diferenciador contra la competencia"
+    "must_include": ["hero", "services", "portfolio", "visual-break", "how-it-works", "comparison", "testimonials", "pricing", "contact"],
+    "must_exclude": ["team-section", "blog-preview", "trust-band-standalone", "benefits-grid", "faq-standalone"],
+    "priority_section": "comparison — el mayor diferenciador contra la competencia",
+    "faq_placement": "3 preguntas clave como accordions dentro de la sección Contact, antes del formulario"
   },
 
   "reference_inspiration": {
     "url": "https://renewed-mindset-656459.framer.app/",
-    "what_to_take": "Estructura limpia, espacios generosos, stats prominentes, comparison table, tipografía jerárquica",
-    "what_to_improve": "Añadir más personalidad de marca latinoamericana, comparación más visual, hero con prueba real (mockup de sitio)",
+    "what_to_take": [
+      "Estructura limpia y espacios generosos entre secciones",
+      "Stats prominentes con números grandes y sublabels explicativos",
+      "Comparison table como sección central — formato claro SitioPro vs Agencias Tradicionales",
+      "Tipografía jerárquica con mucho contraste de peso",
+      "Case studies / portfolio con resultados reales como números"
+    ],
+    "what_to_improve": [
+      "Añadir identidad propia latinoamericana/ecuatoriana",
+      "Portfolio con imágenes reales de sitios construidos",
+      "Hero con mockup de laptop mostrando trabajo real (no ilustraciones)",
+      "Testimonios con nombres completos y resultados específicos (cifras reales)"
+    ],
     "avoid": "Copiar diseño exacto — reinterpretar con identidad propia de SitioPro"
   }
 }
