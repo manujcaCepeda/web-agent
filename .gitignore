@@ -1,3 +1,19 @@
 node_modules/
 .env
 dist/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Runtime artifacts
+core/generation-log.json
+projects/*/audit-screenshots/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
