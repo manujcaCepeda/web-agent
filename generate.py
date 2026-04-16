@@ -408,6 +408,56 @@ def check_layout_uniqueness(brand_strategy: dict, business_type: str) -> list[st
     return warnings
 
 
+def load_frontend_dev(part: str, component_system: str = "", art_director: str = "") -> str:
+    """Load only the necessary parts of frontend-dev for each generation step.
+
+    Parts:
+      "core"     → rules, inputs, output contract (~800 tokens)
+      "design"   → design language, typography (~12k tokens)
+      "systems"  → images, forms, UX, animations (~4k tokens)
+      "sections" → section blueprints (~16k tokens)
+      "qa"       → QA checklist (~1k tokens)
+      "full"     → all parts combined (fallback, ~35k tokens)
+    """
+    def load_optional(path: Path) -> str:
+        return read_file(path) if path.exists() else ""
+
+    # Check if split files exist (new optimized structure)
+    core_path = AGENTS_DIR / "frontend-dev-core.md"
+    if not core_path.exists():
+        # Fallback to monolithic file for backwards compatibility
+        prompt = load_optional(AGENTS_DIR / "frontend-dev.md")
+        if component_system:
+            prompt += f"\n\n---\n\n# COMPONENT SYSTEM SPECIFICATION\n\n{component_system}"
+        if art_director:
+            prompt += f"\n\n---\n\n# ART DIRECTOR REFERENCE\n\n{art_director}"
+        return prompt
+
+    part_files = {
+        "core":     ["frontend-dev-core.md"],
+        "design":   ["frontend-dev-core.md", "frontend-dev-design.md"],
+        "systems":  ["frontend-dev-core.md", "frontend-dev-systems.md"],
+        "sections": ["frontend-dev-core.md", "frontend-dev-sections.md"],
+        "qa":       ["frontend-dev-qa.md"],
+        "full":     ["frontend-dev-core.md", "frontend-dev-design.md",
+                     "frontend-dev-systems.md", "frontend-dev-sections.md",
+                     "frontend-dev-qa.md"],
+    }
+
+    files = part_files.get(part, part_files["full"])
+    chunks = [load_optional(AGENTS_DIR / f) for f in files]
+    prompt = "\n\n".join(c for c in chunks if c)
+
+    if component_system:
+        prompt += f"\n\n---\n\n# COMPONENT SYSTEM SPECIFICATION\n\n{component_system}"
+    if art_director:
+        prompt += f"\n\n---\n\n# ART DIRECTOR REFERENCE (USE FOR WOW SECTIONS + COLOR PALETTE)\n\n{art_director}"
+
+    tokens_approx = len(prompt) // 3
+    print(f"  ✓ frontend-dev loaded: part='{part}' (~{tokens_approx:,} tokens)")
+    return prompt
+
+
 def load_prompts(template_name: str) -> dict:
     # Load optional supplementary context files (injected into existing agents — no extra API calls)
     def load_optional(path: Path) -> str:
@@ -434,12 +484,10 @@ def load_prompts(template_name: str) -> dict:
     if hero_system:
         ui_designer_prompt += f"\n\n---\n\n# HERO SYSTEM RULES (USE FOR hero_variant SELECTION)\n\n{hero_system}"
 
-    # Inject component-system + art-director into frontend-dev
-    frontend_dev_prompt = read_file(AGENTS_DIR / "frontend-dev.md")
-    if component_system:
-        frontend_dev_prompt += f"\n\n---\n\n# COMPONENT SYSTEM SPECIFICATION\n\n{component_system}"
-    if art_director:
-        frontend_dev_prompt += f"\n\n---\n\n# ART DIRECTOR REFERENCE (USE FOR WOW SECTIONS + COLOR PALETTE)\n\n{art_director}"
+    # frontend-dev: load full for generation (all parts needed for complete site)
+    # Use load_frontend_dev("full") for complete generation
+    # Use load_frontend_dev("sections") when only regenerating specific sections
+    frontend_dev_prompt = load_frontend_dev("full", component_system, art_director)
 
     return {
         "business_analyzer": business_analyzer_prompt,
