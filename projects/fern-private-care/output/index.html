@@ -1522,6 +1522,17 @@ document.addEventListener('scroll', function() {
     header.style.backgroundColor = '';
   }
 });
+
+// Hero image parallax effect
+document.addEventListener('scroll', function() {
+  const heroSection = document.getElementById('hero');
+  const heroImage = heroSection?.querySelector('img');
+  if (heroImage) {
+    const scrollY = window.scrollY;
+    const parallaxOffset = scrollY * 0.5;
+    heroImage.style.transform = `translateY(${parallaxOffset}px)`;
+  }
+});
 </script>
 </body>
 </html>
