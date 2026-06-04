@@ -39,6 +39,22 @@
     .reveal, .reveal-element { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     .reveal.visible, .reveal-element.visible { opacity: 1; transform: translateY(0); }
 
+    /* Hero word-by-word animation */
+    .hero-word {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      margin-right: 0.2em;
+      animation: heroWordFadeIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    @keyframes heroWordFadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .btn-primary {
       background: var(--color-primary);
       color: #fff;
@@ -508,28 +524,40 @@
       </p>
     </div>
 
-    <!-- Service Row 1 — In-Home Care — FEATURED CARD (larger, accent border) -->
-    <div class="reveal-element flex flex-col md:flex-row rounded-xl overflow-hidden shadow-xl mb-8 bg-white group border-l-4 border-[#F59E0B] hover:shadow-3xl hover:-translate-y-1 transition-all duration-300" style="transition-delay:0ms;">
-      <div class="md:w-2/5 min-h-[320px] overflow-hidden img-zoom relative">
-        <img src="../assets/images/services/homeCare.jpg" alt="In-Home Care" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
-        <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(to right, transparent 60%, rgba(255,255,255,0.08) 100%);"></div>
+    <!-- Service Row 1 — In-Home Care — FEATURED CARD (PROMINENT DESIGN) -->
+    <div class="reveal-element flex flex-col md:flex-row rounded-2xl overflow-hidden shadow-2xl mb-12 bg-white group border-l-8 border-[#F59E0B] hover:shadow-3xl hover:-translate-y-2 transition-all duration-300" style="transition-delay:0ms; background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(240,250,247,0.6) 100%);">
+      <div class="md:w-1/2 min-h-[380px] overflow-hidden img-zoom relative">
+        <img src="../assets/images/services/homeCare.jpg" alt="In-Home Care" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+        <div class="absolute inset-0 pointer-events-none" style="background:linear-gradient(to right, transparent 50%, rgba(255,255,255,0.12) 100%);"></div>
       </div>
-      <div class="md:w-3/5 p-10 md:p-12 flex flex-col justify-center">
-        <span class="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-4 py-2 rounded-full w-fit"
-          style="background:#F59E0B; color:white;">★ Featured Service</span>
-        <h3 class="text-3xl font-bold text-gray-900 mb-4 leading-snug">24/7 Home Care</h3>
-        <p class="text-gray-500 leading-relaxed mb-5 text-sm md:text-base">
+      <div class="md:w-1/2 p-12 md:p-14 flex flex-col justify-center relative">
+        <!-- Decorative accent -->
+        <div class="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10 pointer-events-none" style="background: radial-gradient(circle, #F59E0B, transparent 70%);"></div>
+
+        <span class="inline-block text-xs font-bold tracking-widest uppercase mb-4 px-5 py-2 rounded-full w-fit relative z-10"
+          style="background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); color:white; box-shadow: 0 4px 15px rgba(245,158,11,0.30);">★ FEATURED SERVICE</span>
+        <h3 class="text-4xl md:text-5xl font-bold text-gray-900 mb-5 leading-tight">24/7 Home Care</h3>
+        <p class="text-gray-600 leading-relaxed mb-7 text-base md:text-lg font-medium">
           Our 24/7 in-home senior care in Florida ensures someone is always there when it matters most — right in the comfort of their own home.
         </p>
-        <div class="flex flex-wrap gap-2 mb-5">
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">Continuous safety monitoring day and night</span>
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">Immediate response to any health concern</span>
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">You stay informed — always</span>
+        <div class="flex flex-col gap-3 mb-8">
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-[#2F7F79] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">Continuous safety monitoring day and night</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-[#2F7F79] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">Immediate response to any health concern</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-[#2F7F79] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">You stay informed — always</span>
+          </div>
         </div>
-        <a href="#contact" class="btn-primary inline-flex items-center gap-2 px-7 py-3 rounded-lg font-semibold text-white text-sm w-fit"
-          style="background:var(--color-primary); box-shadow:var(--shadow-button);">
+        <a href="#contact" class="inline-flex items-center gap-3 px-9 py-4 rounded-xl font-bold text-lg text-white w-fit transition-all duration-300 hover:scale-105 hover:shadow-2xl relative z-10"
+          style="background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%); box-shadow: 0 8px 24px rgba(245,158,11,0.40);">
           Ask About 24/7 Home Care
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
         </a>
       </div>
     </div>
@@ -559,25 +587,41 @@
       </div>
     </div>
 
-    <!-- Service Row 3 — Post-Surgery Care — image LEFT -->
-    <div class="reveal-element flex flex-col md:flex-row rounded-xl overflow-hidden shadow-lg mb-6 bg-white group border-l-4 border-emerald-400 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style="transition-delay:160ms;">
-      <div class="md:w-2/5 min-h-[280px] overflow-hidden img-zoom relative">
-        <img src="../assets/images/services/rehabilitation.jpg" alt="Post-Surgery Care" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+    <!-- Service Row 3 — Post-Surgery Care — ASYMMETRIC LAYOUT (image prominent, text overlay) -->
+    <div class="reveal-element relative rounded-2xl overflow-hidden shadow-xl mb-8 group" style="transition-delay:160ms; min-height: 420px; background: linear-gradient(135deg, #f0faf7 0%, #e6f7f0 100%);">
+      <!-- Image as background with gradient overlay -->
+      <div class="absolute inset-0 overflow-hidden">
+        <img src="../assets/images/services/rehabilitation.jpg" alt="Rehabilitation & Therapy" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+        <div class="absolute inset-0 bg-gradient-to-r from-white from-35% via-white/80 to-transparent" style="background: linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.70) 50%, rgba(255,255,255,0) 100%);"></div>
       </div>
-      <div class="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
-        <span class="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full w-fit"
-          style="background:rgba(16,185,129,0.12); color:#047857;">No Long Contract</span>
-        <h3 class="text-2xl font-bold text-gray-900 mb-3 leading-snug">Rehabilitation & Therapy</h3>
-        <p class="text-gray-500 leading-relaxed mb-5 text-sm md:text-base">
+
+      <!-- Content positioned absolutely, full height, wide -->
+      <div class="relative z-10 p-8 md:p-12 flex flex-col justify-center h-full md:max-w-2xl">
+        <div class="inline-flex items-center gap-2 mb-4 px-4 py-2 rounded-full w-fit"
+          style="background: linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(16,185,129,0.08) 100%); border: 1px solid rgba(16,185,129,0.3);">
+          <svg class="w-4 h-4" fill="currentColor" style="color:#047857;" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          <span class="text-xs font-bold tracking-widest uppercase" style="color:#047857;">No Long Contract</span>
+        </div>
+        <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">Rehabilitation &amp; Therapy</h3>
+        <p class="text-gray-700 leading-relaxed mb-6 text-base font-medium">
           Our senior rehabilitation support across Florida walks beside your loved one on their path back to strength — gently and patiently.
         </p>
-        <div class="flex flex-wrap gap-2 mb-5">
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">Supervised physical rehabilitation by trained staff</span>
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">Improved mobility and independence over time</span>
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">Emotional encouragement throughout recovery</span>
+        <div class="flex flex-col gap-2 mb-7">
+          <div class="flex items-start gap-2">
+            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color:#047857;" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">Supervised physical rehabilitation by trained staff</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color:#047857;" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">Improved mobility and independence over time</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color:#047857;" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">Emotional encouragement throughout recovery</span>
+          </div>
         </div>
-        <a href="#contact" class="btn-primary inline-flex items-center gap-2 px-7 py-3 rounded-lg font-semibold text-white text-sm w-fit"
-          style="background:var(--color-primary); box-shadow:var(--shadow-button);">
+        <a href="#contact" class="inline-flex items-center gap-2 px-8 py-3 rounded-lg font-bold text-white text-sm w-fit transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); box-shadow: 0 6px 20px rgba(16,185,129,0.30);">
           Ask About Rehabilitation
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
         </a>
@@ -1579,6 +1623,15 @@ document.querySelectorAll('.reveal-element, .reveal').forEach(el => revealObserv
 window.addEventListener('load', () => {
   document.querySelectorAll('.reveal-element, .reveal').forEach(el => {
     if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('visible');
+  });
+});
+
+// ── Hero word-by-word animation ──────────────────────────────
+window.addEventListener('load', () => {
+  const heroWords = document.querySelectorAll('.hero-word');
+  heroWords.forEach((word, index) => {
+    const delay = index * 80; // 80ms delay between words
+    word.style.animationDelay = delay + 'ms';
   });
 });
 
