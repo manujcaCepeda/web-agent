@@ -1315,75 +1315,128 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ═══════════════════════════════════════════════════════════
      CONTACT
 ════════════════════════════════════════════════════════════════ -->
-<section id="contact" class="py-12 md:py-16 bg-white">
-  <div class="max-w-6xl mx-auto px-6">
-    <div class="text-center mb-12">
-      <span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4" style="background:rgba(47,127,121,0.15);color:#2F7F79;">Contact Us</span>
-      <h2 class="serif-headline text-3xl md:text-4xl text-gray-900 leading-tight mb-3">Start With a Free Conversation</h2>
-      <p class="text-gray-500 text-lg max-w-xl mx-auto">No commitment. No sales pitch. Just honest answers from a care specialist who understands what your family is going through.</p>
+<section id="contact" class="py-20 md:py-32 relative overflow-hidden noise-texture" style="background: linear-gradient(135deg, rgba(47,127,121,0.05) 0%, rgba(240,250,247,0.6) 50%, rgba(47,127,121,0.08) 100%);">
+
+  <!-- Decorative gradient orbs -->
+  <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full opacity-20 pointer-events-none" style="background: radial-gradient(circle, #2F7F79, transparent 70%);"></div>
+  <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full opacity-15 pointer-events-none" style="background: radial-gradient(circle, #F59E0B, transparent 70%);"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6">
+    <!-- Header -->
+    <div class="text-center mb-16">
+      <span class="inline-block text-sm font-semibold tracking-widest uppercase px-5 py-2 rounded-full mb-6 reveal-element" style="background:rgba(47,127,121,0.15);color:#2F7F79;">Start Your Journey Today</span>
+      <h2 class="serif-headline text-5xl md:text-6xl text-gray-900 leading-tight mb-6 reveal-element">
+        Ready for
+        <span style="background: linear-gradient(135deg, #2F7F79 0%, #F59E0B 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          A Free Conversation?
+        </span>
+      </h2>
+      <p class="text-gray-600 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed reveal-element">
+        No commitment. No sales pitch. Just honest answers from Carmen Rodríguez, our founder and care specialist, who understands exactly what your family is going through.
+      </p>
     </div>
-    <div class="grid md:grid-cols-2 gap-12 items-start">
-      <!-- Form — Premium card with gradient -->
-      <form id="contact-form" class="rounded-2xl shadow-lg border border-gray-200 p-10 space-y-5" style="background: linear-gradient(135deg, #ffffff 0%, rgba(240,250,247,0.5) 100%);">
-        <div>
-          <label class="block text-sm font-bold text-gray-800 mb-2">Your name</label>
-          <input type="text" name="from_name" required placeholder="e.g. María Fernández" class="w-full px-5 py-3.5 rounded-xl border-2 border-gray-200 bg-white/80 focus:outline-none focus:border-teal-400 focus:ring-4 focus:ring-teal-100 text-gray-900 text-base transition-all font-medium">
-        </div>
-        <div>
-          <label class="block text-sm font-bold text-gray-800 mb-2">Your phone number</label>
-          <input type="tel" name="phone" placeholder="+1 (XXX) XXX-XXXX" class="w-full px-5 py-3.5 rounded-xl border-2 border-gray-200 bg-white/80 focus:outline-none focus:border-teal-400 focus:ring-4 focus:ring-teal-100 text-gray-900 text-base transition-all font-medium">
-        </div>
-        <div>
-          <label class="block text-sm font-bold text-gray-800 mb-2">Tell us about your loved one</label>
-          <textarea rows="4" name="message" placeholder="What kind of care are you looking for? Any specific needs we should know about?" class="w-full px-5 py-3.5 rounded-xl border-2 border-gray-200 bg-white/80 focus:outline-none focus:border-teal-400 focus:ring-4 focus:ring-teal-100 text-gray-900 text-base transition-all resize-none font-medium"></textarea>
-        </div>
-        <button id="form-submit-btn" type="submit" class="w-full py-4 rounded-xl font-bold text-white text-base transition-all duration-300 hover:scale-105 hover:shadow-2xl mt-6" style="background: linear-gradient(135deg, #2F7F79 0%, #1A3A37 100%); box-shadow: 0 8px 24px rgba(47,127,121,0.35);">
-          Request My Free Consultation →
-        </button>
-        <p id="form-success" class="hidden text-sm font-semibold text-center py-2" style="color:#2F7F79;">✓ Message sent! We'll contact you shortly.</p>
-        <p class="text-xs text-gray-400 text-center">We respond within 2 business hours. No obligation.</p>
-      </form>
-      <!-- Contact info -->
-      <div class="space-y-3">
-        <div class="flex items-start gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(47,127,121,0.08);">
-            <svg class="w-5 h-5" style="color:#2F7F79;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-          </div>
-          <div>
-            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Phone</p>
-            <a href="tel:12393843206" class="text-gray-900 font-bold text-lg hover:text-teal-700 transition-colors">(239) 384-3206</a>
+
+    <!-- Content Grid -->
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- LEFT: Contact Information Cards — 2x2 Grid -->
+      <div class="lg:col-span-1 space-y-4">
+        <!-- Phone -->
+        <div class="group reveal-element p-6 rounded-2xl border border-gray-200 transition-all duration-300 hover:shadow-xl hover:border-teal-300" style="background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,250,247,0.6) 100%); backdrop-filter: blur(10px);">
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110" style="background: linear-gradient(135deg, #2F7F79 0%, #1A3A37 100%); color: white;">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 font-bold uppercase tracking-wide mb-1">Call Us</p>
+              <a href="tel:12393843206" class="text-gray-900 font-bold text-lg hover:text-teal-600 transition-colors">(239) 384-3206</a>
+              <p class="text-xs text-gray-500 mt-1">Available 24/7</p>
+            </div>
           </div>
         </div>
-        <div class="flex items-start gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(47,127,121,0.08);">
-            <svg class="w-5 h-5" style="color:#2F7F79;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-          </div>
-          <div>
-            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Email</p>
-            <a href="mailto:fer-revelo@hotmail.com" class="text-gray-900 font-bold text-lg hover:text-teal-700 transition-colors">fer-revelo@hotmail.com</a>
-          </div>
-        </div>
-        <div class="flex items-start gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(47,127,121,0.08);">
-            <svg class="w-5 h-5" style="color:#2F7F79;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          </div>
-          <div>
-            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Availability</p>
-            <p class="text-gray-900 font-bold text-lg">24 Hours, 7 Days a Week</p>
-            <p class="text-gray-500 text-sm">Including holidays — we never close</p>
+
+        <!-- Email -->
+        <div class="group reveal-element p-6 rounded-2xl border border-gray-200 transition-all duration-300 hover:shadow-xl hover:border-teal-300" style="background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,250,247,0.6) 100%); backdrop-filter: blur(10px);">
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110" style="background: linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%); color: white;">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 font-bold uppercase tracking-wide mb-1">Email</p>
+              <a href="mailto:fer-revelo@hotmail.com" class="text-gray-900 font-bold text-lg hover:text-teal-600 transition-colors break-all">fer-revelo@hotmail.com</a>
+              <p class="text-xs text-gray-500 mt-1">Response in 2 hours</p>
+            </div>
           </div>
         </div>
-        <div class="flex items-start gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
-          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0" style="background:rgba(47,127,121,0.08);">
-            <svg class="w-5 h-5" style="color:#2F7F79;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+
+        <!-- Availability -->
+        <div class="group reveal-element p-6 rounded-2xl border border-gray-200 transition-all duration-300 hover:shadow-xl hover:border-teal-300" style="background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,250,247,0.6) 100%); backdrop-filter: blur(10px);">
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110" style="background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%); color: white;">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 font-bold uppercase tracking-wide mb-1">Hours</p>
+              <p class="text-gray-900 font-bold text-lg">24/7, Every Day</p>
+              <p class="text-xs text-gray-500 mt-1">Holidays included</p>
+            </div>
           </div>
-          <div>
-            <p class="text-xs text-gray-400 font-semibold uppercase tracking-wide mb-1">Service Area</p>
-            <p class="text-gray-900 font-bold text-lg">Fort Myers, Naples, Lehigh &amp; Orlando County</p>
-            <p class="text-gray-500 text-sm">Fort Myers, USA</p>
+        </div>
+
+        <!-- Service Area -->
+        <div class="group reveal-element p-6 rounded-2xl border border-gray-200 transition-all duration-300 hover:shadow-xl hover:border-teal-300" style="background: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(240,250,247,0.6) 100%); backdrop-filter: blur(10px);">
+          <div class="flex gap-4">
+            <div class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:scale-110" style="background: linear-gradient(135deg, #3a9e97 0%, #236059 100%); color: white;">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+            </div>
+            <div>
+              <p class="text-xs text-gray-500 font-bold uppercase tracking-wide mb-1">Service Area</p>
+              <p class="text-gray-900 font-bold text-lg">SW Florida & Expanding</p>
+              <p class="text-xs text-gray-500 mt-1">Fort Myers, Naples, more</p>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- RIGHT: Premium Contact Form — Larger, more prominent -->
+      <form id="contact-form" class="lg:col-span-2 reveal-element rounded-3xl shadow-2xl border border-gray-200 p-8 md:p-12 space-y-6" style="background: linear-gradient(135deg, #ffffff 0%, rgba(240,250,247,0.7) 100%); backdrop-filter: blur(20px);">
+
+        <!-- Form Title -->
+        <div class="mb-8">
+          <h3 class="serif-headline text-2xl md:text-3xl text-gray-900 mb-2">Your free consultation awaits</h3>
+          <p class="text-gray-500 text-sm">Tell us a bit about what you're looking for — we'll respond within 2 hours.</p>
+        </div>
+
+        <!-- Name Field -->
+        <div class="group">
+          <label class="block text-sm font-bold text-gray-800 mb-3 group-focus-within:text-teal-600 transition-colors">Your Name</label>
+          <input type="text" name="from_name" required placeholder="María Fernández" class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 bg-white focus:outline-none focus:border-teal-400 focus:ring-4 focus:ring-teal-100 text-gray-900 text-base transition-all font-medium" style="transition: all 0.3s ease;">
+        </div>
+
+        <!-- Phone Field -->
+        <div class="group">
+          <label class="block text-sm font-bold text-gray-800 mb-3 group-focus-within:text-teal-600 transition-colors">Phone Number</label>
+          <input type="tel" name="phone" placeholder="(239) 384-3206" class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 bg-white focus:outline-none focus:border-teal-400 focus:ring-4 focus:ring-teal-100 text-gray-900 text-base transition-all font-medium" style="transition: all 0.3s ease;">
+        </div>
+
+        <!-- Message Field -->
+        <div class="group">
+          <label class="block text-sm font-bold text-gray-800 mb-3 group-focus-within:text-teal-600 transition-colors">Tell Us About Your Loved One</label>
+          <textarea rows="5" name="message" placeholder="What kind of care are you looking for? Any specific needs or concerns?" class="w-full px-6 py-4 rounded-xl border-2 border-gray-200 bg-white focus:outline-none focus:border-teal-400 focus:ring-4 focus:ring-teal-100 text-gray-900 text-base transition-all resize-none font-medium" style="transition: all 0.3s ease;"></textarea>
+        </div>
+
+        <!-- Submit Button -->
+        <button id="form-submit-btn" type="submit" class="w-full py-5 rounded-xl font-bold text-white text-lg transition-all duration-300 hover:scale-105 hover:shadow-3xl mt-8" style="background: linear-gradient(135deg, #2F7F79 0%, #1A3A37 100%); box-shadow: 0 12px 32px rgba(47,127,121,0.40);">
+          Request My Free Consultation →
+        </button>
+
+        <!-- Success Message -->
+        <p id="form-success" class="hidden text-sm font-semibold text-center py-3 rounded-lg" style="color:white; background: linear-gradient(135deg, #2F7F79 0%, #1A3A37 100%);">✓ Message received! We'll be in touch shortly.</p>
+
+        <!-- Trust Footer -->
+        <div class="pt-4 border-t border-gray-200">
+          <p class="text-xs text-gray-500 text-center font-medium">We respond within 2 business hours. No sales calls, no spam. Just clarity.</p>
+        </div>
+      </form>
     </div>
   </div>
 </section>
