@@ -135,6 +135,37 @@
 
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 3px; }
+
+    /* Premium link hover effect */
+    nav a {
+      position: relative;
+      overflow: hidden;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+      background: var(--color-primary);
+      transition: left 0.3s ease;
+    }
+    nav a:hover::after { left: 0; }
+
+    /* Premium form input animations */
+    input, textarea {
+      transition: all 0.3s ease;
+    }
+    input::placeholder, textarea::placeholder {
+      transition: color 0.3s ease;
+    }
+    input:focus, textarea:focus {
+      background: white !important;
+    }
+    input:focus::placeholder, textarea:focus::placeholder {
+      color: transparent;
+    }
   </style>
   <script type="application/ld+json">
 {
