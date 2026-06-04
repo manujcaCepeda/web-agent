@@ -1365,8 +1365,12 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="grid md:grid-cols-4 gap-10 mb-16">
       <div class="md:col-span-2">
         <div class="flex items-center gap-3 mb-4">
-          <img src="../assets/images/Logo.png" alt="Fern Private Care" class="h-10 w-auto brightness-0 invert" onerror="this.style.display='none'">
-          <span class="text-xl font-bold text-white">Fern Private Care</span>
+          <img src="../assets/images/Logo.png" alt="Fern Private Care" class="h-10 w-auto"
+            onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <span style="display:none;align-items:center;gap:8px;">
+            <span class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-black" style="background:var(--color-primary);">F</span>
+            <span class="font-bold text-white text-base">Fern Private Care</span>
+          </span>
         </div>
         <p class="text-teal-200 text-sm leading-relaxed max-w-xs">Trusted in-home care for seniors in Fort Myers, Naples, Lehigh &amp; Orlando County. Background-checked, bilingual caregivers — assigned personally by Carmen Rodríguez, RN.</p>
         <div class="flex items-center gap-4 mt-5">
