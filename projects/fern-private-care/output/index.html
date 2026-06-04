@@ -665,80 +665,141 @@
 
 <!-- ═══════════════════════════════════════════════════════════════
      VISUAL BREAK — dark-metrics-band
-     Deep teal conviction band — full bleed, amber numbers
+     Deep teal conviction band — full bleed, animated numbers
      ═══════════════════════════════════════════════════════════════ -->
-<section id="trust-metrics" class="py-14 md:py-16 relative overflow-hidden noise-texture" style="background:#1A3A37;">
+<section id="trust-metrics" class="py-20 md:py-28 relative overflow-hidden noise-texture" style="background: linear-gradient(135deg, #1A3A37 0%, #236059 50%, #1A3A37 100%);">
 
-  <!-- Subtle background texture overlay -->
-  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 80% 50% at 50% 50%, rgba(47,127,121,0.25) 0%, transparent 70%);"></div>
+  <!-- Animated background gradient orbs -->
+  <div class="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-20 pointer-events-none" style="background: radial-gradient(circle, #F59E0B, transparent 70%);"></div>
+  <div class="absolute -bottom-40 -right-40 w-96 h-96 rounded-full opacity-15 pointer-events-none" style="background: radial-gradient(circle, #A7D7C5, transparent 70%);"></div>
+
+  <!-- Center radial gradient for depth -->
+  <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 100% 80% at 50% 50%, rgba(47,127,121,0.3) 0%, transparent 70%);"></div>
 
   <div class="relative z-10 max-w-7xl mx-auto px-6">
 
-    <!-- Header -->
-    <div class="text-center mb-12">
-      <p class="text-sm font-bold tracking-[0.3em] uppercase mb-4" style="color:rgba(167,215,197,0.7);">Why Families in South Florida Choose Fern</p>
-      <h2 class="serif-headline text-3xl md:text-4xl text-white leading-tight max-w-2xl mx-auto">
-        Ten Years of Trust — Built One Family at a Time
+    <!-- Header — Larger, more impactful -->
+    <div class="text-center mb-20">
+      <p class="text-xs font-bold tracking-[0.4em] uppercase mb-5 reveal-element" style="color:rgba(167,215,197,0.8); letter-spacing: 0.15em;">Five Years of Excellence</p>
+      <h2 class="serif-headline text-5xl md:text-6xl text-white leading-tight max-w-3xl mx-auto mb-6 reveal-element">
+        Trust Built Through
+        <span style="background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+          Proven Commitment
+        </span>
       </h2>
+      <p class="text-white/70 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed reveal-element">Each metric below represents a real family's decision to trust us with their loved one.</p>
     </div>
 
-    <!-- Metrics Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 mb-12">
+    <!-- Metrics Grid — Enhanced styling -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-16">
 
-      <div class="reveal-element text-center" style="transition-delay:0ms;">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(245,158,11,0.15);">
-          <svg class="w-7 h-7" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" stroke-width="2.5">
+      <!-- Metric 1: Years -->
+      <div class="reveal-element text-center group p-6 rounded-2xl transition-all duration-300 hover:shadow-2xl" style="transition-delay:0ms; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(167,215,197,0.2);">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:scale-110" style="background: linear-gradient(135deg, rgba(245,158,11,0.25) 0%, rgba(245,158,11,0.1) 100%); border: 2px solid rgba(245,158,11,0.4);">
+          <svg class="w-8 h-8" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
           </svg>
         </div>
-        <p class="text-6xl md:text-7xl font-black leading-none mb-3 drop-shadow-lg" style="background:linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">5+</p>
-        <p class="text-sm font-semibold uppercase tracking-widest leading-snug" style="color:rgba(255,255,255,0.55);">Years Serving Florida Families Since 2019</p>
+        <p class="text-5xl md:text-6xl font-black leading-none mb-4 drop-shadow-lg counter" data-target="5" style="background:linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">0</p>
+        <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: #F59E0B;">Years</p>
+        <p class="text-xs font-medium leading-snug" style="color:rgba(255,255,255,0.6);">Serving Florida Families Since 2019</p>
       </div>
 
-      <div class="reveal-element text-center" style="transition-delay:100ms;">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(245,158,11,0.15);">
-          <svg class="w-7 h-7" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" stroke-width="2.5">
+      <!-- Metric 2: 24/7 -->
+      <div class="reveal-element text-center group p-6 rounded-2xl transition-all duration-300 hover:shadow-2xl" style="transition-delay:100ms; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(167,215,197,0.2);">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:scale-110" style="background: linear-gradient(135deg, rgba(245,158,11,0.25) 0%, rgba(245,158,11,0.1) 100%); border: 2px solid rgba(245,158,11,0.4);">
+          <svg class="w-8 h-8" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
-        <p class="text-6xl md:text-7xl font-black leading-none mb-3 drop-shadow-lg" style="background:linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">24/7</p>
-        <p class="text-sm font-semibold uppercase tracking-widest leading-snug" style="color:rgba(255,255,255,0.55);">Available Every Day, Including Holidays</p>
+        <p class="text-5xl md:text-6xl font-black leading-none mb-4 drop-shadow-lg" style="background:linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">24/7</p>
+        <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: #F59E0B;">Always Available</p>
+        <p class="text-xs font-medium leading-snug" style="color:rgba(255,255,255,0.6);">Including Nights, Weekends &amp; Holidays</p>
       </div>
 
-      <div class="reveal-element text-center" style="transition-delay:200ms;">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(245,158,11,0.15);">
-          <svg class="w-7 h-7" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" stroke-width="2.5">
+      <!-- Metric 3: Backgrounds Checked -->
+      <div class="reveal-element text-center group p-6 rounded-2xl transition-all duration-300 hover:shadow-2xl" style="transition-delay:200ms; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(167,215,197,0.2);">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:scale-110" style="background: linear-gradient(135deg, rgba(245,158,11,0.25) 0%, rgba(245,158,11,0.1) 100%); border: 2px solid rgba(245,158,11,0.4);">
+          <svg class="w-8 h-8" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
           </svg>
         </div>
-        <p class="text-6xl md:text-7xl font-black leading-none mb-3 drop-shadow-lg" style="background:linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">100%</p>
-        <p class="text-sm font-semibold uppercase tracking-widest leading-snug" style="color:rgba(255,255,255,0.55);">Background-Checked &amp; HHA Certified</p>
+        <p class="text-5xl md:text-6xl font-black leading-none mb-4 drop-shadow-lg" style="background:linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">100%</p>
+        <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: #F59E0B;">Safety First</p>
+        <p class="text-xs font-medium leading-snug" style="color:rgba(255,255,255,0.6);">Background-Checked &amp; HHA Certified</p>
       </div>
 
-      <div class="reveal-element text-center" style="transition-delay:300ms;">
-        <div class="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4" style="background:rgba(245,158,11,0.15);">
-          <svg class="w-7 h-7" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" stroke-width="2.5">
+      <!-- Metric 4: Personalized -->
+      <div class="reveal-element text-center group p-6 rounded-2xl transition-all duration-300 hover:shadow-2xl" style="transition-delay:300ms; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(167,215,197,0.2);">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 transition-all duration-300 group-hover:scale-110" style="background: linear-gradient(135deg, rgba(245,158,11,0.25) 0%, rgba(245,158,11,0.1) 100%); border: 2px solid rgba(245,158,11,0.4);">
+          <svg class="w-8 h-8" fill="none" stroke="#F59E0B" viewBox="0 0 24 24" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
           </svg>
         </div>
-        <p class="text-4xl md:text-5xl font-black leading-none mb-3" style="color:#F59E0B;">Tailored</p>
-        <p class="text-sm font-semibold uppercase tracking-widest leading-snug" style="color:rgba(255,255,255,0.55);">Personalized for Every Family We Serve</p>
+        <p class="text-3xl md:text-4xl font-black leading-none mb-4" style="color:#F59E0B;">Custom</p>
+        <p class="text-xs font-bold uppercase tracking-widest mb-1" style="color: #F59E0B;">Personalized Plans</p>
+        <p class="text-xs font-medium leading-snug" style="color:rgba(255,255,255,0.6);">Tailored to Every Family's Unique Needs</p>
       </div>
 
     </div>
 
-    <!-- Single amber CTA -->
-    <div class="text-center">
-      <p class="text-white/60 text-base mb-6 max-w-lg mx-auto">Every family we work with starts with a single conversation. No commitment, no pressure — just clarity.</p>
-      <a href="#contact" class="btn-primary inline-flex items-center gap-3 px-10 py-4 rounded-xl font-bold text-gray-900 text-base"
-        style="background:#F59E0B; box-shadow:0 8px 30px rgba(245,158,11,0.35);">
-        Book a Free Consultation — No Commitment
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+    <!-- CTA Section — Enhanced -->
+    <div class="text-center pt-12 border-t" style="border-color: rgba(167,215,197,0.2);">
+      <p class="text-white/70 text-base md:text-lg mb-8 max-w-lg mx-auto leading-relaxed reveal-element">Every relationship with Fern starts with one simple conversation. No commitment, no pressure — just honest answers and clarity about what we can do for your family.</p>
+      <a href="#contact" class="group inline-flex items-center gap-3 px-10 py-5 rounded-2xl font-bold text-lg text-gray-900 transition-all duration-300 hover:scale-105 hover:shadow-3xl reveal-element"
+        style="background: linear-gradient(135deg, #F59E0B 0%, #FCD34D 100%); box-shadow:0 12px 40px rgba(245,158,11,0.45);">
+        Start Your Free Consultation
+        <svg class="w-6 h-6 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
       </a>
     </div>
 
   </div>
 </section>
+
+<!-- Counter animation script -->
+<script>
+(function() {
+  const counterElements = document.querySelectorAll('.counter');
+
+  const animateCounter = (element) => {
+    const target = parseInt(element.dataset.target);
+    const duration = 1800; // 1.8 seconds
+    const startTime = Date.now();
+    const startValue = 0;
+
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Ease-out cubic for smooth deceleration
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      const currentValue = Math.floor(startValue + (target - startValue) * easeProgress);
+
+      element.textContent = currentValue;
+
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        element.textContent = target;
+      }
+    };
+
+    animate();
+  };
+
+  // Intersection Observer to trigger animation when element enters viewport
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.animated) {
+        entry.target.dataset.animated = 'true';
+        animateCounter(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counterElements.forEach(el => observer.observe(el));
+})();
+</script>
 
 
 <!-- ═══════════════════════════════════════════════════════════════
