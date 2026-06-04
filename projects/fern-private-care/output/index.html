@@ -166,6 +166,43 @@
     input:focus::placeholder, textarea:focus::placeholder {
       color: transparent;
     }
+
+    /* Premium footer link hover effects */
+    footer a {
+      position: relative;
+      display: inline-block;
+    }
+    footer ul a::before {
+      content: '';
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      width: 4px;
+      height: 4px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      opacity: 0;
+      transform: translateY(-50%) translateX(0);
+      transition: all 0.3s ease;
+    }
+    footer ul a:hover::before {
+      opacity: 1;
+      transform: translateY(-50%) translateX(-4px);
+    }
+    footer ul a:hover {
+      padding-left: 12px;
+      transition: all 0.3s ease;
+    }
+
+    /* Premium social icons animation */
+    footer a.w-9.h-9 {
+      transition: all 0.3s ease;
+    }
+    footer a.w-9.h-9:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.25) !important;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
   </style>
   <script type="application/ld+json">
 {
