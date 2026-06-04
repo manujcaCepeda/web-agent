@@ -582,12 +582,12 @@
       </div>
     </div>
 
-    <!-- Service Row 2 — Overnight Care — image RIGHT -->
+    <!-- Service Row 2 — Overnight Care — image RIGHT (70% image / 30% text) -->
     <div class="reveal-element flex flex-col md:flex-row-reverse rounded-xl overflow-hidden shadow-lg mb-6 bg-white group border-r-4 border-blue-400 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style="transition-delay:80ms;">
-      <div class="md:w-2/5 min-h-[280px] overflow-hidden img-zoom relative">
+      <div class="md:w-3/5 min-h-[340px] overflow-hidden img-zoom relative">
         <img src="../assets/images/services/short-term.jpg" alt="Overnight Care" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
       </div>
-      <div class="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
+      <div class="md:w-2/5 p-8 md:p-10 flex flex-col justify-center">
         <span class="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full w-fit"
           style="background:rgba(59,130,246,0.12); color:#1D4ED8;">Overnight Support</span>
         <h3 class="text-2xl font-bold text-gray-900 mb-3 leading-snug">Short-Term Stay Care</h3>
@@ -648,10 +648,10 @@
       </div>
     </div>
 
-    <!-- Service Row 4 — Alzheimer's & Dementia — image RIGHT -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse rounded-xl overflow-hidden shadow-lg mb-6 bg-white group border-r-4 border-purple-400 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style="transition-delay:240ms;">
+    <!-- Service Row 4 — Alzheimer's & Dementia — image LEFT (flip visual) -->
+    <div class="reveal-element flex flex-col md:flex-row rounded-xl overflow-hidden shadow-lg mb-6 bg-white group border-l-4 border-purple-400 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style="transition-delay:240ms;">
       <div class="md:w-2/5 min-h-[280px] overflow-hidden img-zoom relative">
-        <img src="../assets/images/services/personalCare.jpg" alt="Alzheimer's & Dementia Care" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+        <img src="../assets/images/services/personalCare.jpg" alt="Personal Care & Daily Dignity" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
       </div>
       <div class="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
         <span class="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full w-fit"
@@ -698,25 +698,38 @@
       </div>
     </div>
 
-    <!-- Service Row 6 — Medication Management — image RIGHT -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse rounded-xl overflow-hidden shadow-lg mb-6 bg-white group border-r-4 border-indigo-400 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" style="transition-delay:400ms;">
-      <div class="md:w-2/5 min-h-[280px] overflow-hidden img-zoom relative">
+    <!-- Service Row 6 — Medication Management — asymmetric background layout -->
+    <div class="reveal-element relative rounded-2xl overflow-hidden shadow-xl mb-8 group" style="transition-delay:400ms; min-height: 400px; background: linear-gradient(135deg, #f0faf7 0%, #e6f7f0 100%);">
+      <!-- Image as subtle background -->
+      <div class="absolute inset-0 overflow-hidden">
         <img src="../assets/images/services/medicational.jpg" alt="Medication Management" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+        <div class="absolute inset-0 bg-gradient-to-r from-white from-40% via-white/85 to-transparent" style="background: linear-gradient(to right, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.75) 50%, rgba(255,255,255,0) 100%);"></div>
       </div>
-      <div class="md:w-3/5 p-8 md:p-10 flex flex-col justify-center">
-        <span class="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full w-fit"
+
+      <!-- Content positioned absolutely, left side, narrower -->
+      <div class="relative z-10 p-8 md:p-12 flex flex-col justify-center h-full md:max-w-xl">
+        <span class="inline-block text-xs font-bold tracking-widest uppercase mb-4 px-3 py-1 rounded-full w-fit"
           style="background:rgba(99,102,241,0.12); color:#4F46E5;">Expert Care</span>
-        <h3 class="text-2xl font-bold text-gray-900 mb-3 leading-snug">Medication Management</h3>
-        <p class="text-gray-500 leading-relaxed mb-5 text-sm md:text-base">
+        <h3 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">Medication Management</h3>
+        <p class="text-gray-600 leading-relaxed mb-6 text-base font-medium">
           Our trained senior caregivers in Florida ensure every medication is given correctly, on schedule — removing one more worry from your list.
         </p>
-        <div class="flex flex-wrap gap-2 mb-5">
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">Accurate, on-time medication administration</span>
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">Prevents dangerous missed or double doses</span>
-          <span class="text-sm font-semibold px-3 py-1.5 rounded-full" style="background:rgba(167,215,197,0.3); color:#236059;">Clear documentation for family and physicians</span>
+        <div class="flex flex-col gap-2 mb-7">
+          <div class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-[#4F46E5] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">Accurate, on-time medication administration</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-[#4F46E5] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">Prevents dangerous missed or double doses</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-[#4F46E5] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-semibold text-gray-700">Clear documentation for family and physicians</span>
+          </div>
         </div>
-        <a href="#contact" class="btn-primary inline-flex items-center gap-2 px-7 py-3 rounded-lg font-semibold text-white text-sm w-fit"
-          style="background:var(--color-primary); box-shadow:var(--shadow-button);">
+        <a href="#contact" class="inline-flex items-center gap-3 px-8 py-3 rounded-xl font-bold text-white text-sm w-fit transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+          style="background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%); box-shadow: 0 6px 20px rgba(79,70,229,0.30);">
           Ask About Medication Management
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
         </a>
