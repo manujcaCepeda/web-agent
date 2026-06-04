@@ -120,6 +120,22 @@
       transform: rotate(180deg);
     }
 
+    /* MEJORA #1: Color grading + overlay coherente en imágenes de servicios */
+    /* Aplicar warm tone y saturación coherentes a todas las fotos de servicios */
+    .img-zoom img {
+      filter: saturate(1.15) hue-rotate(2deg) brightness(1.05);
+    }
+
+    /* Overlay consistente en teal suave para dar identidad visual */
+    .img-zoom::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(47, 127, 121, 0.12);
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
     .faq-icon svg {
       transition: transform 0.5s cubic-bezier(0.22,1,0.36,1);
     }
