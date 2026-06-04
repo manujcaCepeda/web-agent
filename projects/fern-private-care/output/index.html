@@ -130,7 +130,19 @@
     .hero-word:nth-child(8) { animation-delay: 0.7s; }
     .hero-word:nth-child(9) { animation-delay: 0.8s; }
 
-    @media (max-width: 767px) { body { padding-bottom: 68px; } }
+    @media (max-width: 767px) {
+      body { padding-bottom: 68px; }
+      .mobile-cta-bar {
+        background: linear-gradient(135deg, #ffffff 0%, rgba(240,250,247,0.95) 100%);
+        backdrop-filter: blur(10px);
+      }
+      .mobile-cta-bar a {
+        transition: all 0.3s ease;
+      }
+      .mobile-cta-bar a:active {
+        transform: scale(0.98);
+      }
+    }
     @media (min-width: 768px) { body { padding-bottom: 0 !important; } }
 
     ::-webkit-scrollbar { width: 5px; }
