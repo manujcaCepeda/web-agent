@@ -142,13 +142,13 @@
       filter: saturate(1.15) hue-rotate(2deg) brightness(1.05);
     }
 
-    /* Overlay consistente en teal suave para dar identidad visual */
+    /* Overlay removed — images now clean without overlay */
     .img-zoom::after {
       content: '';
       position: absolute;
       inset: 0;
-      background: rgba(47, 127, 121, 0.12);
-      mix-blend-mode: overlay;
+      background: transparent;
+      mix-blend-mode: normal;
       pointer-events: none;
     }
 
@@ -649,9 +649,6 @@
       <!-- Background Image -->
       <img src="../assets/images/services/servicio1.png" alt="24/7 Home Care" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #1A3A37 0%, #236059 100%)';this.removeAttribute('src')">
 
-      <!-- Overlay: Dark and Strong -->
-      <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(26,58,55,0.78) 0%, rgba(35,96,89,0.72) 40%, rgba(26,58,55,0.68) 100%);"></div>
-
       <!-- Content Overlay -->
       <div class="relative z-10 h-full flex flex-col items-start justify-center p-8 md:p-20">
         <!-- Icon -->
@@ -665,7 +662,9 @@
 
         <!-- Content -->
         <div class="max-w-2xl">
-          <h2 class="serif-headline text-6xl md:text-7xl font-black text-white leading-tight mb-8 drop-shadow-lg">Care Around the Clock</h2>
+          <span class="inline-block text-teal-100 text-8xl md:text-9xl font-black opacity-30 mb-4" style="font-family: 'Playfair Display', serif;">1</span>
+          <h2 class="serif-headline text-6xl md:text-7xl font-black text-white leading-tight mb-2 drop-shadow-lg">Care Around the Clock</h2>
+          <p class="text-2xl text-teal-50 leading-relaxed mb-8 font-light" style="font-family: 'Playfair Display', serif;">Support When Your Family Needs It Most</p>
           <p class="text-xl text-white leading-relaxed mb-10 max-w-2xl font-medium">
             Whether your loved one needs a few hours of support or full-time assistance, our team is available when your family needs us most.
           </p>
@@ -708,7 +707,9 @@
             </svg>
           </div>
         </div>
-        <h2 class="serif-headline text-4xl md:text-5xl text-gray-900 leading-tight mb-6">Independence With Dignity</h2>
+        <span class="block text-6xl md:text-7xl font-black text-teal-100 opacity-20 mb-2" style="font-family: 'Playfair Display', serif;">2</span>
+        <h2 class="serif-headline text-4xl md:text-5xl text-gray-900 leading-tight mb-2">Independence With Dignity</h2>
+        <p class="text-xl text-teal-600 leading-relaxed mb-6 font-light" style="font-family: 'Playfair Display', serif;">Your Loved One's Comfort, Our Priority</p>
         <p class="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
           We help seniors maintain their independence, routine, and confidence — with just the right support in the comfort of home.
         </p>
@@ -746,7 +747,9 @@
             </svg>
           </div>
         </div>
-        <h2 class="serif-headline text-4xl md:text-5xl text-gray-900 leading-tight mb-6">Recovery & Wellness</h2>
+        <span class="block text-6xl md:text-7xl font-black text-teal-100 opacity-20 mb-2" style="font-family: 'Playfair Display', serif;">3</span>
+        <h2 class="serif-headline text-4xl md:text-5xl text-gray-900 leading-tight mb-2">Recovery & Wellness</h2>
+        <p class="text-xl text-teal-600 leading-relaxed mb-6 font-light" style="font-family: 'Playfair Display', serif;">Healing With Compassion and Care</p>
         <p class="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
           Compassionate support during recovery helps your loved one heal safely, improve strength, and regain independence.
         </p>
@@ -792,7 +795,9 @@
             </svg>
           </div>
         </div>
-        <h2 class="serif-headline text-4xl md:text-5xl text-gray-900 leading-tight mb-6">Companionship & Peace Of Mind</h2>
+        <span class="block text-6xl md:text-7xl font-black text-teal-100 opacity-20 mb-2" style="font-family: 'Playfair Display', serif;">4</span>
+        <h2 class="serif-headline text-4xl md:text-5xl text-gray-900 leading-tight mb-2">Companionship & Peace Of Mind</h2>
+        <p class="text-xl text-teal-600 leading-relaxed mb-6 font-light" style="font-family: 'Playfair Display', serif;">Connection That Matters, Hearts That Care</p>
         <p class="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
           Meaningful connection, friendly conversation, and daily support that brings joy to their day and peace of mind to your heart.
         </p>
