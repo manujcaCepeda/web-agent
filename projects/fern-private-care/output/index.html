@@ -33,6 +33,13 @@
       --radius-button: 0.75rem;
       --shadow-card: 0 2px 12px rgba(47,127,121,0.08);
       --shadow-button: 0 8px 30px rgba(47,127,121,0.30);
+      /* Spacing Scale — Premium rhythm */
+      --space-xs: 16px;
+      --space-sm: 24px;
+      --space-md: 40px;
+      --space-lg: 64px;
+      --space-xl: 96px;
+      --space-2xl: 128px;
     }
 
     body {
@@ -627,7 +634,7 @@
      BENEFITS SECTION (moved before services per audit)
      ═══════════════════════════════════════════════════════════ -->
 <section id="benefits" class="py-12 md:py-16 bg-white">
-  <div class="max-w-6xl mx-auto px-6">
+  <div class="max-w-[1320px] mx-auto px-6">
     <div class="text-center mb-12">
       <span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4" style="background:rgba(47,127,121,0.15);color:#2F7F79;">Why Fern</span>
       <h2 class="serif-headline text-3xl md:text-4xl text-gray-900 leading-tight mb-4">What Makes Fern Different from Every Other Agency</h2>
@@ -691,8 +698,8 @@
   </div>
 </section>
 
-<section id="services" class="py-20 md:py-28 bg-white">
-  <div class="max-w-7xl mx-auto px-6">
+<section id="services" class="py-16 md:py-20 bg-white">
+  <div class="max-w-[1320px] mx-auto px-6">
 
     <!-- Section Header — Editorial Premium -->
     <div class="text-center mb-4">
@@ -748,7 +755,7 @@
     </div>
 
     <!-- Editorial Block 2: Independence With Dignity (Image LEFT, Text RIGHT) -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-0" style="transition-delay:100ms;">
+    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-0 md:h-[500px]" style="transition-delay:100ms;">
       <!-- Image Section -->
       <div class="md:w-1/2 w-full h-[400px] md:h-[500px] overflow-hidden img-zoom group">
         <img src="../assets/images/services/servicio2.png" alt="Independence With Dignity" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
@@ -785,7 +792,7 @@
     </div>
 
     <!-- Editorial Block 3: Recovery & Wellness (Image LEFT, Text RIGHT) -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-stretch mb-0" style="transition-delay:200ms;">
+    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-stretch mb-0 md:h-[500px]" style="transition-delay:200ms;">
       <!-- Text Section -->
       <div class="md:w-1/2 pl-0 md:pl-12 md:h-full flex flex-col justify-center">
         <span class="block text-6xl md:text-7xl font-black text-teal-100 opacity-20 leading-none" style="font-family: 'Playfair Display', serif; margin-bottom: -0.5rem;">3</span>
@@ -822,7 +829,7 @@
     </div>
 
     <!-- Editorial Block 4: Companionship & Peace Of Mind (Image RIGHT, Text LEFT) -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-0" style="transition-delay:300ms;">
+    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-0 md:h-[500px]" style="transition-delay:300ms;">
       <!-- Image Section -->
       <div class="md:w-1/2 w-full h-[400px] md:h-[500px] overflow-hidden img-zoom group">
         <img src="../assets/images/services/servicio4.png" alt="Companionship & Peace Of Mind" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
@@ -866,7 +873,7 @@
      VISUAL BREAK — dark-metrics-band
      Deep teal conviction band — full bleed, animated numbers
      ═══════════════════════════════════════════════════════════════ -->
-<section id="trust-metrics" class="py-20 md:py-28 relative overflow-hidden noise-texture" style="background: linear-gradient(135deg, #1A3A37 0%, #236059 50%, #1A3A37 100%);">
+<section id="trust-metrics" class="py-16 md:py-20 relative overflow-hidden noise-texture" style="background: linear-gradient(135deg, #1A3A37 0%, #236059 50%, #1A3A37 100%);">
 
   <!-- Animated background gradient orbs -->
   <div class="absolute -top-40 -left-40 w-96 h-96 rounded-full opacity-20 pointer-events-none" style="background: radial-gradient(circle, #F59E0B, transparent 70%);"></div>
@@ -875,7 +882,7 @@
   <!-- Center radial gradient for depth -->
   <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 100% 80% at 50% 50%, rgba(47,127,121,0.3) 0%, transparent 70%);"></div>
 
-  <div class="relative z-10 max-w-7xl mx-auto px-6">
+  <div class="relative z-10 max-w-[1320px] mx-auto px-6">
 
     <!-- Header — Larger, more impactful -->
     <div class="text-center mb-20">
@@ -1030,8 +1037,8 @@
 <!-- ═══════════════════════════════════════════════════════════
      TESTIMONIALS CAROUSEL — Scalable for 3, 5, 7+ testimonios
      ═══════════════════════════════════════════════════════════ -->
-<section id="testimonials" class="py-14 md:py-20 border-t border-gray-200 noise-texture" style="background: linear-gradient(135deg, #2F7F79 0%, #236059 50%, #1A3A37 100%);">
-  <div class="max-w-7xl mx-auto px-6">
+<section id="testimonials" class="py-12 md:py-16 border-t border-gray-200 noise-texture" style="background: linear-gradient(135deg, #2F7F79 0%, #236059 50%, #1A3A37 100%);">
+  <div class="max-w-[1320px] mx-auto px-6">
 
     <!-- Section Header -->
     <div class="text-center mb-16">
@@ -1234,7 +1241,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ═══════════════════════════════════════════════════════════
      FINAL CTA SECTION
      ═══════════════════════════════════════════════════════════ -->
-<section id="cta-final" class="py-16 md:py-28 relative overflow-hidden noise-texture" style="background: linear-gradient(135deg, #1A3A37 0%, #2F7F79 55%, #236059 100%);">
+<section id="cta-final" class="py-12 md:py-16 relative overflow-hidden noise-texture" style="background: linear-gradient(135deg, #1A3A37 0%, #2F7F79 55%, #236059 100%);">
 
   <!-- Decorative background circles -->
   <div class="absolute -top-20 -left-20 w-80 h-80 rounded-full opacity-10 pointer-events-none"
@@ -1359,7 +1366,7 @@ document.addEventListener('DOMContentLoaded', function() {
      HOW IT WORKS
 ════════════════════════════════════════════════════════════════ -->
 <section id="how-it-works" class="py-12 md:py-16 border-t border-gray-200" style="background:#F3F4F6;">
-  <div class="max-w-5xl mx-auto px-6">
+  <div class="max-w-[1320px] mx-auto px-6">
     <div class="text-center mb-16">
       <span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4" style="background:rgba(47,127,121,0.15);color:#2F7F79;">Getting Started</span>
       <h2 class="serif-headline text-3xl md:text-4xl text-gray-900 leading-tight mb-4">Care Begins in 3 Simple Steps</h2>
@@ -1397,7 +1404,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ═══════════════════════════════════════════════════════════
      GIFT CARD
 ════════════════════════════════════════════════════════════════ -->
-<section id="giftcard" class="py-12 md:py-24 relative overflow-hidden" style="background:linear-gradient(135deg, #ffffff 0%, #f0faf7 100%);">
+<section id="giftcard" class="py-12 md:py-16 relative overflow-hidden" style="background:linear-gradient(135deg, #ffffff 0%, #f0faf7 100%);">
   <div class="max-w-7xl mx-auto px-6 relative z-10">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch">
 
@@ -1466,8 +1473,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ═══════════════════════════════════════════════════════════
      FAQ — Premium accordion section
 ════════════════════════════════════════════════════════════════ -->
-<section id="faq" class="py-16 md:py-24 border-t border-gray-200" style="background: linear-gradient(135deg, #FAFFFE 0%, #F0FAF7 100%);">
-  <div class="max-w-4xl mx-auto px-6">
+<section id="faq" class="py-12 md:py-16 border-t border-gray-200" style="background: linear-gradient(135deg, #FAFFFE 0%, #F0FAF7 100%);">
+  <div class="max-w-[1320px] mx-auto px-6">
     <div class="text-center mb-16">
       <span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4" style="background:rgba(47,127,121,0.15);color:#2F7F79;">Your Questions, Answered</span>
       <h2 class="serif-headline text-4xl md:text-5xl text-gray-900 leading-tight mb-4">Everything You Need to Know Before You Call</h2>
@@ -1566,13 +1573,13 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- ═══════════════════════════════════════════════════════════
      CONTACT
 ════════════════════════════════════════════════════════════════ -->
-<section id="contact" class="py-20 md:py-32 relative overflow-hidden noise-texture" style="background: linear-gradient(135deg, rgba(47,127,121,0.05) 0%, rgba(240,250,247,0.6) 50%, rgba(47,127,121,0.08) 100%);">
+<section id="contact" class="py-12 md:py-20 relative overflow-hidden noise-texture" style="background: linear-gradient(135deg, rgba(47,127,121,0.05) 0%, rgba(240,250,247,0.6) 50%, rgba(47,127,121,0.08) 100%);">
 
   <!-- Decorative gradient orbs -->
   <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full opacity-20 pointer-events-none" style="background: radial-gradient(circle, #2F7F79, transparent 70%);"></div>
   <div class="absolute -bottom-32 -right-32 w-96 h-96 rounded-full opacity-15 pointer-events-none" style="background: radial-gradient(circle, #F59E0B, transparent 70%);"></div>
 
-  <div class="relative z-10 max-w-7xl mx-auto px-6">
+  <div class="relative z-10 max-w-[1320px] mx-auto px-6">
     <!-- Header -->
     <div class="text-center mb-16">
       <span class="inline-block text-sm font-semibold tracking-widest uppercase px-5 py-2 rounded-full mb-6 reveal-element" style="background:rgba(47,127,121,0.15);color:#2F7F79;">Start Your Journey Today</span>
