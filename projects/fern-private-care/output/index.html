@@ -631,7 +631,7 @@
   <div class="max-w-7xl mx-auto px-6">
 
     <!-- Section Header — Editorial Premium -->
-    <div class="text-center mb-20">
+    <div class="text-center mb-10">
       <span class="inline-block text-sm font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full mb-4"
         style="background:rgba(47,127,121,0.15); color:var(--color-primary);">
         Our Services
@@ -644,56 +644,63 @@
       </p>
     </div>
 
-    <!-- Editorial Block 1: Care Around the Clock (Image RIGHT, Text LEFT) -->
-    <div class="reveal-element flex flex-col md:flex-row gap-0 items-center mb-24" style="transition-delay:0ms;">
-      <!-- Text Section -->
-      <div class="md:w-1/2 pr-0 md:pr-12 py-12 md:py-0">
-        <div class="flex items-center gap-3 mb-6">
-          <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: rgba(47,127,121,0.12);">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--color-primary);">
+    <!-- Editorial Block 1: Care Around the Clock (Full-width image with overlay) -->
+    <div class="reveal-element relative w-full h-[420px] md:h-[520px] overflow-hidden mb-0 group" style="transition-delay:0ms;">
+      <!-- Background Image -->
+      <img src="../assets/images/services/servicio1.png" alt="24/7 Home Care" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #1A3A37 0%, #236059 100%)';this.removeAttribute('src')">
+
+      <!-- Overlay: Dark and Strong -->
+      <div class="absolute inset-0" style="background: linear-gradient(135deg, rgba(26,58,55,0.78) 0%, rgba(35,96,89,0.72) 40%, rgba(26,58,55,0.68) 100%);"></div>
+
+      <!-- Content Overlay -->
+      <div class="relative z-10 h-full flex flex-col items-start justify-center p-8 md:p-20">
+        <!-- Icon -->
+        <div class="absolute top-8 md:top-20">
+          <div class="w-14 h-14 rounded-xl flex items-center justify-center" style="background: rgba(255,255,255,0.2);">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="color: #FFFFFF;">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
         </div>
-        <h2 class="serif-headline text-4xl md:text-5xl text-gray-900 leading-tight mb-6">Care Around the Clock</h2>
-        <p class="text-lg text-gray-700 leading-relaxed mb-8 max-w-lg">
-          Whether your loved one needs a few hours of support or full-time assistance, our team is available when your family needs us most.
-        </p>
-        <div class="space-y-3 mb-8">
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">24/7 Availability</span>
-          </div>
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Day or Night Support</span>
-          </div>
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Always Here When It Matters</span>
+
+        <!-- Content -->
+        <div class="max-w-2xl">
+          <h2 class="serif-headline text-6xl md:text-7xl font-black text-white leading-tight mb-8 drop-shadow-lg">Care Around the Clock</h2>
+          <p class="text-xl text-white leading-relaxed mb-10 max-w-2xl font-medium">
+            Whether your loved one needs a few hours of support or full-time assistance, our team is available when your family needs us most.
+          </p>
+          <div class="space-y-4">
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="currentColor" style="color: #FFFFFF;" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span class="font-bold text-white text-lg">24/7 Availability</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="currentColor" style="color: #FFFFFF;" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span class="font-bold text-white text-lg">Day or Night Support</span>
+            </div>
+            <div class="flex items-start gap-3">
+              <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="currentColor" style="color: #FFFFFF;" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+              </svg>
+              <span class="font-bold text-white text-lg">Always Here When It Matters</span>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Image Section -->
-      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden img-zoom group">
-        <img src="../assets/images/services/homeCare.jpg" alt="24/7 Home Care" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
       </div>
     </div>
 
     <!-- Editorial Block 2: Independence With Dignity (Image LEFT, Text RIGHT) -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-24" style="transition-delay:100ms;">
+    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-0" style="transition-delay:100ms;">
       <!-- Image Section -->
-      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden img-zoom group">
-        <img src="../assets/images/services/personalCare.jpg" alt="Independence With Dignity" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] overflow-hidden img-zoom group">
+        <img src="../assets/images/services/servicio2.png" alt="Independence With Dignity" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
       </div>
       <!-- Text Section -->
-      <div class="md:w-1/2 pl-0 md:pl-12 py-12 md:py-0">
+      <div class="md:w-1/2 pl-0 md:pl-12 py-12 md:py-0 md:h-full flex flex-col justify-center">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: rgba(47,127,121,0.12);">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--color-primary);">
@@ -728,10 +735,10 @@
       </div>
     </div>
 
-    <!-- Editorial Block 3: Recovery & Wellness (Image RIGHT, Text LEFT) -->
-    <div class="reveal-element flex flex-col md:flex-row gap-0 items-center mb-24" style="transition-delay:200ms;">
+    <!-- Editorial Block 3: Recovery & Wellness (Image LEFT, Text RIGHT) -->
+    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-stretch mb-0" style="transition-delay:200ms;">
       <!-- Text Section -->
-      <div class="md:w-1/2 pr-0 md:pr-12 py-12 md:py-0">
+      <div class="md:w-1/2 pl-0 md:pl-12 py-12 md:pt-12 md:h-full flex flex-col justify-center">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: rgba(47,127,121,0.12);">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--color-primary);">
@@ -765,19 +772,19 @@
         </div>
       </div>
       <!-- Image Section -->
-      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden img-zoom group">
-        <img src="../assets/images/services/rehabilitation.jpg" alt="Recovery & Wellness" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] overflow-hidden img-zoom group">
+        <img src="../assets/images/services/servicio3.png" alt="Recovery & Wellness" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
       </div>
     </div>
 
-    <!-- Editorial Block 4: Companionship & Peace Of Mind (Image LEFT, Text RIGHT) -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-24" style="transition-delay:300ms;">
+    <!-- Editorial Block 4: Companionship & Peace Of Mind (Image RIGHT, Text LEFT) -->
+    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-0" style="transition-delay:300ms;">
       <!-- Image Section -->
-      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] rounded-2xl overflow-hidden img-zoom group">
-        <img src="../assets/images/services/companionship.jpg" alt="Companionship & Peace Of Mind" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] overflow-hidden img-zoom group">
+        <img src="../assets/images/services/servicio4.png" alt="Companionship & Peace Of Mind" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
       </div>
       <!-- Text Section -->
-      <div class="md:w-1/2 pl-0 md:pl-12 py-12 md:py-0">
+      <div class="md:w-1/2 pl-0 md:pl-12 py-12 md:py-0 md:h-full flex flex-col justify-center">
         <div class="flex items-center gap-3 mb-6">
           <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background: rgba(47,127,121,0.12);">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color: var(--color-primary);">
