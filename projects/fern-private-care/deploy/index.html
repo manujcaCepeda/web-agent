@@ -35,7 +35,26 @@
       --shadow-button: 0 8px 30px rgba(47,127,121,0.30);
     }
 
-    body { font-family: 'Inter', sans-serif; background: var(--color-bg, #fff); color: var(--color-text, #111); }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--color-bg, #fff);
+      color: var(--color-text, #111);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Mobile-first responsive text scaling */
+    h1 { font-size: 1.75rem; line-height: 1.2; }
+    h2 { font-size: 1.5rem; line-height: 1.3; }
+    h3 { font-size: 1.25rem; line-height: 1.3; }
+    p { font-size: 1rem; line-height: 1.5; }
+
+    @media (min-width: 768px) {
+      h1 { font-size: 2.5rem; }
+      h2 { font-size: 2rem; }
+      h3 { font-size: 1.5rem; }
+    }
+
     .reveal, .reveal-element { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
     .reveal.visible, .reveal-element.visible { opacity: 1; transform: translateY(0); }
 
@@ -97,6 +116,51 @@
       background: linear-gradient(135deg, #236059 0%, #F59E0B 100%);
     }
     .btn-primary:active { transform: translateY(-1px); }
+
+    /* Mobile Optimization */
+    @media (max-width: 767px) {
+      .max-w-7xl { padding-left: 1rem; padding-right: 1rem; }
+      .px-6 { padding-left: 1rem !important; padding-right: 1rem !important; }
+      .py-20, .py-28 { padding-top: 3rem !important; padding-bottom: 3rem !important; }
+      .py-16 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+      .mb-10 { margin-bottom: 1.5rem !important; }
+      .mb-12 { margin-bottom: 2rem !important; }
+      .gap-8 { gap: 1.5rem !important; }
+      .gap-6 { gap: 1rem !important; }
+
+      /* Image optimization for mobile */
+      img { max-width: 100%; height: auto; }
+
+      /* Button sizing for mobile */
+      .btn-primary {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.95rem;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 0.5rem;
+      }
+
+      /* Section padding for mobile */
+      section { padding-left: 1rem !important; padding-right: 1rem !important; }
+
+      /* Text sizing override for mobile */
+      .text-4xl { font-size: 1.75rem !important; }
+      .text-5xl { font-size: 1.875rem !important; }
+      .text-6xl { font-size: 2rem !important; }
+      .text-3xl { font-size: 1.5rem !important; }
+      .text-2xl { font-size: 1.25rem !important; }
+      .text-xl { font-size: 1.05rem !important; }
+      .text-lg { font-size: 1rem !important; }
+
+      /* Flex and grid optimization */
+      .flex-col { gap: 1rem; }
+      .grid { gap: 1rem !important; }
+    }
+
+    /* Image lazy loading optimization */
+    img[loading="lazy"] {
+      background-color: #f0f0f0;
+    }
 
     .btn-outline {
       background: transparent;
