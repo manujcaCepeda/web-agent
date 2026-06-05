@@ -308,6 +308,51 @@
       background: rgba(255, 255, 255, 0.25) !important;
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
+
+    /* Hero section animations */
+    @keyframes fadeSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes heroFloat {
+      from {
+        transform: scale(1.03);
+      }
+      to {
+        transform: scale(1.06);
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .hero-image-float {
+      animation: heroFloat 20s ease-in-out infinite alternate;
+    }
   </style>
   <script type="application/ld+json">
 {
@@ -341,7 +386,7 @@
     <div class="flex items-center justify-between h-16">
 
       <a href="#" class="flex items-center flex-shrink-0">
-        <img src="../assets/images/LogoFernPrivateCare.png" alt="Fern Private Care Logo" class="h-10 w-auto"
+        <img src="../assets/images/LogoFernPrivateCare.png" alt="Fern Private Care Logo" class="h-14 w-auto"
           onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='flex';">
         <span style="display:none;align-items:center;gap:8px;">
           <span class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-black" style="background:var(--color-primary);">F</span>
@@ -351,7 +396,7 @@
 
       <nav class="hidden lg:flex items-center gap-8">
         <a href="#services" class="text-gray-600 hover:text-gray-900 font-semibold text-sm transition-colors">Services</a>
-        <a href="#benefits" class="text-gray-600 hover:text-gray-900 font-semibold text-sm transition-colors">Why Us</a>
+        <a href="#benefits" class="text-gray-600 hover:text-gray-900 font-semibold text-sm transition-colors">Why Fern</a>
         <a href="#testimonials" class="text-gray-600 hover:text-gray-900 font-semibold text-sm transition-colors">Testimonials</a>
         <a href="#giftcard" class="text-gray-600 hover:text-gray-900 font-semibold text-sm transition-colors">Gift Card</a>
         <a href="#faq" class="text-gray-600 hover:text-gray-900 font-semibold text-sm transition-colors">FAQ</a>
@@ -359,13 +404,13 @@
       </nav>
 
       <div class="hidden lg:flex items-center gap-4">
-        <a href="tel:12393843206" class="flex items-center gap-2 text-sm font-semibold" style="color:var(--color-primary);">
+        <a href="tel:12393843206" class="flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-lg transition-all hover:bg-gray-100" style="color:var(--color-primary);">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
           </svg>
-          (239) 384-3206
+          Call Now
         </a>
-        <a href="#contact" class="btn-primary px-6 py-2.5 text-sm">Free Consultation</a>
+        <a href="#contact" class="btn-primary px-6 py-2.5 text-sm">Schedule Consultation</a>
       </div>
 
       <button id="hamburger" class="lg:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 rounded-lg hover:bg-gray-100 transition-colors" aria-label="Open menu">
@@ -379,7 +424,7 @@
   <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 shadow-lg">
     <nav class="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1">
       <a href="#services" class="text-gray-700 font-semibold py-3 border-b border-gray-50 hover:text-gray-900 transition-colors">Services</a>
-      <a href="#benefits" class="text-gray-700 font-semibold py-3 border-b border-gray-50 hover:text-gray-900 transition-colors">Why Us</a>
+      <a href="#benefits" class="text-gray-700 font-semibold py-3 border-b border-gray-50 hover:text-gray-900 transition-colors">Why Fern</a>
       <a href="#testimonials" class="text-gray-700 font-semibold py-3 border-b border-gray-50 hover:text-gray-900 transition-colors">Testimonials</a>
       <a href="#giftcard" class="text-gray-700 font-semibold py-3 border-b border-gray-50 hover:text-gray-900 transition-colors">Gift Card</a>
       <a href="#faq" class="text-gray-700 font-semibold py-3 border-b border-gray-50 hover:text-gray-900 transition-colors">FAQ</a>
@@ -399,130 +444,109 @@
 
 <!-- ═══════════════════════════════════════════════ HERO -->
 <!-- ═══════════════════════════════════════════════ HERO V2 — BACKGROUND IMAGE FULL SECTION -->
-<section id="hero" class="relative h-[550px] md:h-[650px] lg:h-[700px] overflow-hidden bg-gray-900">
+<section id="hero" class="relative h-[480px] md:h-[520px] lg:h-[580px] overflow-hidden bg-gray-900">
 
   <!-- BACKGROUND IMAGE (Full Coverage) -->
   <img
     src="../assets/images/services/hero.png"
     alt="Family moment - Daughter with elderly mother, caregiver in background"
-    class="absolute inset-0 w-full h-full object-cover object-center"
+    class="absolute inset-0 w-full h-full object-cover object-center hero-image-float"
     loading="eager"
     onerror="this.onerror=null;this.style.background='linear-gradient(135deg,#A7D7C5 0%,#2F7F79 100%)';this.removeAttribute('src');">
 
-  <!-- Subtle Gradient Overlay (for text readability) -->
-  <div class="absolute inset-0 bg-gradient-to-r from-white/30 via-white/10 to-transparent"></div>
+  <!-- Premium Left-Side Overlay (for text readability + editorial feel) -->
+  <div class="absolute inset-0" style="background: linear-gradient(90deg, rgba(250,246,239,.92) 0%, rgba(250,246,239,.82) 35%, rgba(250,246,239,.20) 65%, rgba(250,246,239,0) 100%);"></div>
 
   <!-- CONTENT LAYER (Over Background) -->
-  <div class="relative z-10 h-full flex flex-col justify-between p-6 md:p-10 lg:p-16">
+  <div class="relative z-10 h-full flex flex-col justify-center p-6 md:p-10 lg:p-16">
 
     <!-- TOP SECTION: Headline + Subheadline + CTAs + Social Proof -->
     <div class="max-w-2xl">
 
-      <!-- Badge: HERO II - PEACE OF MIND -->
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase mb-6"
-        style="background: rgba(255,255,255,0.95); color: var(--color-primary);"
-        data-animate="fadeIn" data-delay="0">
-        HERO II • PEACE OF MIND
+      <!-- Trust Pill Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 text-xs font-semibold"
+        style="background: rgba(47,127,121,0.12); color: var(--color-primary);"
+        data-animate="fadeSlideUp" data-delay="0">
+        <span>★★★★★</span>
+        Trusted by Families Across Southwest Florida
       </div>
 
-      <!-- MAIN HEADLINE: 2 Lines with Color Accent -->
-      <h1 class="serif-headline text-5xl md:text-6xl lg:text-7xl leading-tight font-black mb-6 text-gray-900"
+      <!-- MAIN HEADLINE: Line 1 + Line 2 with Color Split -->
+      <h1 class="serif-headline text-4xl md:text-5xl lg:text-5xl leading-tight font-black mb-4 text-gray-900"
         style="animation: fadeSlideUp 0.7s cubic-bezier(0.25,0.46,0.45,0.94) forwards;"
         data-animate="fadeSlideUp" data-delay="0">
-        Peace of Mind
+        Exceptional Care
         <br>
-        For You. <span style="color: var(--color-primary); display: inline;">Comfort for Them.</span>
+        <span style="color: var(--color-primary);">For Those You</span> Love Most.
       </h1>
 
       <!-- SUBHEADLINE -->
-      <p class="text-lg md:text-lg text-gray-700 leading-relaxed mb-8 max-w-xl font-medium"
+      <p class="text-sm md:text-base text-gray-700 leading-relaxed mb-6 max-w-xl font-normal"
         style="animation: fadeSlideUp 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.1s forwards; opacity: 0;"
         data-animate="fadeSlideUp" data-delay="100">
         We provide personalized in-home care that brings comfort, dignity, and security to your loved one — and peace of mind to your entire family.
       </p>
 
       <!-- CTA BUTTONS -->
-      <div class="flex flex-col sm:flex-row gap-4 mb-8"
+      <div class="flex flex-col sm:flex-row gap-3 mb-6"
         style="animation: fadeSlideUp 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s forwards; opacity: 0;"
         data-animate="fadeSlideUp" data-delay="200">
-        <a href="#contact" class="px-8 py-4 text-base font-bold rounded-lg inline-flex items-center justify-center gap-2 text-white transition-all duration-300 hover:shadow-xl hover:scale-105"
-          style="background: linear-gradient(135deg, #2F7F79 0%, #F59E0B 100%); box-shadow: 0 8px 30px rgba(47,127,121,0.4);">
-          Book a Free Consultation
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+        <a href="#contact" class="px-6 py-3 text-sm font-bold rounded-lg inline-flex items-center justify-center gap-2 text-white transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+          style="background: var(--color-primary); box-shadow: 0 4px 15px rgba(47,127,121,0.3);">
+          Schedule Your Free Consultation
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
           </svg>
         </a>
-        <a href="tel:12393843206" class="px-8 py-4 text-base font-bold rounded-lg inline-flex items-center justify-center gap-2 text-gray-900 border-2 border-gray-400 bg-white/90 hover:bg-white transition-all duration-300"
-          style="">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 7V5z"/>
-          </svg>
-          Call Us Now
+        <a href="tel:12393843206" class="px-6 py-3 text-sm font-bold rounded-lg inline-flex items-center justify-center gap-2 text-gray-900 bg-white/85 hover:bg-white transition-all duration-300"
+          style="border: 1px solid rgba(0,0,0,0.1);">
+          <span style="font-size: 18px;">📞</span>
+          (239) 384-3206
         </a>
       </div>
 
       <!-- SOCIAL PROOF -->
-      <div class="flex items-center gap-4"
+      <div class="flex flex-col gap-2"
         style="animation: fadeSlideUp 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.3s forwards; opacity: 0;"
         data-animate="fadeSlideUp" data-delay="300">
-        <div class="flex text-yellow-400 text-xl gap-0.5">★★★★★</div>
-        <p class="text-sm font-semibold text-gray-800">5.0 • Trusted by families across Fort Myers, Naples, Lehigh & Orlando</p>
-      </div>
-
-    </div>
-
-    <!-- BOTTOM SECTION: Trust Row (3 Icons + Text) -->
-    <div class="flex flex-col sm:flex-row gap-8 md:gap-12 max-w-2xl"
-      style="animation: fadeSlideUp 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.4s forwards; opacity: 0;"
-      data-animate="fadeSlideUp" data-delay="400">
-
-      <div class="flex items-center gap-3">
-        <svg class="w-7 h-7 flex-shrink-0" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-        </svg>
-        <span class="font-bold text-gray-900 text-base">Background Checked</span>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <svg class="w-7 h-7 flex-shrink-0" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-        </svg>
-        <span class="font-bold text-gray-900 text-base">Available 24/7</span>
-      </div>
-
-      <div class="flex items-center gap-3">
-        <svg class="w-7 h-7 flex-shrink-0" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-        </svg>
-        <span class="font-bold text-gray-900 text-base">Personalized Plans</span>
+        <div class="flex items-center gap-3">
+          <div class="flex text-yellow-400 text-lg gap-0.5">★★★★★</div>
+          <p class="text-xs font-semibold text-gray-800">5.0 Google Rating</p>
+        </div>
+        <p class="text-xs text-gray-600 max-w-md">Trusted by families across: Fort Myers • Naples • Lehigh Acres • Cape Coral</p>
       </div>
 
     </div>
 
   </div>
 
-  <!-- TRUST METRICS CARD — TOP RIGHT OVERLAY -->
-  <div class="absolute top-6 right-6 md:top-10 md:right-10 bg-white rounded-2xl shadow-2xl p-6 max-w-xs"
-    style="animation: slideInDown 0.7s cubic-bezier(0.25,0.46,0.45,0.94) 0.5s forwards; opacity: 0; backdrop-filter: blur(10px);">
+  <!-- TRUST METRICS CARD — BOTTOM RIGHT OVERLAY (Premium Glass - Floating) -->
+  <div class="absolute bottom-6 right-6 md:bottom-10 md:right-10 rounded-xl shadow-lg p-4 max-w-xs"
+    style="animation: fadeIn 0.6s cubic-bezier(0.25,0.46,0.45,0.94) 0.5s forwards; opacity: 0; backdrop-filter: blur(18px); background: rgba(255,255,255,.72); border: 1px solid rgba(255,255,255,.25);">
 
-    <div class="grid grid-cols-3 gap-6 text-center">
-      <!-- Metric 1: Families -->
+    <div class="grid grid-cols-3 gap-3 mb-3 text-center">
+      <!-- Metric 1: Families Served -->
       <div>
-        <p class="text-3xl font-black leading-none mb-2" style="color: var(--color-primary);">38+</p>
-        <p class="text-xs font-semibold text-gray-600 leading-tight">Families<br/>Supported</p>
+        <p class="text-2xl font-black leading-none mb-0.5" style="color: var(--color-primary);">38+</p>
+        <p class="text-xs font-semibold text-gray-600 leading-tight">Families<br/>Served</p>
       </div>
 
-      <!-- Metric 2: Response Time -->
-      <div class="border-l border-r border-gray-200">
-        <p class="text-3xl font-black leading-none mb-2" style="color: var(--color-primary);">&lt;2 hrs</p>
-        <p class="text-xs font-semibold text-gray-600 leading-tight">Response<br/>Time</p>
+      <!-- Metric 2: Google Rating -->
+      <div class="border-l border-r border-gray-200/50">
+        <p class="text-2xl font-black leading-none mb-0.5" style="color: var(--color-primary);">5.0</p>
+        <p class="text-xs font-semibold text-gray-600 leading-tight">Google<br/>Rating</p>
       </div>
 
-      <!-- Metric 3: Background Check -->
+      <!-- Metric 3: Availability -->
       <div>
-        <p class="text-3xl font-black leading-none mb-2" style="color: var(--color-primary);">100%</p>
-        <p class="text-xs font-semibold text-gray-600 leading-tight">Background<br/>Checked</p>
+        <p class="text-2xl font-black leading-none mb-0.5" style="color: var(--color-primary);">24/7</p>
+        <p class="text-xs font-semibold text-gray-600 leading-tight">Availability</p>
       </div>
+    </div>
+
+    <!-- Trust Badges Row -->
+    <div class="border-t border-gray-200/50 pt-3 mt-3">
+      <p class="text-xs font-semibold text-gray-600 text-center">Licensed • Bonded • Insured</p>
     </div>
   </div>
 
