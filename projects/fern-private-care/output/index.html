@@ -518,6 +518,195 @@
         background: linear-gradient(90deg, rgba(250,246,239,.92) 0%, rgba(250,246,239,.82) 35%, rgba(250,246,239,.20) 65%, rgba(250,246,239,0) 100%);
       }
     }
+
+    /* ═══════════════════════════════════════════════════════════════
+       MOBILE REFACTOR — Unified design system 320px-767px
+       ═══════════════════════════════════════════════════════════════ */
+    @media (max-width: 767px) {
+
+      /* ── 1. CTA FINAL SECTION — Hide absolute-positioned right column ── */
+      #cta-final .grid > div:last-child { display: none !important; }
+      #cta-final .grid { grid-template-columns: 1fr !important; }
+      /* Reduce oversized heading in CTA final */
+      #cta-final h2 { font-size: 2rem !important; line-height: 1.2 !important; }
+      #cta-final p.text-lg { font-size: 0.95rem !important; margin-bottom: 1.5rem !important; }
+      #cta-final .flex-col.sm\:flex-row { flex-direction: column !important; }
+      #cta-final .flex-col.sm\:flex-row a { width: 100% !important; text-align: center !important; justify-content: center !important; }
+
+      /* ── 2. TRUST METRICS — Fix "Custom" overflow + reduce header spacing ── */
+      #trust-metrics .counter,
+      #trust-metrics p.text-5xl,
+      #trust-metrics p.text-6xl {
+        font-size: 1.75rem !important;
+        overflow: visible !important;
+        white-space: nowrap;
+      }
+      /* "Custom" specifically at narrower font */
+      #trust-metrics .grid > div:last-child p.text-5xl {
+        font-size: 1.4rem !important;
+        letter-spacing: -0.02em;
+      }
+      #trust-metrics .text-center.mb-20 { margin-bottom: 2rem !important; }
+      #trust-metrics h2.text-5xl { font-size: 1.75rem !important; }
+      #trust-metrics .grid.grid-cols-2 { gap: 0.75rem !important; }
+      #trust-metrics .grid > div { padding: 1rem !important; }
+      #trust-metrics .w-16.h-16 { width: 2.5rem !important; height: 2.5rem !important; }
+      #trust-metrics .w-8.h-8 { width: 1.25rem !important; height: 1.25rem !important; }
+      #trust-metrics .mb-6 { margin-bottom: 0.75rem !important; }
+      #trust-metrics a { padding: 0.75rem 1.5rem !important; font-size: 0.9rem !important; }
+
+      /* ── 3. HERO — Hide floating metrics card (duplicate content) ── */
+      #hero > div.absolute.bottom-6 { display: none !important; }
+
+      /* ── 4. SERVICE BLOCKS — Reduce image heights + compact layout ── */
+      /* Block 1: full-bleed */
+      #services .relative.w-full.h-\[420px\] {
+        height: 200px !important;
+      }
+      #services .relative.w-full.h-\[420px\] .p-8 {
+        padding: 0.75rem 1rem !important;
+      }
+      #services .relative.w-full.h-\[420px\] h2 {
+        font-size: 1.25rem !important;
+        margin-bottom: 0.25rem !important;
+      }
+      #services .relative.w-full.h-\[420px\] p { font-size: 0.75rem !important; margin-bottom: 0.25rem !important; }
+      #services .relative.w-full.h-\[420px\] .space-y-4 { display: none !important; }
+
+      /* Blocks 2-4: flex-col image + text — ALTERNATING LAYOUT */
+      #services .md\:h-\[500px\] {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 0 !important;
+      }
+      #services .md\:h-\[500px\] > .h-\[400px\] {
+        height: auto !important;
+        width: 45% !important;
+        min-height: 140px !important;
+      }
+      #services .md\:h-\[500px\] > div.md\:w-1\/2 {
+        width: 55% !important;
+      }
+      #services h2.text-4xl { font-size: 1.125rem !important; margin-bottom: 0.25rem !important; }
+      #services p.text-lg { font-size: 0.8rem !important; margin-bottom: 0.5rem !important; }
+      #services .space-y-3.mb-8 { margin-bottom: 0.5rem !important; gap: 0.25rem !important; }
+      #services .md\:w-1\/2.pl-0 { padding: 0.75rem !important; }
+      #services .flex.items-start.gap-3 { gap: 0.5rem !important; }
+      #services .text-5xl { font-size: 0.9rem !important; }
+
+      /* ── 5. BENEFITS — Compact cards ── */
+      #benefits .grid.md\:grid-cols-3 { gap: 0.75rem !important; }
+      #benefits .rounded-xl.p-10 { padding: 1.25rem !important; }
+      #benefits .rounded-xl.p-8 { padding: 1rem !important; }
+      #benefits .w-16.h-16 { width: 2.5rem !important; height: 2.5rem !important; margin-bottom: 0.75rem !important; }
+      #benefits .w-8.h-8 { width: 1.25rem !important; height: 1.25rem !important; }
+      #benefits .w-12.h-12 { width: 2rem !important; height: 2rem !important; margin-bottom: 0.5rem !important; }
+      #benefits .w-6.h-6 { width: 1rem !important; height: 1rem !important; }
+      #benefits .mb-12 { margin-bottom: 1.5rem !important; }
+      #benefits h3 { font-size: 1rem !important; margin-bottom: 0.5rem !important; }
+      #benefits p.text-base, #benefits p.text-sm { font-size: 0.8rem !important; line-height: 1.4 !important; }
+
+      /* ── 6. FAQ — Compact trigger padding ── */
+      #faq-container .faq-trigger { padding: 1.25rem 1rem !important; font-size: 0.9rem !important; }
+      #faq-container .faq-answer p { padding: 0 1rem 1rem !important; font-size: 0.85rem !important; }
+      #faq-container .faq-icon { width: 2rem !important; height: 2rem !important; flex-shrink: 0; }
+      #faq-container .faq-icon svg { width: 1rem !important; height: 1rem !important; }
+      #faq .text-center.mb-16 { margin-bottom: 1.5rem !important; }
+      #faq h2 { font-size: 1.5rem !important; }
+
+      /* ── 7. CONTACT — Fix email display ── */
+      #contact a[href^="mailto"] { font-size: 0.75rem !important; overflow-wrap: break-word; display: block; line-height: 1.3; }
+      #contact .text-center.mb-16 { margin-bottom: 1.5rem !important; }
+      #contact h2 { font-size: 1.5rem !important; }
+      #contact .lg\:col-span-1 { margin-bottom: 1rem !important; }
+      #contact .rounded-2xl.shadow-2xl { padding: 1rem !important; }
+      #contact .group.p-6 { padding: 0.75rem !important; }
+      #contact .w-12.h-12 { width: 2rem !important; height: 2rem !important; }
+      #contact .text-xs { font-size: 0.65rem !important; }
+      #contact .text-lg { font-size: 0.9rem !important; }
+
+      /* ── 8. FOOTER — AGGRESSIVE reduction ── */
+      footer.pt-20 { padding-top: 1rem !important; padding-bottom: 1rem !important; }
+      footer .mb-16 { margin-bottom: 0.5rem !important; }
+      footer .grid.md\:grid-cols-4 { gap: 0.5rem !important; grid-template-columns: 1fr !important; }
+      footer h4 { font-size: 0.8rem !important; margin-bottom: 0.5rem !important; text-transform: uppercase; letter-spacing: 0.05em; }
+      footer ul { margin-bottom: 1rem !important; }
+      footer ul li { margin-bottom: 0.25rem !important; }
+      footer a { font-size: 0.75rem !important; }
+      footer .text-teal-200 { font-size: 0.75rem !important; }
+      footer .flex.items-center.gap-3 { gap: 0.75rem !important; margin-bottom: 0.75rem !important; }
+      footer .md\:col-span-2 { margin-bottom: 1rem !important; }
+      footer .border-t { margin-top: 0.75rem !important; padding-top: 0.75rem !important; }
+      footer .border-t p { font-size: 0.65rem !important; }
+      footer .w-10 { width: 2rem !important; height: 2rem !important; }
+      footer svg { width: 1rem !important; height: 1rem !important; }
+
+      /* ── 9. TESTIMONIALS — Reduce header spacing ── */
+      #testimonials .text-center.mb-16 { margin-bottom: 1.5rem !important; }
+      #testimonials h2 { font-size: 1.5rem !important; }
+      #testimonials .testimonial-slide { padding: 0 !important; }
+      #testimonials .bg-white.rounded-xl.p-8 { padding: 1rem !important; }
+      #testimonials .flex.text-amber-400 { font-size: 0.8rem !important; }
+      #testimonials p.text-gray-700 { font-size: 0.8rem !important; line-height: 1.4 !important; }
+      #testimonials .inline-flex.items-center.gap-2 { font-size: 0.65rem !important; padding: 0.25rem 0.5rem !important; }
+      #testimonials .flex.items-center.gap-4 { gap: 0.75rem !important; padding-top: 0.75rem !important; }
+      #testimonials .w-14.h-14 { width: 2.5rem !important; height: 2.5rem !important; }
+
+      /* ── 10. INLINE CTA BANNER — Reduce padding ── */
+      section.py-14 { padding-top: 1.5rem !important; padding-bottom: 1.5rem !important; }
+      section.py-14 h2 { font-size: 1.5rem !important; }
+      section.py-14 p { font-size: 0.9rem !important; }
+
+      /* ── 11. HOW IT WORKS — Compact cards ── */
+      #how-it-works .rounded-xl.p-8 { padding: 0.75rem !important; }
+      #how-it-works h3 { font-size: 0.95rem !important; margin-bottom: 0.25rem !important; }
+      #how-it-works p { font-size: 0.8rem !important; line-height: 1.3 !important; }
+      #how-it-works .text-center.mb-16 { margin-bottom: 1.5rem !important; }
+      #how-it-works .w-12.h-12 { width: 2rem !important; height: 2rem !important; font-size: 0.8rem !important; }
+
+      /* ── 12. GIFT CARD — Reduce image area ── */
+      #giftcard .min-h-\[400px\] { min-height: 180px !important; }
+      #giftcard .rounded-l-2xl { padding: 1rem !important; }
+      #giftcard h2 { font-size: 1.25rem !important; margin-bottom: 0.5rem !important; }
+      #giftcard p { font-size: 0.85rem !important; margin-bottom: 0.5rem !important; }
+
+      /* ── 13. SECTION HEADERS — Uniform mobile sizing ── */
+      .text-center > span.tracking-widest { font-size: 0.6rem !important; padding: 0.2rem 0.5rem !important; margin-bottom: 0.3rem !important; }
+
+      /* ── 14. HERO — Compact mobile ── */
+      #hero h1 { font-size: 1.5rem !important; margin-bottom: 0.75rem !important; line-height: 1.2 !important; }
+      #hero > div.relative > div > div:first-child p:first-of-type { font-size: 0.8rem !important; margin-bottom: 0.75rem !important; }
+
+      /* ── 15. MOBILE CTA BAR — Size optimization ── */
+      .mobile-cta-bar { height: auto !important; padding: 0.5rem !important; gap: 0.5rem !important; }
+      .mobile-cta-bar a { padding: 0.5rem 0.75rem !important; font-size: 0.75rem !important; }
+
+      /* ── 16. SERVICES CARDS — New redesigned section ── */
+      #services .mb-12 { margin-bottom: 1.5rem !important; }
+      /* Featured card — single column stack on mobile */
+      #services .grid.md\:grid-cols-2.gap-0 { grid-template-columns: 1fr !important; gap: 0 !important; }
+      #services .grid.md\:grid-cols-2.gap-0 .order-2 { order: 1 !important; }
+      #services .grid.md\:grid-cols-2.gap-0 .order-1 { order: 2 !important; }
+      #services .grid.md\:grid-cols-2.gap-0 .h-\[280px\] { height: 220px !important; }
+      #services .grid.md\:grid-cols-2.gap-0 .p-8 { padding: 1rem !important; }
+      #services .grid.md\:grid-cols-2.gap-0 .md\:p-12 { padding: 1rem !important; }
+      #services .grid.md\:grid-cols-2.gap-0 h3 { font-size: 1.5rem !important; margin-bottom: 0.5rem !important; }
+      #services .grid.md\:grid-cols-2.gap-0 > div:first-of-type > p { font-size: 0.9rem !important; }
+      #services .grid.md\:grid-cols-2.gap-0 .text-lg { font-size: 0.95rem !important; }
+      #services .grid.md\:grid-cols-2.gap-0 > div:first-of-type > div:last-child a { padding: 0.5rem 1rem !important; font-size: 0.8rem !important; }
+
+      /* Secondary cards grid — full width on mobile */
+      #services .grid.md\:grid-cols-2.gap-8 { grid-template-columns: 1fr !important; gap: 1rem !important; }
+      #services .grid.md\:grid-cols-2.gap-8 .h-\[220px\] { height: 180px !important; }
+      #services .grid.md\:grid-cols-2.gap-8 .md\:h-\[280px\] { height: 180px !important; }
+      #services .grid.md\:grid-cols-2.gap-8 .p-6 { padding: 0.75rem !important; }
+      #services .grid.md\:grid-cols-2.gap-8 .md\:p-8 { padding: 0.75rem !important; }
+      #services .grid.md\:grid-cols-2.gap-8 h3 { font-size: 1.1rem !important; margin-bottom: 0.25rem !important; }
+      #services .grid.md\:grid-cols-2.gap-8 .text-sm { font-size: 0.75rem !important; }
+      #services .grid.md\:grid-cols-2.gap-8 p:not(.text-sm) { font-size: 0.85rem !important; line-height: 1.4 !important; }
+      #services .grid.md\:grid-cols-2.gap-8 a { padding: 0.4rem 0.8rem !important; font-size: 0.7rem !important; }
+
+    }
   </style>
   <script type="application/ld+json">
 {
@@ -817,151 +1006,54 @@
       </p>
     </div>
 
-    <!-- Editorial Block 1: Care Around the Clock (Full-width image with overlay) -->
-    <div class="reveal-element relative w-full h-[420px] md:h-[520px] overflow-hidden mb-0 group" style="transition-delay:0ms;">
-      <!-- Background Image -->
-      <img src="../assets/images/services/servicio1.png" alt="24/7 Home Care" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #1A3A37 0%, #236059 100%)';this.removeAttribute('src')">
+    <!-- SERVICES CARDS GRID — CRO-Optimized, Family-Focused -->
 
-      <!-- Content Overlay -->
-      <div class="relative z-10 h-full flex flex-col items-start justify-center p-8 md:p-20">
-
-        <!-- Content -->
-        <div class="max-w-2xl">
-          <h2 class="serif-headline text-4xl md:text-5xl font-black text-white leading-tight mb-0 drop-shadow-lg">Care Around the Clock</h2>
-          <p class="text-lg md:text-xl text-teal-50 leading-relaxed mb-4 font-light" style="font-family: 'Playfair Display', serif;">Support When Your Family Needs It Most</p>
-          <p class="text-base md:text-lg text-white leading-relaxed mb-8 max-w-2xl font-medium">
-            Whether your loved one needs a few hours of support or full-time assistance, our team is available when your family needs us most.
-          </p>
-          <div class="space-y-4">
-            <div class="flex items-start gap-3">
-              <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="currentColor" style="color: #FFFFFF;" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-              <span class="font-bold text-white text-base">24/7 Availability</span>
-            </div>
-            <div class="flex items-start gap-3">
-              <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="currentColor" style="color: #FFFFFF;" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-              <span class="font-bold text-white text-lg">Day or Night Support</span>
-            </div>
-            <div class="flex items-start gap-3">
-              <svg class="w-6 h-6 flex-shrink-0 mt-0.5" fill="currentColor" style="color: #FFFFFF;" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-              </svg>
-              <span class="font-bold text-white text-lg">Always Here When It Matters</span>
-            </div>
-          </div>
-        </div>
+    <!-- Featured Card: Safety & Support 24/7 -->
+    <div class="reveal-element grid md:grid-cols-2 gap-0 items-stretch mb-12 md:mb-16 bg-gradient-to-br from-teal-50 to-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300" style="transition-delay:0ms;">
+      <!-- Image Section -->
+      <div class="h-[280px] md:h-[380px] overflow-hidden img-zoom group order-2 md:order-1">
+        <img src="../assets/images/services/servicio1.png" alt="24/7 Safety & Support" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+      </div>
+      <!-- Text Section -->
+      <div class="p-8 md:p-12 flex flex-col justify-center order-1 md:order-2">
+        <div class="mb-4 text-teal-600 text-sm font-semibold tracking-wide uppercase">Featured Service</div>
+        <h3 class="serif-headline text-3xl md:text-4xl font-black text-gray-900 leading-tight mb-3">Safety & Support 24/7</h3>
+        <p class="text-lg md:text-xl text-teal-700 font-semibold mb-6" style="font-family: 'Playfair Display', serif;">Your parent is safe. You sleep at night.</p>
+        <p class="text-gray-700 leading-relaxed mb-6">Knowing help is always available removes the fear of emergencies. Our caregivers provide continuous monitoring, medication management, and immediate response to health changes — so your family has true peace of mind.</p>
+        <p class="text-sm text-gray-600 mb-8 font-medium italic">Available around the clock, every day of the year.</p>
+        <a href="#contact-form?service=24-7-support" class="inline-block px-6 py-3 bg-teal-700 text-white font-semibold rounded-lg hover:bg-teal-800 transition-colors duration-200 w-fit">Explore 24/7 Options</a>
       </div>
     </div>
 
-    <!-- Editorial Block 2: Independence With Dignity (Image LEFT, Text RIGHT) -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-0 md:h-[500px]" style="transition-delay:100ms;">
-      <!-- Image Section -->
-      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] overflow-hidden img-zoom group">
-        <img src="../assets/images/services/servicio2.png" alt="Independence With Dignity" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
-      </div>
-      <!-- Text Section -->
-      <div class="md:w-1/2 pl-0 md:pl-12 md:h-full flex flex-col justify-center">
-        <h2 class="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-8 pb-0" style="font-family: 'Playfair Display', serif;">Independence With Dignity</h2>
-        <p class="text-lg md:text-xl text-teal-700 leading-snug mb-4 font-semibold" style="font-family: 'Playfair Display', serif;">Your Loved One's Comfort, Our Priority</p>
-        <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-8 max-w-lg font-medium">
-          We help seniors maintain their independence, routine, and confidence — with just the right support in the comfort of home.
-        </p>
-        <div class="space-y-3 mb-8">
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Personal Care & Daily Living Assistance</span>
-          </div>
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Mobility, Hygiene & Meal Support</span>
-          </div>
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Encouraging Confidence Every Day</span>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Secondary Cards Grid — 2 Column -->
+    <div class="grid md:grid-cols-2 gap-8 mb-0">
 
-    <!-- Editorial Block 3: Recovery & Wellness (Image LEFT, Text RIGHT) -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-stretch mb-0 md:h-[500px]" style="transition-delay:200ms;">
-      <!-- Text Section -->
-      <div class="md:w-1/2 pl-0 md:pl-12 md:h-full flex flex-col justify-center">
-        <h2 class="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-3 pb-0" style="font-family: 'Playfair Display', serif;">Recovery & Wellness</h2>
-        <p class="text-lg md:text-xl text-teal-700 leading-snug mb-4 font-semibold" style="font-family: 'Playfair Display', serif;">Healing With Compassion and Care</p>
-        <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-8 max-w-lg font-medium">
-          Compassionate support during recovery helps your loved one heal safely, improve strength, and regain independence.
-        </p>
-        <div class="space-y-3 mb-8">
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Rehabilitation Support</span>
-          </div>
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Medication Reminders</span>
-          </div>
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Health & Wellness Monitoring</span>
-          </div>
+      <!-- Card 2: Independence & Dignity -->
+      <div class="reveal-element flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300" style="transition-delay:100ms;">
+        <div class="h-[220px] md:h-[280px] overflow-hidden img-zoom group">
+          <img src="../assets/images/services/servicio2.png" alt="Independence & Dignity" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+        </div>
+        <div class="p-6 md:p-8 flex flex-col flex-grow">
+          <h3 class="serif-headline text-2xl md:text-2xl font-bold text-gray-900 leading-tight mb-2">Independence & Dignity</h3>
+          <p class="text-teal-700 font-semibold text-sm mb-3" style="font-family: 'Playfair Display', serif;">They stay confident. You stay at peace.</p>
+          <p class="text-gray-700 text-sm leading-relaxed flex-grow mb-6">Your loved one keeps their routine, their choices, and their self-respect. We're the help they accept — not the constraint they resist.</p>
+          <a href="#contact-form?service=independence-dignity" class="inline-block px-5 py-2.5 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors duration-200 w-fit text-sm">Learn More</a>
         </div>
       </div>
-      <!-- Image Section -->
-      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] overflow-hidden img-zoom group">
-        <img src="../assets/images/services/servicio3.png" alt="Recovery & Wellness" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
-      </div>
-    </div>
 
-    <!-- Editorial Block 4: Companionship & Peace Of Mind (Image RIGHT, Text LEFT) -->
-    <div class="reveal-element flex flex-col md:flex-row-reverse gap-0 items-center mb-0 md:h-[500px]" style="transition-delay:300ms;">
-      <!-- Image Section -->
-      <div class="md:w-1/2 w-full h-[400px] md:h-[500px] overflow-hidden img-zoom group">
-        <img src="../assets/images/services/servicio4.png" alt="Companionship & Peace Of Mind" class="w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
-      </div>
-      <!-- Text Section -->
-      <div class="md:w-1/2 pl-0 md:pl-12 md:h-full flex flex-col justify-center">
-        <h2 class="text-4xl md:text-5xl font-black text-gray-900 leading-tight mb-3 pb-0" style="font-family: 'Playfair Display', serif;">Companionship & Peace Of Mind</h2>
-        <p class="text-lg md:text-xl text-teal-700 leading-snug mb-4 font-semibold" style="font-family: 'Playfair Display', serif;">Connection That Matters, Hearts That Care</p>
-        <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-8 max-w-lg font-medium">
-          Meaningful connection, friendly conversation, and daily support that brings joy to their day and peace of mind to your heart.
-        </p>
-        <div class="space-y-3 mb-8">
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Companionship & Emotional Support</span>
-          </div>
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Engaging Activities & Outings</span>
-          </div>
-          <div class="flex items-start gap-3">
-            <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="currentColor" style="color: var(--color-primary);" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-            </svg>
-            <span class="font-semibold text-gray-700">Peace of Mind for the Whole Family</span>
-          </div>
+      <!-- Card 3: Connection & Joy -->
+      <div class="reveal-element flex flex-col bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-lg transition-shadow duration-300" style="transition-delay:200ms;">
+        <div class="h-[220px] md:h-[280px] overflow-hidden img-zoom group">
+          <img src="../assets/images/services/servicio4.png" alt="Connection & Joy" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.onerror=null;this.style.background='linear-gradient(135deg, #A7D7C5 0%, #2F7F79 100%)';this.removeAttribute('src')">
+        </div>
+        <div class="p-6 md:p-8 flex flex-col flex-grow">
+          <h3 class="serif-headline text-2xl md:text-2xl font-bold text-gray-900 leading-tight mb-2">Connection & Companionship</h3>
+          <p class="text-teal-700 font-semibold text-sm mb-3" style="font-family: 'Playfair Display', serif;">Conversation that matters. Loneliness that fades.</p>
+          <p class="text-gray-700 text-sm leading-relaxed flex-grow mb-6">Real friendship reduces depression and isolation. Our caregivers don't just assist — they listen, engage, and become part of your loved one's day.</p>
+          <a href="#contact-form?service=companionship" class="inline-block px-5 py-2.5 bg-amber-500 text-white font-semibold rounded-lg hover:bg-amber-600 transition-colors duration-200 w-fit text-sm">Discover Companionship</a>
         </div>
       </div>
+
     </div>
 
   </div>
