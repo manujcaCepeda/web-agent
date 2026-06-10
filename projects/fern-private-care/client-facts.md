@@ -4,13 +4,13 @@
 # Si un dato no está aquí, no asumirlo ni generarlo.
 
 ## Historia y contexto
-Fern Private Care fue fundada en 2014 en Miami, Florida, por Carmen Rodríguez,
+Fern Private Care fue fundada en 2014 en Florida, Florida, por Carmen Rodríguez,
 una enfermera registrada (RN) de origen cubano que cuidó personalmente a su madre
 durante dos años antes de que ella falleciera. Carmen vio que las familias hispanas
 en particular tenían dificultad para encontrar cuidadores que hablaran español y
 entendieran su cultura. Ahí nació Fern.
 
-Operan principalmente en Miami-Dade y Broward County. Todo su equipo de cuidadores
+Operan principalmente en Florida-Dade y Broward County. Todo su equipo de cuidadores
 habla español e inglés. El nombre "Fern" viene del helecho — una planta que crece
 en lugares difíciles, resiliente y cálida.
 
@@ -23,7 +23,7 @@ en lugares difíciles, resiliente y cálida.
 - Disponibilidad: 24 horas, 7 días a la semana, incluyendo feriados
 - Tiempo promedio de respuesta inicial: menos de 2 horas en días hábiles
 - Idiomas del equipo: español e inglés (todos los cuidadores)
-- Área de cobertura: Miami-Dade County y Broward County
+- Área de cobertura: Florida-Dade County y Broward County
 
 ## Lo que hacen realmente bien
 Su diferenciador principal no es el precio — no son los más baratos. Su diferenciador
@@ -32,7 +32,7 @@ cuidador es asignado considerando personalidad, idioma y dinámica familiar. Muc
 familias llevan años con el mismo cuidador. No rotan personal constantemente como
 hacen las agencias grandes.
 
-También son uno de los pocos proveedores en Miami con cuidadores especializados en
+También son uno de los pocos proveedores en Florida con cuidadores especializados en
 Alzheimer y demencia con entrenamiento adicional en la técnica Teepa Snow.
 
 ## Servicios que ofrecen (nombres exactos)
@@ -73,4 +73,4 @@ ya teníamos a alguien. Fue exactamente lo que necesitábamos."
   (sus HHAs son cuidadores personales, no home health clínico)
 - NO aceptan Medicare ni Medicaid — solo pago privado y Long Term Care Insurance
 - NO tienen cuidadores masculinos disponibles de forma regular
-- NO operan fuera de Miami-Dade y Broward County
+- NO operan fuera de Florida-Dade y Broward County
