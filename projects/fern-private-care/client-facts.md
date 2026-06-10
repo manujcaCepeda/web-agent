@@ -4,9 +4,9 @@
 # Si un dato no está aquí, no asumirlo ni generarlo.
 
 ## Historia y contexto
-Fern Private Care fue fundada en 2014 en Florida, Florida, por Carmen Rodríguez,
+Fern Private Care fue fundada en 2014 en Florida, Florida, por Fernanda Rodríguez,
 una enfermera registrada (RN) de origen cubano que cuidó personalmente a su madre
-durante dos años antes de que ella falleciera. Carmen vio que las familias hispanas
+durante dos años antes de que ella falleciera. Fernanda vio que las familias hispanas
 en particular tenían dificultad para encontrar cuidadores que hablaran español y
 entendieran su cultura. Ahí nació Fern.
 
@@ -27,7 +27,7 @@ en lugares difíciles, resiliente y cálida.
 
 ## Lo que hacen realmente bien
 Su diferenciador principal no es el precio — no son los más baratos. Su diferenciador
-es la confianza: Carmen hace personalmente la primera visita a cada familia. Cada
+es la confianza: Fernanda hace personalmente la primera visita a cada familia. Cada
 cuidador es asignado considerando personalidad, idioma y dinámica familiar. Muchas
 familias llevan años con el mismo cuidador. No rotan personal constantemente como
 hacen las agencias grandes.
@@ -46,7 +46,7 @@ Alzheimer y demencia con entrenamiento adicional en la técnica Teepa Snow.
 
 **María José Fernández — hija de paciente, Coral Gables**
 "Mi mamá tiene 84 años y tiene Alzheimer. Probamos con dos agencias antes de
-encontrar a Fern. La diferencia es que Carmen vino a conocer a mi mamá antes
+encontrar a Fern. La diferencia es que Fernanda vino a conocer a mi mamá antes
 de asignar a alguien. La cuidadora que nos dieron, Luisa, lleva 14 meses con
 nosotros. Mi mamá la reconoce y la quiere. Eso no tiene precio."
 
@@ -64,7 +64,7 @@ ya teníamos a alguien. Fue exactamente lo que necesitábamos."
 - Licencia de operación en Florida (Agency for Health Care Administration — AHCA)
 - Todos los cuidadores: certificados HHA (Home Health Aide) — Estado de Florida
 - Background check: FBI y FDLE (Florida Department of Law Enforcement)
-- Fundadora Carmen Rodríguez: RN licenciada en Florida, licencia activa
+- Fundadora Fernanda Rodríguez: RN licenciada en Florida, licencia activa
 - Entrenamiento técnica Teepa Snow: solo cuidadores asignados a casos de Alzheimer/demencia
 - Asegurados y bondeados (seguro de responsabilidad civil activo)
 
